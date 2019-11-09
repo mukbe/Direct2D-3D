@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+./.vs/
+./DirectTool/Debug/
+./_Resources/
