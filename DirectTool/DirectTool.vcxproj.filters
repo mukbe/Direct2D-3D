@@ -52,6 +52,8 @@
     <ClCompile Include="View\CameraManager.cpp" />
     <ClCompile Include="Utilities\FloatRect.cpp" />
     <ClCompile Include="Utilities\Matrix2D.cpp" />
+    <ClCompile Include="Systems\GameObject.cpp" />
+    <ClCompile Include="Systems\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DefineHeader.h" />
@@ -120,6 +122,8 @@
     <ClInclude Include="MacroFunction.h" />
     <ClInclude Include="Utilities\FloatRect.h" />
     <ClInclude Include="Utilities\Matrix2D.h" />
+    <ClInclude Include="Systems\GameObject.h" />
+    <ClInclude Include="Systems\Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utilities">

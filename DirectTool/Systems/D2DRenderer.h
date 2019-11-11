@@ -16,7 +16,7 @@ class D2DRenderer
 {
 	SingletonHeader(D2DRenderer)
 public:
-
+	
 	void Create2DBuffer();
 
 	void BeginDraw();
@@ -46,7 +46,7 @@ private:
 
 	//텍스트 출력 스토리지
 	mapTextList		dwTextFormats;
-
+	
 public:
 	//텍스트 출력 (기본 브러쉬 사용)
 	void DrawText2D(int x, int y, wstring text, int size, DefaultBrush::Enum defaultBrush = DefaultBrush::black, DWRITE_TEXT_ALIGNMENT align = DWRITE_TEXT_ALIGNMENT_CENTER, wstring font = L"맑은고딕");

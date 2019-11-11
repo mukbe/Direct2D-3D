@@ -20,6 +20,7 @@
 #include "./Utilities/Logging.h"
 
 #include "./Utilities/Buffer.h"
+#include "./Utilities/Matrix2D.h"
 
 #define KeyCode Keyboard::Get()
 #define GameMouse Mouse::Get()

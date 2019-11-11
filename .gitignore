@@ -30,6 +30,19 @@
 *.exe
 *.out
 *.app
+*.db
+*.opendb
+*.ipch
+*.ilk
+*pdb
+*.log
+*.tlog
+*.suo
+*.idb
+
+
+
+
 
 ./.vs/
 ./DirectTool/Debug/

@@ -49,4 +49,6 @@ private:
 
 	FloatRect play;
 	PositionBuffer *buffer;
+	float angle;
+
 };

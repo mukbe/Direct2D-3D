@@ -11,7 +11,7 @@ Program::Program()
 	//JsonHelper::ReadData(L"LevelEditor.json", jsonRoot);
 	
 
-
+	
 
 	//camera = new CameraMove2D;
 	
@@ -50,6 +50,8 @@ Program::Program()
 	play = FloatRect(D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2), 70, true);
 	buffer = new PositionBuffer;
 
+
+	angle = 45;
 }
 
 Program::~Program()
@@ -82,6 +84,12 @@ void Program::Update(float tick)
 	if (Keyboard::Get()->Press('A'))
 		play += D3DXVECTOR2(-40.f, 0)*Time::Delta();
 
+	if (Keyboard::Get()->Press(VK_LEFT))
+		angle += 20 * Time::Delta();
+	if (Keyboard::Get()->Press(VK_RIGHT))
+		angle -= 20 * Time::Delta();
+
+
 }
 
 void Program::PostUpdate()
@@ -92,9 +100,20 @@ void Program::PostUpdate()
 void Program::Render()
 {	
 
-	RECT rc = { 50,50,150,150 };
-	D2D1::Matrix3x2F rot = D2D1::Matrix3x2F::Rotation(45,D2D1::Point2F( rc.left + (rc.right-rc.left )/2,rc.top + (rc.bottom - rc.top)/2));
-	//p2DRenderer->SetWorld(rot);
+	RECT rc = { -50,-50,50,50 };
+
+
+
+
+	Matrix2D world, local;
+	D2D1::Matrix3x2F  result;
+	world.SetPos(WinSizeX / 2, WinSizeY / 2);
+	local.SetRotate(angle, D3DXVECTOR2(0,0));
+	result = local.GetResult() *  world.GetResult();
+
+	p2DRenderer->GetRenderTarget()->SetTransform(result);
+
+
 	p2DRenderer->FillRectangle(rc);
 	RECT rc2 = { 150,50,250,150 };
 	p2DRenderer->SetWorld(D2D1::Matrix3x2F::Identity());

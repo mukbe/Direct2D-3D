@@ -29,6 +29,8 @@ WPARAM Window::Run()
 	BufferManager::Create();
 	ShaderManager::Create();
 
+	Matrix2D::SetRenderTarget();
+
 	{//Imgui Init
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();

@@ -44,6 +44,8 @@ void D2DRenderer::Create2DBuffer()
 
 	d2dRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &dwDefaultBrush[DefaultBrush::white]);
 
+	
+
 }
 
 void D2DRenderer::BeginDraw()
@@ -309,10 +311,7 @@ void D2DRenderer::FillRectangle(RECT rc, DefaultBrush::Enum defaultBrush, bool i
 	}
 	D3DXVECTOR2 pos = CAMERA->GetPos();
 
-	D2D1::Matrix3x2F r = D2D1::Matrix3x2F::Rotation(45, D2D1::Point2F(rc.left + (rc.right - rc.left) / 2, rc.top + (rc.bottom - rc.top) / 2));
-	D2D1::Matrix3x2F t = D2D1::Matrix3x2F::Translation(pos.x,pos.y);
-
-	d2dRenderTarget->SetTransform(r*t);
+	//d2dRenderTarget->SetTransform(r*t);
 
 	d2dRenderTarget->FillRectangle(D2D1::RectF(rc.left, rc.top, rc.right, rc.bottom), dwDefaultBrush[defaultBrush]);
 	d2dRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
