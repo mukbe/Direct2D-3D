@@ -2,7 +2,6 @@
 #include "Program.h"
 
 #include "./Scenes/SceneMain.h"
-#include "./View/CameraMove2D.h"
 
 Program::Program()
 {
@@ -49,6 +48,7 @@ Program::Program()
 	
 	play = FloatRect(D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2), 70, true);
 	buffer = new PositionBuffer;
+
 
 
 	angle = 45;
@@ -105,11 +105,14 @@ void Program::Render()
 
 
 
-	Matrix2D world, local;
+	Matrix2D world, local, view;
 	D2D1::Matrix3x2F  result;
-	world.SetPos(WinSizeX / 2, WinSizeY / 2);
+	//world.SetPos(WinSizeX / 2, WinSizeY / 2);
 	local.SetRotate(angle, D3DXVECTOR2(0,0));
-	result = local.GetResult() *  world.GetResult();
+	local.SetPos((play.left + play.right) / 2, (play.bottom + play.top) / 2);
+	view = CAMERA->GetView();
+
+	result = local.GetResult() *  world.GetResult() *  view.GetResult();
 
 	p2DRenderer->GetRenderTarget()->SetTransform(result);
 
@@ -117,7 +120,7 @@ void Program::Render()
 	p2DRenderer->FillRectangle(rc);
 	RECT rc2 = { 150,50,250,150 };
 	p2DRenderer->SetWorld(D2D1::Matrix3x2F::Identity());
-	p2DRenderer->FillRectangle(rc2);
+	//p2DRenderer->FillRectangle(rc2);
 
 
 	p2DRenderer->FillRectangle(play.GetRect(),DefaultBrush::red);

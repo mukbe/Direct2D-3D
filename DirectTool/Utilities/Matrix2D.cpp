@@ -11,7 +11,8 @@ void Matrix2D::SetRenderTarget()
 		LOG->Warning(__FILE__ , __LINE__, "Matrix2D Already Connected RenderTarget");
 		return;
 	}
-	renderTarget = p2DRenderer->GetRenderTarget();
+
+	Log_WarnAssert(renderTarget = p2DRenderer->GetRenderTarget());
 }
 
 void Matrix2D::UpdateMatrix()
@@ -59,7 +60,7 @@ void Matrix2D::SetRotate(float degree, D3DXVECTOR2 pos, bool isLocal, bool isDeg
 		{
 			if (pos.x == 0 && pos.y == 0)
 			{
-				//LOG->Warning(__FILE__, __LINE__, "Is not Local pos");
+				//LOG->Print("Local pos?");
 			}
 			rotate = Matrix3x2F::Rotation(degree, Point2F(pos.x, pos.y));
 
@@ -109,6 +110,7 @@ void Matrix2D::SetPos(POINT p)
 
 void Matrix2D::Bind()
 {
+	
 	renderTarget->SetTransform(result);
 }
 

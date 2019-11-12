@@ -42,7 +42,6 @@
     <ClCompile Include="View\Projection.cpp" />
     <ClCompile Include="View\OrthoWindow.cpp" />
     <ClCompile Include="View\CameraBase.cpp" />
-    <ClCompile Include="View\CameraMove2D.cpp" />
     <ClCompile Include="Utilities\Buffer.cpp" />
     <ClCompile Include="Render\BufferManager.cpp" />
     <ClCompile Include="Systems\D2DRenderer.cpp" />
@@ -110,7 +109,6 @@
     <ClInclude Include="View\Projection.h" />
     <ClInclude Include="View\OrthoWindow.h" />
     <ClInclude Include="View\CameraBase.h" />
-    <ClInclude Include="View\CameraMove2D.h" />
     <ClInclude Include="Render\WorldBuffer.h" />
     <ClInclude Include="Render\BufferManager.h" />
     <ClInclude Include="Utilities\Buffer.h" />

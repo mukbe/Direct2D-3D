@@ -3,6 +3,7 @@
 #define ZOOM_MAX 2.5f
 #define ZOOM_MIN 0.5f
 
+//프로시저추가해서 ZOOM값 변경하면 깔끔해질듯
 class CameraManager
 {
 	SingletonHeader(CameraManager)
@@ -35,8 +36,11 @@ public:
 	POINT GetMousePos();
 
 	BOOL IsCollision(D3DXVECTOR2 p);
-
+	Matrix2D GetView() { return view; }
 private:
+	void UpdateMatrix();
+	
+	Matrix2D view;
 	D3DXVECTOR2 pos;
 	RECT renderRect;
 	float zoom;

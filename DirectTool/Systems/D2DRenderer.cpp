@@ -309,9 +309,8 @@ void D2DRenderer::FillRectangle(RECT rc, DefaultBrush::Enum defaultBrush, bool i
 	{
 		//rc = CAMERA->GetRelativeRECT(rc);
 	}
-	D3DXVECTOR2 pos = CAMERA->GetPos();
-
-	//d2dRenderTarget->SetTransform(r*t);
+	
+	//CAMERA->GetView().Bind();
 
 	d2dRenderTarget->FillRectangle(D2D1::RectF(rc.left, rc.top, rc.right, rc.bottom), dwDefaultBrush[defaultBrush]);
 	d2dRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());

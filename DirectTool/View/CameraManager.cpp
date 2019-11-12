@@ -1,12 +1,16 @@
 #include "stdafx.h"
 #include "CameraManager.h"
+#include "./Utilities/Matrix2D.h"
 
 SingletonCpp(CameraManager)
 
 CameraManager::CameraManager()
 {
+	//pos = D3DXVECTOR2(-WinSizeX/2 ,-WinSizeY/2);
 	pos = D3DXVECTOR2(0.f,0.f);
 	zoom = 1.f;
+	view = Matrix2D();
+	UpdateMatrix();
 }
 
 
@@ -34,8 +38,9 @@ void CameraManager::Update()
 		pos -= delta;
 
 		memcpy(&picked, Mouse::Get()->GetPosition(), sizeof(D3DXVECTOR2));
+
+		UpdateMatrix();
 	}
-	
 }
 
 void CameraManager::UpdateRenderRect()
@@ -91,4 +96,10 @@ BOOL CameraManager::IsCollision(D3DXVECTOR2 p)
 		return true;
 	}
 	return false;
+}
+
+void CameraManager::UpdateMatrix()
+{
+	view.SetPos(pos);
+	view.SetScale(zoom);
 }

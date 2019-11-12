@@ -25,11 +25,23 @@ void Logging::Init(const char * filename)
 	pt = localtime(&t);
 	char str[128];
 
-	snprintf(str, 128, "%02i%02i%02i %d : %d : %d", pt->tm_year + 1900, pt->tm_mon + 1, pt->tm_mday, pt->tm_hour
-		, pt->tm_min, pt->tm_sec);
+	
+
+	//snprintf(str, 128, "%02i%02i%02i %d : %d : %d", pt->tm_year + 1900, pt->tm_mon + 1, pt->tm_mday, pt->tm_hour
+	//	, pt->tm_min, pt->tm_sec);
 
 	handle.w << "===================================================" << endl;
-	handle.w << "------------" << str << endl;
+
+	handle.w << " " << pt->tm_year + 1900 << "." << pt->tm_mon + 1 << "." << pt->tm_mday << '\t';
+	if (pt->tm_hour < 10)
+		handle.w << "0";
+	handle.w << pt->tm_hour << ":";
+	if (pt->tm_min < 10)
+		handle.w << "0";
+	handle.w << pt->tm_min << ":";
+	if (pt->tm_sec < 10)
+		handle.w << "0";
+	handle.w << pt->tm_sec << '\t';
 
 	D3DDesc desc;
 	DxRenderer::GetDesc(&desc);
@@ -39,7 +51,7 @@ void Logging::Init(const char * filename)
 void Logging::Release()
 {
 	handle.r.close();
-	handle.w << " End" << endl;
+	handle.w << '\t'<< '\t' << '\t'<<" End" << endl;
 	handle.w << "===================================================" << endl;
 	handle.w.close();
 }
@@ -58,7 +70,16 @@ void Logging::Print(const char * str, ...)
 	time_t  curTime = 0;
 	time(&curTime);
 	pt = localtime(&curTime);
-	snprintf(buffer1, 2048, "%02i:%02i:%02i  %s", pt->tm_hour, pt->tm_min, pt->tm_sec, buffer0);
+	handle.w << " " << pt->tm_year + 1900 << "." << pt->tm_mon + 1 << "." << pt->tm_mday << '\t';
+	if (pt->tm_hour < 10)
+		handle.w << "0";
+	handle.w << pt->tm_hour << ":";
+	if (pt->tm_min < 10)
+		handle.w << "0";
+	handle.w << pt->tm_min << ":";
+	if (pt->tm_sec < 10)
+		handle.w << "0";
+	handle.w << pt->tm_sec << '\t';
 
 	handle.w << buffer1 << endl;
 

@@ -169,7 +169,6 @@
     <ClCompile Include="Render\Texture.cpp" />
     <ClCompile Include="Utilities\Buffer.cpp" />
     <ClCompile Include="Utilities\ImGuiHelper.cpp" />
-    <ClCompile Include="View\CameraMove2D.cpp" />
     <ClCompile Include="View\CameraBase.cpp" />
     <ClCompile Include="View\OrthoWindow.cpp" />
     <ClCompile Include="View\Projection.cpp" />
@@ -206,7 +205,6 @@
     <ClInclude Include="Render\Texture.h" />
     <ClInclude Include="Utilities\Buffer.h" />
     <ClInclude Include="Utilities\ImGuiHelper.h" />
-    <ClInclude Include="View\CameraMove2D.h" />
     <ClInclude Include="View\CameraBase.h" />
     <ClInclude Include="DefineHeader.h" />
     <ClInclude Include="View\OrthoWindow.h" />
