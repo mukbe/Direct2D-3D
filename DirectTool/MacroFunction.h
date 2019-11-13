@@ -19,10 +19,10 @@ inline float Clamp(float val, float s, float big)
 {
 	return max(s, min(big, val));
 }
-inline bool EllipseRectCollision(D3DXVECTOR2 origin, int r, RECT rc)
+inline bool EllipseRectCollision(D3DXVECTOR2 origin, float r, RECT rc)
 {
 	RECT temp, pt;
-	pt = RectMakeCenter(origin.x, origin.y, r, r);
+	pt = RectMakeCenter((int)origin.x, (int)origin.y, (int)r, (int)r);
 	if (IntersectRect(&temp, &rc, &pt))
 	{
 		if (origin.x <= rc.left && origin.y <= rc.top)

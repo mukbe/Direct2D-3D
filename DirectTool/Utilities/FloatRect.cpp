@@ -23,7 +23,7 @@ FloatRect FloatRect::MoveRect(FloatRect rc, D3DXVECTOR2 v)
 	return std::move(r);
 }
 
-FloatRect FloatRect::operator+=(D3DXVECTOR2  v)
+FloatRect FloatRect::operator+=(const D3DXVECTOR2&  v)
 {
 	left += v.x;
 	right += v.x;
@@ -32,7 +32,7 @@ FloatRect FloatRect::operator+=(D3DXVECTOR2  v)
 	return *this;
 }
 
-FloatRect FloatRect::operator-=(D3DXVECTOR2 v)
+FloatRect FloatRect::operator-=(const D3DXVECTOR2& v)
 {
 	left -= v.x;
 	right -= v.x;

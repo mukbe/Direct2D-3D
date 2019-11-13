@@ -6,8 +6,8 @@ public:
 	static FloatRect MoveRect(FloatRect rc, float dx, float dy);
 	static FloatRect MoveRect(FloatRect rc, D3DXVECTOR2 v);
 
-	FloatRect operator+=(D3DXVECTOR2 v);
-	FloatRect operator-=(D3DXVECTOR2 v);
+	FloatRect operator+=(const D3DXVECTOR2& v);
+	FloatRect operator-=(const D3DXVECTOR2& v);
 public:
 	float left;
 	float top;

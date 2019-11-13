@@ -35,5 +35,9 @@ public:
 	void SetPos(POINT p);
 
 	void Bind();
+
+
+	Matrix2D operator*(const Matrix2D& other);
+	
 };
 

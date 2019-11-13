@@ -37,7 +37,7 @@ void RenderTargetBuffer::Create()
 void RenderTargetBuffer::BindRenderTarget()
 {
 	DeviceContext->OMSetRenderTargets(arraySize, &rtv, dsv);
-	DeviceContext->ClearRenderTargetView(rtv, ColorGray(0.2));
+	DeviceContext->ClearRenderTargetView(rtv, ColorGray(0.2f));
 }
 
 //

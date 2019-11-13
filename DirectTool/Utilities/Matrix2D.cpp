@@ -58,17 +58,11 @@ void Matrix2D::SetRotate(float degree, D3DXVECTOR2 pos, bool isLocal, bool isDeg
 	{
 		if (isLocal)
 		{
-			if (pos.x == 0 && pos.y == 0)
-			{
-				//LOG->Print("Local pos?");
-			}
 			rotate = Matrix3x2F::Rotation(degree, Point2F(pos.x, pos.y));
-
 		}
 		else
 		{
 			rotate = Matrix3x2F::Rotation(degree);
-
 		}
 	}
 	else
@@ -76,15 +70,11 @@ void Matrix2D::SetRotate(float degree, D3DXVECTOR2 pos, bool isLocal, bool isDeg
 		if (isLocal)
 		{
 			rotate = Matrix3x2F::Rotation(D3DXToDegree(degree), Point2F(pos.x, pos.y));
-
 		}
 		else
 		{
 			rotate = Matrix3x2F::Rotation(D3DXToDegree(degree));
-
 		}
-
-
 	}
 
 	UpdateMatrix();
@@ -110,8 +100,18 @@ void Matrix2D::SetPos(POINT p)
 
 void Matrix2D::Bind()
 {
-	
 	renderTarget->SetTransform(result);
+}
+
+Matrix2D  Matrix2D::operator*(const Matrix2D & other)
+{
+	Matrix2D val;
+	val.scale = this->scale * other.scale;
+	val.rotate = this->rotate * other.rotate;
+	val.trans = this->trans * other.trans;
+	val.result = this->result * other.result;
+
+	return val;
 }
 
 

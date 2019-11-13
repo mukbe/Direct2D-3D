@@ -159,7 +159,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Systems\GameObject.cpp" />
-    <ClCompile Include="Systems\Transform.cpp" />
     <ClCompile Include="Utilities\Matrix2D.cpp" />
     <ClCompile Include="Utilities\FloatRect.cpp" />
     <ClCompile Include="View\CameraManager.cpp" />
@@ -193,7 +192,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\GameObject.h" />
-    <ClInclude Include="Systems\Transform.h" />
     <ClInclude Include="Utilities\Matrix2D.h" />
     <ClInclude Include="Utilities\FloatRect.h" />
     <ClInclude Include="MacroFunction.h" />

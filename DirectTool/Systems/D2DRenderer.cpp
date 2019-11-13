@@ -342,10 +342,10 @@ void D2DRenderer::FillEllipse(RECT rc, D2D1::ColorF::Enum color, float alpha, bo
 }
 void D2DRenderer::FillEllipse(RECT rc, DefaultBrush::Enum defaultBrush, bool isRelativePos)
 {
-	if (isRelativePos)
-	{
-		rc = CAMERA->GetRelativeRECT(rc);
-	}
+	//if (isRelativePos)
+	//{
+	//	rc = CAMERA->GetRelativeRECT(rc);
+	//}
 
 	int width = rc.right - rc.left;
 	int height = rc.bottom - rc.top;

@@ -49,7 +49,7 @@ Program::Program()
 	play = FloatRect(D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2), 70, true);
 	buffer = new PositionBuffer;
 
-
+	gameObject = new GameObject();
 
 	angle = 45;
 }
@@ -105,18 +105,22 @@ void Program::Render()
 
 
 
-	Matrix2D world, local, view;
-	D2D1::Matrix3x2F  result;
-	//world.SetPos(WinSizeX / 2, WinSizeY / 2);
+	Matrix2D world, local, view, result;
+	D2D1::Matrix3x2F  s,d;
+
 	local.SetRotate(angle, D3DXVECTOR2(0,0));
 	local.SetPos((play.left + play.right) / 2, (play.bottom + play.top) / 2);
 	view = CAMERA->GetView();
 
-	result = local.GetResult() *  world.GetResult() *  view.GetResult();
-
-	p2DRenderer->GetRenderTarget()->SetTransform(result);
+	result = local * world * view;
 
 
+	//TODO 도형 렌더링시에 렌더링이 끝나고 단위행렬로 바꿀지 생각해볼것
+	//랜더링시에 모든 객체가 폼을 가지고 있다면 단위행렬로 바꾸는걸 없애야함
+	gameObject->Transform()->SetPos(D3DXVECTOR2(WinSizeX / 4, WinSizeY / 4));
+	gameObject->Render(true);
+
+	p2DRenderer->GetRenderTarget()->SetTransform(result.GetResult());
 	p2DRenderer->FillRectangle(rc);
 	RECT rc2 = { 150,50,250,150 };
 	p2DRenderer->SetWorld(D2D1::Matrix3x2F::Identity());
@@ -164,7 +168,10 @@ void Program::ImguiRender()
 	ImGui::Begin("Camera");
 	ImGui::Text("FPS : %f", Time::Get()->FPS());
 	ImGui::Text("Tick : %f", Time::Delta());
-	ImGui::Text("PosX : %f, PosY : %f", play.left, play.right);
+	ImGui::Text("PosX : %.2f, PosY : %.2f", CAMERA->GetPos().x, CAMERA->GetPos().y);
+	ImGui::Separator();
+	ImGui::Text("Player Position");
+	ImGui::Text("X : %f, Y : %f", play.left, play.right);
 	ImGui::End();
 
 	//camera->UIRender();

@@ -51,4 +51,6 @@ private:
 	PositionBuffer *buffer;
 	float angle;
 
+	GameObject* gameObject;
+
 };

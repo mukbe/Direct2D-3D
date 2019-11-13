@@ -72,5 +72,7 @@ const wstring ShaderPath = L"_Shaders/";
 
 #include "./Render/WorldBuffer.h"
 
+#include "./Systems/GameObject.h"
+
 
 
