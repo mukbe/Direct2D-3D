@@ -5,7 +5,8 @@
 
 GameObject::GameObject(string name , D3DXVECTOR2 pos )
 {
-	buffer = new PositionBuffer;
+	//buffer = new PositionBuffer;
+	worldBuffer = new WorldBuffer;
 	shader = new Shader(L"./Shaders/Color.hlsl");
 
 	transform = new Matrix2D();
@@ -22,7 +23,8 @@ GameObject::~GameObject()
 	SafeDelete(transform);
 
 	SafeDelete(shader);
-	SafeDelete(buffer);
+	SafeDelete(worldBuffer);
+	//SafeDelete(buffer);
 
 }
 
@@ -68,10 +70,11 @@ void GameObject::PostRender()
 
 	//이거 수정해라
 	CAMERA->CameraDataBind();
-	
-	buffer->SetPosition(D3DXVECTOR2(0,0));
-	buffer->SetVSBuffer(1);
-	buffer->SetPSBuffer(1);
+	worldBuffer->Setting(transform->GetResult());
+	worldBuffer->SetPSBuffer(1);
+	//buffer->SetPosition(D3DXVECTOR2(0,0));
+	//buffer->SetVSBuffer(1);
+	//buffer->SetPSBuffer(1);
 	pRenderer->TurnOnAlphaBlend();
 	DeviceContext->Draw(4, 0);
 }

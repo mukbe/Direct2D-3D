@@ -3,13 +3,15 @@ cbuffer Buffer_Camera : register(b0)
     float4 View;
 
     float2 CameraPos;
-    float2 padding;
+    float2 Padding_Camera;
 }
 
-cbuffer Buffer_Position : register(b1)
+cbuffer Buffer_World : register(b1)
 {
-    float2 Position;
-    float2 Padding;
+    float4 World;
+
+    float2 Pos;
+    float2 Padding_World;
 }
 
 static const float2 arrBasePos[4] =
@@ -52,15 +54,18 @@ PixelInput VS(uint VertexID : SV_VertexID)
 float4 PS(PixelInput input) : SV_TARGET
 {
     float4 color = input.color;
-    float2 origin = Position;
+    //float2 origin = Position;
     
+    float3 position = float3(0,0, 1);
     
-    origin = mul(float3(origin, 1), float3x2(View.xyzw, CameraPos)).xy;
+    position.xy = mul(position, float3x2(World,  Pos));
+
+    position.xy = mul(position, float3x2(View.xyzw, CameraPos));
     float zoom = length(View.xw);
 
     color = float4(0, 0, 0, 0.3f);
-    float dx = abs(input.position.x - origin.x);
-    float dy = abs(input.position.y - origin.y);
+    float dx = abs(input.position.x - position.x);
+    float dy = abs(input.position.y - position.y);
     float distance = sqrt(dx * dx + dy * dy);
     
     
