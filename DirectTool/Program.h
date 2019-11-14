@@ -4,23 +4,7 @@ class SceneMain;
 class Program
 {
 
-	class PositionBuffer : public ShaderBuffer
-	{
-	private:
-		struct Struct
-		{
-			D3DXVECTOR2 Pos;
-			D3DXVECTOR2 padding;
-		}data;
-	public:
-		PositionBuffer()
-			:ShaderBuffer(&data, sizeof Struct)
-		{
-			
-		}
-		void SetPosition(D3DXVECTOR2 p) { data.Pos = p; }
-		
-	};
+
 
 public:
 	Program();
@@ -42,13 +26,9 @@ private:
 	//class ShadowRenderer* shadow;
 	class SceneMain *sm;
 
-	class CameraMove2D* camera;
-	Shader* shader;
 	ID3D11Buffer* vertexBuffer, *indexBuffer;
-	WorldBuffer* worldBuffer;
 
 	FloatRect play;
-	PositionBuffer *buffer;
 	float angle;
 
 	GameObject* gameObject;

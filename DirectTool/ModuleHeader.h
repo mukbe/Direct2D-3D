@@ -6,7 +6,6 @@
 #include "./Utilities/Matrix2D.h"
 
 
-#include "./View/CameraManager.h"
 
 #include "./Render/BufferManager.h"
 #include "./Render/VertexLayout.h"
@@ -15,6 +14,9 @@
 #include "./Render/Shader.h"
 #include "./Render/ShaderManager.h"
 #include "./Render/Texture.h"
+
+#include "./View/CameraManager.h"
+
 
 #include "./Utilities/Math.h"
 #include "./Utilities/Json.h"

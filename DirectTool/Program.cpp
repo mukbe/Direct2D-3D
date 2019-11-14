@@ -15,9 +15,7 @@ Program::Program()
 	//camera = new CameraMove2D;
 	
 	sm = new SceneMain;
-	shader = new Shader(L"./Shaders/Color.hlsl");
 
-	worldBuffer = new WorldBuffer;
 	vector<VertexColor> vertexData;
 	vector<UINT> indexData;
 	
@@ -47,22 +45,18 @@ Program::Program()
 
 	
 	play = FloatRect(D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2), 70, true);
-	buffer = new PositionBuffer;
 
-	gameObject = new GameObject();
+	gameObject = new GameObject("", D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2));
 
 	angle = 45;
 }
 
 Program::~Program()
 {
-	SafeDelete(shader);
 	SafeDelete(sm);
 	//SafeDelete(camera);
 	//JsonHelper::WriteData(L"LevelEditor.json", jsonRoot);
 	//SafeDelete(jsonRoot);
-
-	SafeDelete(buffer);
 }
 
 void Program::PreUpdate()
@@ -90,6 +84,12 @@ void Program::Update(float tick)
 		angle -= 20 * Time::Delta();
 
 
+	if (Keyboard::Get()->Down('T'))
+		CAMERA->AddZoom(0.1f);
+	if (Keyboard::Get()->Down('R'))
+		CAMERA->AddZoom(-0.1f);
+
+
 }
 
 void Program::PostUpdate()
@@ -99,68 +99,18 @@ void Program::PostUpdate()
 
 void Program::Render()
 {	
-
-	RECT rc = { -50,-50,50,50 };
-
-
-
-
-	Matrix2D world, local, view, result;
-	D2D1::Matrix3x2F  s,d;
-
-	local.SetRotate(angle, D3DXVECTOR2(0,0));
-	local.SetPos((play.left + play.right) / 2, (play.bottom + play.top) / 2);
-	view = CAMERA->GetView();
-
-	result = local * world * view;
-
-
-	//TODO 도형 렌더링시에 렌더링이 끝나고 단위행렬로 바꿀지 생각해볼것
-	//랜더링시에 모든 객체가 폼을 가지고 있다면 단위행렬로 바꾸는걸 없애야함
-	gameObject->Transform()->SetPos(D3DXVECTOR2(WinSizeX / 4, WinSizeY / 4));
 	gameObject->Render(true);
 
-	p2DRenderer->GetRenderTarget()->SetTransform(result.GetResult());
-	p2DRenderer->FillRectangle(rc);
-	RECT rc2 = { 150,50,250,150 };
-	p2DRenderer->SetWorld(D2D1::Matrix3x2F::Identity());
-	//p2DRenderer->FillRectangle(rc2);
 
 
-	p2DRenderer->FillRectangle(play.GetRect(),DefaultBrush::red);
+	//p2DRenderer->FillRectangle(play.GetRect(),DefaultBrush::red);
 
 	
 }
 
 void Program::PostRender()
 {
-	UINT stride = sizeof(VertexColor);
-	UINT offset = 0;
-
-	DeviceContext->IASetInputLayout(nullptr);
-	DeviceContext->IASetVertexBuffers(0, 0, nullptr, nullptr, nullptr);
-	DeviceContext->IASetIndexBuffer(nullptr, DXGI_FORMAT_UNKNOWN, 0);
-	DeviceContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-
-	shader->Render();
-
-	//camera->Render();
-	D3DXMATRIX mat;
-	D3DXMatrixIdentity(&mat);
-	//worldBuffer->SetMatrix(mat);
-	//worldBuffer->SetVSBuffer(9);
-	//DeviceContext->DrawIndexed(6, 0, 0);
-
-	//States::SetBlend(States::BLENDING_ON);
-	//States::SetBlend(States::BLENDING_OFF);
-	buffer->SetPosition(D3DXVECTOR2(play.left + (play.right - play.left) / 2, play.top + (play.bottom - play.top) / 2));
-	buffer->SetVSBuffer(1);
-	buffer->SetPSBuffer(1);
-	pRenderer->TurnOnAlphaBlend();
-	DeviceContext->Draw(4, 0);
-
-	
-	sm->Render();
+	gameObject->PostRender();
 }
 
 void Program::ImguiRender()

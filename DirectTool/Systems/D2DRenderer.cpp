@@ -190,28 +190,16 @@ void D2DRenderer::DrawLine(D2D1::ColorF::Enum color, float alpha, D3DXVECTOR2 st
 	d2dRenderTarget->CreateSolidColorBrush(D2D1::ColorF(color, alpha), &brush);
 
 
-	if (isRelativePos)
-	{
-		start = CAMERA->GetRelativeVector2D(start);
-		end = CAMERA->GetRelativeVector2D(end);
-	}
 
 	d2dRenderTarget->DrawLine(D2D1::Point2F(start.x, start.y), D2D1::Point2F(end.x, end.y), brush, strokeWidth);
-	d2dRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
 
 	brush->Release();
 }
 void D2DRenderer::DrawLine(D3DXVECTOR2 start, D3DXVECTOR2 end, DefaultBrush::Enum defaultBrush, bool isRelativePos, float strokeWidth)
 {
-	if (isRelativePos)
-	{
-		start = CAMERA->GetRelativeVector2D(start);
-		end = CAMERA->GetRelativeVector2D(end);
-	}
 
 	d2dRenderTarget->DrawLine(D2D1::Point2F(start.x, start.y), D2D1::Point2F(end.x, end.y), dwDefaultBrush[defaultBrush], strokeWidth);
-	d2dRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 }
 
 void D2DRenderer::DrawRectangle(RECT rc, D2D1::ColorF::Enum color, float alpha, bool isRelativePos, float strokeWidth)
@@ -219,25 +207,14 @@ void D2DRenderer::DrawRectangle(RECT rc, D2D1::ColorF::Enum color, float alpha, 
 	ID2D1SolidColorBrush* brush;
 	d2dRenderTarget->CreateSolidColorBrush(D2D1::ColorF(color, alpha), &brush);
 
-	if (isRelativePos)
-	{
-		rc = CAMERA->GetRelativeRECT(rc);
-	}
 
 	d2dRenderTarget->DrawRectangle(D2D1::RectF(rc.left, rc.top, rc.right, rc.bottom), brush, strokeWidth);
-	d2dRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
 	brush->Release();
 }
 void D2DRenderer::DrawRectangle(RECT rc, DefaultBrush::Enum defaultBrush, bool isRelativePos, float strokeWidth)
 {
-	if (isRelativePos)
-	{
-		rc = CAMERA->GetRelativeRECT(rc);
-	}
-
 	d2dRenderTarget->DrawRectangle(D2D1::RectF(rc.left, rc.top, rc.right, rc.bottom), dwDefaultBrush[defaultBrush], strokeWidth);
-	d2dRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 }
 
 void D2DRenderer::DrawEllipse(RECT rc, D2D1::ColorF::Enum color, float alpha, bool isRelativePos, float strokeWidth)
@@ -245,10 +222,7 @@ void D2DRenderer::DrawEllipse(RECT rc, D2D1::ColorF::Enum color, float alpha, bo
 	ID2D1SolidColorBrush* brush;
 	d2dRenderTarget->CreateSolidColorBrush(D2D1::ColorF(color, alpha), &brush);
 
-	if (isRelativePos)
-	{
-		rc = CAMERA->GetRelativeRECT(rc);
-	}
+
 
 	int width = rc.right - rc.left;
 	int height = rc.bottom - rc.top;
@@ -260,17 +234,12 @@ void D2DRenderer::DrawEllipse(RECT rc, D2D1::ColorF::Enum color, float alpha, bo
 	ellipse.radiusY = height * 0.5;
 
 	d2dRenderTarget->DrawEllipse(&ellipse, brush, strokeWidth);
-	d2dRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
 	brush->Release();
 }
 
 void D2DRenderer::DrawEllipse(RECT rc, DefaultBrush::Enum defaultBrush, bool isRelativePos, float strokeWidth)
 {
-	if (isRelativePos)
-	{
-		rc = CAMERA->GetRelativeRECT(rc);
-	}
 
 	int width = rc.right - rc.left;
 	int height = rc.bottom - rc.top;
@@ -282,7 +251,6 @@ void D2DRenderer::DrawEllipse(RECT rc, DefaultBrush::Enum defaultBrush, bool isR
 	ellipse.radiusY = height * 0.5;
 
 	d2dRenderTarget->DrawEllipse(&ellipse, dwDefaultBrush[defaultBrush], strokeWidth);
-	d2dRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 }
 
 void D2DRenderer::FillRectangle(RECT rc, D2D1::ColorF::Enum color, float alpha, bool isRelativePos)
@@ -291,13 +259,7 @@ void D2DRenderer::FillRectangle(RECT rc, D2D1::ColorF::Enum color, float alpha, 
 	d2dRenderTarget->CreateSolidColorBrush(D2D1::ColorF(color, alpha), &brush);
 
 
-	if (isRelativePos)
-	{
-		rc = CAMERA->GetRelativeRECT(rc);
-	}
-
 	d2dRenderTarget->FillRectangle(D2D1::RectF(rc.left, rc.top, rc.right, rc.bottom), brush);
-	d2dRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
 	brush->Release();
 }
@@ -305,15 +267,7 @@ void D2DRenderer::FillRectangle(RECT rc, D2D1::ColorF::Enum color, float alpha, 
 //테스트한거
 void D2DRenderer::FillRectangle(RECT rc, DefaultBrush::Enum defaultBrush, bool isRelativePos)
 {
-	if (isRelativePos)
-	{
-		//rc = CAMERA->GetRelativeRECT(rc);
-	}
-	
-	//CAMERA->GetView().Bind();
-
 	d2dRenderTarget->FillRectangle(D2D1::RectF(rc.left, rc.top, rc.right, rc.bottom), dwDefaultBrush[defaultBrush]);
-	d2dRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
 }
 
@@ -321,10 +275,7 @@ void D2DRenderer::FillEllipse(RECT rc, D2D1::ColorF::Enum color, float alpha, bo
 {
 	ID2D1SolidColorBrush* brush;
 	d2dRenderTarget->CreateSolidColorBrush(D2D1::ColorF(color, alpha), &brush);
-	if (isRelativePos)
-	{
-		rc = CAMERA->GetRelativeRECT(rc);
-	}
+
 
 	int width = rc.right - rc.left;
 	int height = rc.bottom - rc.top;
@@ -336,16 +287,11 @@ void D2DRenderer::FillEllipse(RECT rc, D2D1::ColorF::Enum color, float alpha, bo
 	ellipse.radiusY = height * 0.5;
 
 	d2dRenderTarget->FillEllipse(&ellipse, brush);
-	d2dRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
 	brush->Release();
 }
 void D2DRenderer::FillEllipse(RECT rc, DefaultBrush::Enum defaultBrush, bool isRelativePos)
 {
-	//if (isRelativePos)
-	//{
-	//	rc = CAMERA->GetRelativeRECT(rc);
-	//}
 
 	int width = rc.right - rc.left;
 	int height = rc.bottom - rc.top;
@@ -357,5 +303,4 @@ void D2DRenderer::FillEllipse(RECT rc, DefaultBrush::Enum defaultBrush, bool isR
 	ellipse.radiusY = height * 0.5;
 
 	d2dRenderTarget->FillEllipse(&ellipse, dwDefaultBrush[defaultBrush]);
-	d2dRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 }

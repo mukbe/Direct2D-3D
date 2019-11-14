@@ -5,6 +5,9 @@
 
 GameObject::GameObject(string name , D3DXVECTOR2 pos )
 {
+	buffer = new PositionBuffer;
+	shader = new Shader(L"./Shaders/Color.hlsl");
+
 	transform = new Matrix2D();
 	transform->SetPos(pos);
 	
@@ -17,6 +20,10 @@ GameObject::~GameObject()
 {
 	Release();
 	SafeDelete(transform);
+
+	SafeDelete(shader);
+	SafeDelete(buffer);
+
 }
 
 void GameObject::Init()
@@ -44,5 +51,27 @@ void GameObject::Render(bool isRelative)
 	world.Bind();
 
 	p2DRenderer->FillEllipse(rc.GetRect());
+	
+}
 
+void GameObject::PostRender()
+{
+	UINT stride = sizeof(VertexColor);
+	UINT offset = 0;
+
+	DeviceContext->IASetInputLayout(nullptr);
+	DeviceContext->IASetVertexBuffers(0, 0, nullptr, nullptr, nullptr);
+	DeviceContext->IASetIndexBuffer(nullptr, DXGI_FORMAT_UNKNOWN, 0);
+	DeviceContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+	shader->Render();
+
+	//이거 수정해라
+	CAMERA->CameraDataBind();
+	
+	buffer->SetPosition(D3DXVECTOR2(0,0));
+	buffer->SetVSBuffer(1);
+	buffer->SetPSBuffer(1);
+	pRenderer->TurnOnAlphaBlend();
+	DeviceContext->Draw(4, 0);
 }

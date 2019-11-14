@@ -1,16 +1,18 @@
 #include "stdafx.h"
 #include "CameraManager.h"
 #include "./Utilities/Matrix2D.h"
-
+#include "./Render/ShaderBuffer.h"
 
 SingletonCpp(CameraManager)
 
 CameraManager::CameraManager()
 {
-	//pos = D3DXVECTOR2(-WinSizeX/2 ,-WinSizeY/2);
+
 	pos = D3DXVECTOR2(0.f,0.f);
 	zoom = 1.f;
 	view = Matrix2D();
+	buffer = new CameraBuffer;
+
 	UpdateMatrix();
 	UpdateRenderRect();
 }
@@ -18,6 +20,7 @@ CameraManager::CameraManager()
 
 CameraManager::~CameraManager()
 {
+	SafeDelete(buffer);
 }
 
 void CameraManager::Update()
@@ -25,33 +28,19 @@ void CameraManager::Update()
 	if (Mouse::Get()->Down(0))
 	{
 		memcpy(&picked, Mouse::Get()->GetPosition(), sizeof(D3DXVECTOR2));
-		//TODO 이렇게 해도 되는가 피드백필요
-		//while (ShowCursor(FALSE) >= 0);
 
-	
+		while (ShowCursor(FALSE) >= 0);
 	}
 	if (Mouse::Get()->Up(0))
 	{
-		//while (ShowCursor(TRUE) <= 0);
+		while (ShowCursor(TRUE) <= 0);
 		ClipCursor(NULL);
 	}
 
 	if (Mouse::Get()->Press(0))
 	{
 		
-		RECT cR;
-		D3DDesc desc;
-		DxRenderer::GetDesc(&desc);
-		POINT p1, p2;
-
-		GetClientRect(desc.Handle, &cR);
-		memcpy(&p1, &cR.left, sizeof(POINT));
-		memcpy(&p2, &cR.right, sizeof(POINT));
-		ClientToScreen(desc.Handle, &p1);
-		ClientToScreen(desc.Handle, &p2);
-		memcpy(&cR.left, &p1, sizeof(POINT));
-		memcpy(&cR.right, &p2, sizeof(POINT));
-		ClipCursor(&cR);
+		ClipMouse();
 
 		memcpy(&pick, Mouse::Get()->GetPosition(), sizeof(D3DXVECTOR2));
 
@@ -67,6 +56,13 @@ void CameraManager::Update()
 void CameraManager::UpdateRenderRect()
 {
 	renderRect = { (LONG)pos.x,(LONG)pos.y, (LONG)(pos.x + WinSizeX) , (LONG)(pos.y + WinSizeY) };
+}
+
+void CameraManager::AddZoom(float value)
+{
+	//제한 둬야함
+	zoom += value;
+	UpdateMatrix();
 }
 
 RECT CameraManager::GetRelativeRECT(RECT rc)
@@ -92,11 +88,6 @@ D3DXVECTOR2 CameraManager::GetRelativeVector2D(D3DXVECTOR2 vr)
 	return std::move(vr);
 }
 
-D3DXVECTOR2 CameraManager::GetZoomPos(D3DXVECTOR2 vr)
-{
-	vr *= zoom;
-	return std::move(vr);
-}
 
 POINT CameraManager::GetMousePos()
 {
@@ -119,8 +110,42 @@ BOOL CameraManager::IsCollision(D3DXVECTOR2 p)
 	return false;
 }
 
+void CameraManager::CameraDataBind()
+{
+	//쉐이더에서 사용할 카메라의 행렬을 바인딩하면 쉐이더에 항상 들어감
+
+
+	buffer->Setting(view.GetResult());
+	buffer->SetPSBuffer(0);
+	buffer->SetVSBuffer(0);
+
+}
+
 void CameraManager::UpdateMatrix()
 {
 	view.SetPos(-pos);
 	view.SetScale(zoom);
+
+}
+
+void CameraManager::ClipMouse()
+{
+	RECT cR;
+	D3DDesc desc;
+	DxRenderer::GetDesc(&desc);
+	POINT p1, p2;
+	POINT mouseScreenPos;
+
+	GetCursorPos(&mouseScreenPos);
+
+	GetClientRect(desc.Handle, &cR);
+	memcpy(&p1, &cR.left, sizeof(POINT));
+	memcpy(&p2, &cR.right, sizeof(POINT));
+	ClientToScreen(desc.Handle, &p1);
+	ClientToScreen(desc.Handle, &p2);
+	memcpy(&cR.left, &p1, sizeof(POINT));
+	memcpy(&cR.right, &p2, sizeof(POINT));
+
+	if (PtInRect(&cR, mouseScreenPos))
+		ClipCursor(&cR);
 }
