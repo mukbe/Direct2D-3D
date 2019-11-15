@@ -5,7 +5,6 @@
 
 Projection::Projection()
 {
-	this->viewProjectionBuffer = Buffers->FindShaderBuffer<ViewProjectionBuffer>();
 }
 
 

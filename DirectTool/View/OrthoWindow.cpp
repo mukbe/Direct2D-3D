@@ -83,7 +83,6 @@ void OrthoWindow::Render()
 	//DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//buffer->SetVSBuffer(10);
-	viewProjectionBuffer->SetVSBuffer(10);
 }
 
 void OrthoWindow::DrawIndexed()
@@ -94,8 +93,6 @@ void OrthoWindow::DrawIndexed()
 
 void OrthoWindow::SetView(D3DXMATRIX v)
 {
-	viewProjectionBuffer->SetView(v);
 
 	D3DXMatrixMultiply(&matViewProj, &v, &projection);
-	viewProjectionBuffer->SetVP(matViewProj);
 }

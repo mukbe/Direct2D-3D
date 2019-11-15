@@ -40,24 +40,25 @@ protected:
 
 
 private:
-	class PositionBuffer : public ShaderBuffer
-	{
-	private:
-		struct Struct
-		{
-			D3DXVECTOR2 Pos;
-			D3DXVECTOR2 padding;
-		}data;
-	public:
-		PositionBuffer()
-			:ShaderBuffer(&data, sizeof Struct)
-		{
-
-		}
-		void SetPosition(D3DXVECTOR2 p) { data.Pos = p; }
-	};
-private:
-	PositionBuffer *buffer;
+//	class PositionBuffer : public ShaderBuffer
+//	{
+//	private:
+//		struct Struct
+//		{
+//			D3DXVECTOR2 Pos;
+//			D3DXVECTOR2 padding;
+//		}data;
+//	public:
+//		PositionBuffer()
+//			:ShaderBuffer(&data, sizeof Struct)
+//		{
+//
+//		}
+//		void SetPosition(D3DXVECTOR2 p) { data.Pos = p; }
+//	};
+//private:
+//	PositionBuffer *buffer;
+	WorldBuffer * worldBuffer;
 	Shader* shader;
 
 

@@ -19,7 +19,6 @@ public:
 protected:
 	D3DXMATRIX projection;
 	D3DXMATRIX matViewProj;
-	ViewProjectionBuffer* viewProjectionBuffer;
 
 };
 

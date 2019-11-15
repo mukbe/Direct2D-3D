@@ -24,6 +24,5 @@ BufferManager::~BufferManager()
 
 void BufferManager::Init()
 {
-	this->bufferContainer.insert(make_pair(ViewProjectionBuffer::GetCode(), new ViewProjectionBuffer));
 	this->bufferContainer.insert(make_pair(WorldBuffer::GetCode(), new WorldBuffer));
 }
