@@ -65,7 +65,7 @@ Texture::Texture(wstring file, DXGI_FORMAT format)
 	Initialize();
 	this->file = file;
 	this->format = format;
-
+	
 	this->SetTexture(file);
 }
 
@@ -107,7 +107,7 @@ void Texture::SetTexture(wstring file)
 			texHeight = height;
 		}
 	};
-
+	
 	TexMetadata metaData;
 	ScratchImage image;
 	wstring ext = Path::GetExtension(file);
@@ -165,7 +165,7 @@ void Texture::SetTexture(wstring file)
 		imageLoadInfo.Usage = D3D11_USAGE_DEFAULT;
 		imageLoadInfo.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 		imageLoadInfo.CpuAccessFlags = 0;
-		imageLoadInfo.MiscFlags = 0;
+		imageLoadInfo.MiscFlags = D3D10_RESOURCE_MISC_SHARED;
 		imageLoadInfo.Format = format;
 		imageLoadInfo.Filter = D3DX11_FILTER_LINEAR;
 		imageLoadInfo.MipFilter = D3DX11_FILTER_LINEAR;
@@ -183,6 +183,11 @@ void Texture::SetTexture(wstring file)
 		srvDesc.Texture2D.MostDetailedMip = 0;
 		hr = Device->CreateShaderResourceView(texture, &srvDesc, &srv);
 		assert(SUCCEEDED(hr));
+		
+
+
+		int a = 10;
+
 	}
 	else
 	{

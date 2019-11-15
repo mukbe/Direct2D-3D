@@ -60,6 +60,7 @@ private:
 
 	ID3D11Texture2D* texture;
 	ID3D11ShaderResourceView* srv;
+	ID2D1Bitmap1* bitmap;
 
 	int lastSlot;
 	UINT lastBindFlag;

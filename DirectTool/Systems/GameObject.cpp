@@ -5,7 +5,6 @@
 
 GameObject::GameObject(string name , D3DXVECTOR2 pos )
 {
-	//buffer = new PositionBuffer;
 	worldBuffer = new WorldBuffer;
 	shader = new Shader(L"./Shaders/Color.hlsl");
 
@@ -24,7 +23,7 @@ GameObject::~GameObject()
 
 	SafeDelete(shader);
 	SafeDelete(worldBuffer);
-	//SafeDelete(buffer);
+
 
 }
 
@@ -58,6 +57,12 @@ void GameObject::Render(bool isRelative)
 
 void GameObject::PostRender()
 {
+
+	CAMERA->CameraDataBind();
+	worldBuffer->Setting(transform->GetResult());
+	worldBuffer->SetPSBuffer(1);
+	shader->Render();
+
 	UINT stride = sizeof(VertexColor);
 	UINT offset = 0;
 
@@ -66,15 +71,8 @@ void GameObject::PostRender()
 	DeviceContext->IASetIndexBuffer(nullptr, DXGI_FORMAT_UNKNOWN, 0);
 	DeviceContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	shader->Render();
-
-	//이거 수정해라
-	CAMERA->CameraDataBind();
-	worldBuffer->Setting(transform->GetResult());
-	worldBuffer->SetPSBuffer(1);
-	//buffer->SetPosition(D3DXVECTOR2(0,0));
-	//buffer->SetVSBuffer(1);
-	//buffer->SetPSBuffer(1);
 	pRenderer->TurnOnAlphaBlend();
 	DeviceContext->Draw(4, 0);
+	pRenderer->TurnOffAlphaBlend();
+
 }

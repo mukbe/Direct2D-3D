@@ -20,15 +20,23 @@ void D2DRenderer::Create2DBuffer()
 
 	IDXGISurface* dxgiBuffer;
 	hr = SwapChain->GetBuffer(0, IID_PPV_ARGS(&dxgiBuffer));
-
+	
 	FLOAT dpiX, dpiY;
 	d2dFactory->GetDesktopDpi(&dpiX, &dpiY);
 
 	D2D1_RENDER_TARGET_PROPERTIES prop = D2D1::RenderTargetProperties(
 		D2D1_RENDER_TARGET_TYPE_DEFAULT
 		, D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED), dpiX, dpiY);
-
+	
 	hr = d2dFactory->CreateDxgiSurfaceRenderTarget(dxgiBuffer, prop, &d2dRenderTarget);
+
+	IDXGIDevice * dxgiDevice;
+
+	HResult(Device->QueryInterface(__uuidof(IDXGIDevice), (void**)&dxgiDevice));
+
+
+	d2dFactory->CreateDevice(dxgiDevice, &d2dDevice);
+	d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &d2dDeviceContext);
 
 	SafeRelease(dxgiBuffer);
 

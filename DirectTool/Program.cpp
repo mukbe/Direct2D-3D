@@ -9,7 +9,7 @@ Program::Program()
 	//jsonRoot = new Json::Value();
 	//JsonHelper::ReadData(L"LevelEditor.json", jsonRoot);
 	
-
+	Texture* tex = new Texture(L"../_Resources/Box.png");
 	
 
 	//camera = new CameraMove2D;
