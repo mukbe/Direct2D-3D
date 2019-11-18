@@ -44,11 +44,14 @@ Program::Program()
 
 	
 	play = FloatRect(D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2), 70, true);
-
+	
 	tex = new Texture(L"../_Resources/Box.png");
+	Texture* tex2 = new Texture(L"../_Resources/blueHorse.png",20,13);
+
 
 	gameObject = new GameObject("", D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2));
 	gameObject->SetTexture(tex);
+	gameObject->SetTexture(tex2);
 
 	gameObject2 = new GameObject("");
 

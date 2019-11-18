@@ -85,6 +85,8 @@ Texture::Texture(wstring file, UINT frameX, UINT frameY, DXGI_FORMAT format)
 			frameInfo.push_back(rc);
 		}
 	}
+	frameSize.x = dx;
+	frameSize.y = dy;
 }
 
 //Texture::Texture(wstring file, int width, int height, DXGI_FORMAT format)
@@ -270,8 +272,24 @@ void Texture::Render(D3DXVECTOR2 size , float alpha, Pivot pivot)
 
 }
 
-void Texture::FrameRender(int x, int y, UINT frameX, UINT frameY, float alpha, Pivot pivot)
+void Texture::FrameRender(D3DXVECTOR2 size , UINT frameX, UINT frameY, float alpha, Pivot pivot)
 {
+	int frame = frameY * maxFrameX + frameX;
+	D2D1_RECT_F dxArea;
+	float len = D3DXVec2Length(&size);
+
+	//리소스사이즈
+	if (len <= 0)
+		dxArea = D2D1::RectF(0, 0, width, height);
+	else
+		dxArea = D2D1::RectF(0, 0, size.x, size.y);
+	D2D1_RECT_F dxSrc;
+	dxSrc = D2D1::RectF(frameInfo[frame].X, frameInfo[frame].Y, frameInfo[frame].X + frameInfo[frame].Width, frameInfo[frame].Y + frameInfo[frame].Height);
+
+
+
+	p2DRenderer->GetRenderTarget()->DrawBitmap(bitmap, dxArea, alpha,D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,&dxSrc);
+
 }
 
 

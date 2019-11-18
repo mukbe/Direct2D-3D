@@ -31,6 +31,7 @@ public:
 	Texture* GetTexture() { return defaultTexture; }
 
 protected:
+	D3DXVECTOR2 pos;
 	Matrix2D* transform;
 	string name;
 	bool bActive;
@@ -39,6 +40,9 @@ protected:
 	//충돌렉트or원
 	//데이터 저장 - 할까? 말고 다른곳에서 한번에 할까?
 
+
+	UINT frameX;
+	UINT frameY;
 
 	//test
 	FloatRect rc;

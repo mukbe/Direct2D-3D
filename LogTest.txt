@@ -1524,3 +1524,249 @@ Code: Texture Confirm
  2019.11.18	14:52:19	 'Directx11 2D' Start Succeeded
 			 End
 ===================================================
+===================================================
+ 2019.11.18	15:42:23	 'Directx11 2D' Start Succeeded
+			 End
+===================================================
+===================================================
+ 2019.11.18	15:51:24	 'Directx11 2D' Start Succeeded
+			 End
+===================================================
+===================================================
+ 2019.11.18	15:51:46	 'Directx11 2D' Start Succeeded
+			 End
+===================================================
+===================================================
+ 2019.11.18	15:55:13	 'Directx11 2D' Start Succeeded
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:08:34	 'Directx11 2D' Start Succeeded
+16:08:34	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 127
+Code: Texture Confirm
+===================================================
+ 2019.11.18	16:13:18	 'Directx11 2D' Start Succeeded
+16:13:18	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 127
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:13:42	 'Directx11 2D' Start Succeeded
+16:13:42	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 127
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:14:00	 'Directx11 2D' Start Succeeded
+16:14:00	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 127
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:14:59	 'Directx11 2D' Start Succeeded
+16:14:59	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 127
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:15:43	 'Directx11 2D' Start Succeeded
+16:15:43	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 131
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:15:54	 'Directx11 2D' Start Succeeded
+16:15:54	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 131
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:18:27	 'Directx11 2D' Start Succeeded
+16:18:27	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 135
+Code: Texture Confirm
+===================================================
+ 2019.11.18	16:22:41	 'Directx11 2D' Start Succeeded
+16:22:41	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 137
+Code: Texture Confirm
+===================================================
+ 2019.11.18	16:23:43	 'Directx11 2D' Start Succeeded
+16:23:43	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 137
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:26:25	 'Directx11 2D' Start Succeeded
+16:26:25	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 137
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:26:55	 'Directx11 2D' Start Succeeded
+16:26:55	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 137
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:28:16	 'Directx11 2D' Start Succeeded
+16:28:16	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 138
+Code: Texture Confirm
+===================================================
+ 2019.11.18	16:30:59	 'Directx11 2D' Start Succeeded
+16:30:59	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 138
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:33:00	 'Directx11 2D' Start Succeeded
+16:33:00	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 138
+Code: Texture Confirm
+===================================================
+ 2019.11.18	16:37:29	 'Directx11 2D' Start Succeeded
+16:37:30	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 138
+Code: Texture Confirm
+===================================================
+ 2019.11.18	16:37:56	 'Directx11 2D' Start Succeeded
+16:37:57	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 138
+Code: Texture Confirm
+===================================================
+ 2019.11.18	16:42:00	 'Directx11 2D' Start Succeeded
+16:42:00	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 145
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:42:51	 'Directx11 2D' Start Succeeded
+16:42:52	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 143
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:43:21	 'Directx11 2D' Start Succeeded
+16:43:22	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 143
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:43:56	 'Directx11 2D' Start Succeeded
+16:43:56	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 143
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:44:55	 'Directx11 2D' Start Succeeded
+16:44:55	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 143
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:45:14	 'Directx11 2D' Start Succeeded
+16:45:14	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 143
+Code: Texture Confirm
+===================================================
+ 2019.11.18	16:46:25	 'Directx11 2D' Start Succeeded
+16:46:25	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 143
+Code: Texture Confirm
+===================================================
+ 2019.11.18	16:46:51	 'Directx11 2D' Start Succeeded
+16:46:52	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 147
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:49:27	 'Directx11 2D' Start Succeeded
+16:49:27	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 153
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:50:20	 'Directx11 2D' Start Succeeded
+16:50:20	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 151
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:50:49	 'Directx11 2D' Start Succeeded
+16:50:49	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 151
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:51:10	 'Directx11 2D' Start Succeeded
+16:51:10	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 151
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:52:02	 'Directx11 2D' Start Succeeded
+16:52:02	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 152
+Code: Texture Confirm
+			 End
+===================================================
+===================================================
+ 2019.11.18	16:53:06	 'Directx11 2D' Start Succeeded
+16:53:06	Assertion Failure!
+File: c:\ggaetip\directtool\systems\gameobject.cpp
+Line: 145
+Code: Texture Confirm
+			 End
+===================================================

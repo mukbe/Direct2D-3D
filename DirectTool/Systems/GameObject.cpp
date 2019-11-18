@@ -15,6 +15,8 @@ GameObject::GameObject(string name , D3DXVECTOR2 pos )
 	rc.left = rc.top = -50;
 	rc.right = rc.bottom = 50;
 	size.x = size.y = 100;
+	this->pos = pos;
+	frameX = frameY = 0;
 }
 
 
@@ -40,9 +42,49 @@ void GameObject::Release()
 void GameObject::Update()
 {
 	if (Keyboard::Get()->Press('G'))
-		size += D3DXVECTOR2(10, 10) * Time::Delta();
+		size += D3DXVECTOR2(100, 100) * Time::Delta();
 	if (Keyboard::Get()->Press('F'))
-		size += D3DXVECTOR2(-10, -10) * Time::Delta();
+		size += D3DXVECTOR2(-100, -100) * Time::Delta();
+
+	if (Keyboard::Get()->Press('W'))
+		pos += D3DXVECTOR2(0, -40.f)*Time::Delta();
+	if (Keyboard::Get()->Press('S'))
+		pos += D3DXVECTOR2(0, 40.f)*Time::Delta();
+	if (Keyboard::Get()->Press('D'))
+		pos += D3DXVECTOR2(40.f, 0)*Time::Delta();
+	if (Keyboard::Get()->Press('A'))
+		pos += D3DXVECTOR2(-40.f, 0)*Time::Delta();
+
+	static float time = 0.f;
+	time += Time::Delta();
+
+	if (time >= 0.03f)
+	{
+		frameX++;
+		time -= 0.03f;
+		if (frameX >= 20)
+		{
+			frameY++;
+			frameX = 0;
+			
+
+			if (frameY >= 13)
+			{
+				frameY = 0;
+			}
+		}
+	}
+	if (frameY >= 12 && frameX >= 10)
+	{
+		frameX = 0;
+		frameY = 0;
+
+
+	}
+
+
+
+	transform->SetPos(pos);
 
 }
 
@@ -58,8 +100,11 @@ void GameObject::Render(bool isRelative)
 
 	world.Bind();
 
-	if(defaultTexture != nullptr)
-		defaultTexture->Render(size);
+	if (defaultTexture != nullptr)
+	{
+		//defaultTexture->Render(size);
+		defaultTexture->FrameRender(size, frameX, frameY);
+	}
 
 	//p2DRenderer->FillEllipse(rc.GetRect());
 	

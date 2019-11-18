@@ -64,7 +64,7 @@ public:
 
 
 	void Render(D3DXVECTOR2 size= D3DXVECTOR2(0,0) , float alpha = 1.f ,Pivot pivot = Pivot::LEFT_TOP);
-	void FrameRender(int x, int y, UINT frameX, UINT frameY, float alpha = 1.f, Pivot pivot = Pivot::LEFT_TOP);
+	void FrameRender(D3DXVECTOR2 size, UINT frameX, UINT frameY, float alpha = 1.f, Pivot pivot = Pivot::LEFT_TOP);
 	//void AniRender(int x, int y, animation* ani, Pivot pivot = Pivot::LEFT_TOP, bool sizeSet = FALSE);
 
 	//const bool& operator==(const Texture* other);
