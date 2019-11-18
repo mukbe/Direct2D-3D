@@ -23,11 +23,18 @@ public:
 
 	const bool& IsActive() { return bActive; }
 	void SetActive(const bool& b) { bActive = b; }
+
+	void SetTextureFilePath(wstring file);
+	void SetTexture(Texture* tex);
+	//void SetTexture(const string key);
+
+	Texture* GetTexture() { return defaultTexture; }
+
 protected:
 	Matrix2D* transform;
 	string name;
 	bool bActive;
-
+	Texture* defaultTexture;
 	//렌더링 레이어
 	//충돌렉트or원
 	//데이터 저장 - 할까? 말고 다른곳에서 한번에 할까?
@@ -35,7 +42,7 @@ protected:
 
 	//test
 	FloatRect rc;
-
+	D3DXVECTOR2 size;
 
 private:
 	WorldBuffer * worldBuffer;

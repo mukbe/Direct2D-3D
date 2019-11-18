@@ -60,25 +60,43 @@ Texture::Texture(DXGI_FORMAT format)
 	this->format = format;
 }
 
-Texture::Texture(wstring file, DXGI_FORMAT format)
+Texture::Texture(wstring file, UINT frameX, UINT frameY, DXGI_FORMAT format)
 {
 	Initialize();
 	this->file = file;
 	this->format = format;
-	
-	this->SetTexture(file);
-}
-
-Texture::Texture(wstring file, int width, int height, DXGI_FORMAT format)
-{
-	Initialize();
-	this->file = file;
-	this->width = width;
-	this->height = height;
-	this->format = format;
+	this->maxFrameX = frameX;
+	this->maxFrameY = frameY;
 
 	this->SetTexture(file);
+
+	int dx = bitmap->GetPixelSize().width / frameX;
+	int dy = bitmap->GetPixelSize().height / frameY;
+
+	WICRect rc;
+	for (int j = 0; j < frameY; ++j)
+	{
+		for (int i = 0; i < frameX; ++i)
+		{
+			rc.X = i * dx;
+			rc.Y = j * dy;
+			rc.Width = dx;
+			rc.Height = dy;
+			frameInfo.push_back(rc);
+		}
+	}
 }
+
+//Texture::Texture(wstring file, int width, int height, DXGI_FORMAT format)
+//{
+//	Initialize();
+//	this->file = file;
+//	this->width = width;
+//	this->height = height;
+//	this->format = format;
+//
+//	this->SetTexture(file);
+//}
 
 Texture::~Texture()
 {
@@ -185,8 +203,10 @@ void Texture::SetTexture(wstring file)
 		assert(SUCCEEDED(hr));
 		
 
+		//비트맵이미지
+		Log_ErrorAssert(bitmap = p2DRenderer->CreateD2DBitmapFromFile(file));
 
-		int a = 10;
+
 
 	}
 	else
@@ -226,6 +246,31 @@ void Texture::SetCSResource(UINT slot)
 }
 
 void Texture::ReleaseResource()
+{
+}
+
+void Texture::Render(D3DXVECTOR2 size , float alpha, Pivot pivot)
+{
+	//피벗 계산
+	//vector2D render = getPivotPosition(x, y, pivot);
+	
+	//클리핑
+
+	D2D1_RECT_F dxArea;
+	float len = D3DXVec2Length(&size);
+
+	//리소스사이즈
+	if (len <= 0)
+		dxArea = D2D1::RectF(0, 0, width, height);
+	else
+		dxArea = D2D1::RectF(0, 0, size.x, size.y);
+
+
+	p2DRenderer->GetRenderTarget()->DrawBitmap(bitmap, dxArea, alpha);
+
+}
+
+void Texture::FrameRender(int x, int y, UINT frameX, UINT frameY, float alpha, Pivot pivot)
 {
 }
 

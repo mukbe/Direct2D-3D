@@ -29,8 +29,8 @@ private:
 	ID3D11Buffer* vertexBuffer, *indexBuffer;
 
 	FloatRect play;
-	float angle;
 
 	GameObject* gameObject;
-
+	GameObject* gameObject2;
+	Texture* tex;
 };

@@ -9,7 +9,6 @@ Program::Program()
 	//jsonRoot = new Json::Value();
 	//JsonHelper::ReadData(L"LevelEditor.json", jsonRoot);
 	
-	Texture* tex = new Texture(L"../_Resources/Box.png");
 	
 
 	//camera = new CameraMove2D;
@@ -46,9 +45,13 @@ Program::Program()
 	
 	play = FloatRect(D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2), 70, true);
 
-	gameObject = new GameObject("", D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2));
+	tex = new Texture(L"../_Resources/Box.png");
 
-	angle = 45;
+	gameObject = new GameObject("", D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2));
+	gameObject->SetTexture(tex);
+
+	gameObject2 = new GameObject("");
+
 }
 
 Program::~Program()
@@ -78,17 +81,13 @@ void Program::Update(float tick)
 	if (Keyboard::Get()->Press('A'))
 		play += D3DXVECTOR2(-40.f, 0)*Time::Delta();
 
-	if (Keyboard::Get()->Press(VK_LEFT))
-		angle += 20 * Time::Delta();
-	if (Keyboard::Get()->Press(VK_RIGHT))
-		angle -= 20 * Time::Delta();
 
 
 	if (Keyboard::Get()->Down('T'))
 		CAMERA->AddZoom(0.1f);
 	if (Keyboard::Get()->Down('R'))
 		CAMERA->AddZoom(-0.1f);
-
+	gameObject->Update();
 
 }
 
@@ -100,6 +99,7 @@ void Program::PostUpdate()
 void Program::Render()
 {	
 	gameObject->Render(true);
+	gameObject2->Render(true);
 
 
 

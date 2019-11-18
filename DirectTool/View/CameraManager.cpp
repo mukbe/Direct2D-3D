@@ -45,7 +45,7 @@ void CameraManager::Update()
 		memcpy(&pick, Mouse::Get()->GetPosition(), sizeof(D3DXVECTOR2));
 
 		D3DXVECTOR2 delta = picked - pick;
-		pos += delta;
+		pos += delta * zoom;
 
 		memcpy(&picked, Mouse::Get()->GetPosition(), sizeof(D3DXVECTOR2));
 

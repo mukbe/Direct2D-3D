@@ -18,6 +18,10 @@ void D2DRenderer::Create2DBuffer()
 	HRESULT hr;
 	D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &d2dFactory);
 
+	//WIC 팩토리 생성
+	CoInitialize(NULL);
+	CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&wicFactory));
+
 	IDXGISurface* dxgiBuffer;
 	hr = SwapChain->GetBuffer(0, IID_PPV_ARGS(&dxgiBuffer));
 	
@@ -52,7 +56,7 @@ void D2DRenderer::Create2DBuffer()
 
 	d2dRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &dwDefaultBrush[DefaultBrush::white]);
 
-	
+	AddTextFormat(L"맑은고딕", 20);
 
 }
 
@@ -70,6 +74,70 @@ void D2DRenderer::BeginDraw()
 void D2DRenderer::EndDraw()
 {
 	d2dRenderTarget->EndDraw();
+}
+
+HRESULT D2DRenderer::AddTextFormat(wstring fontname, float size)
+{
+	HRESULT hr;
+	IDWriteTextFormat* format = NULL;
+
+	hr = dwFactory->CreateTextFormat(
+		fontname.c_str(),
+		NULL,
+		DWRITE_FONT_WEIGHT_REGULAR,
+		DWRITE_FONT_STYLE_NORMAL,
+		DWRITE_FONT_STRETCH_NORMAL,
+		size,
+		L"ko",
+		&format
+	);
+
+	this->dwTextFormats.insert(make_pair(fontname, format));
+
+	if (FAILED(hr))
+		return hr;
+
+	return hr;
+}
+
+ID2D1Bitmap * D2DRenderer::CreateD2DBitmapFromFile(wstring file)
+{
+
+	//1. 디코더를 생성한다.
+	IWICBitmapDecoder* ipDecoderPtr = nullptr;
+	if (FAILED(wicFactory->CreateDecoderFromFilename(file.c_str(), NULL, GENERIC_READ, WICDecodeMetadataCacheOnDemand, &ipDecoderPtr)))
+	{
+		LOG->Error(__FILE__, __LINE__, "Does not exist bitmapfile");
+	}
+
+	//2. 디코더에서 프레임을 얻는다.
+	IWICBitmapFrameDecode*	ipFramePtr = nullptr;
+	ipDecoderPtr->GetFrame(0, &ipFramePtr);
+
+	//이미지 로드에 사용
+	IWICFormatConverter* convertedSrcBmp;
+
+	//3. 프레임을 기반으로 포맷 컨버터를 만든다.
+	wicFactory->CreateFormatConverter(&convertedSrcBmp);
+
+	convertedSrcBmp->Initialize(ipFramePtr,
+		GUID_WICPixelFormat32bppPBGRA,
+		WICBitmapDitherTypeNone,
+		nullptr,
+		0.0f,
+		WICBitmapPaletteTypeCustom);
+
+	//4. 컨버트된 데이터를 기반으로 실제 Direct2D용 비트맵을 만든다.
+	ID2D1Bitmap* ipResult = nullptr;
+	d2dRenderTarget->CreateBitmapFromWicBitmap(convertedSrcBmp,
+		nullptr,
+		&ipResult);
+
+	SafeRelease(convertedSrcBmp);
+	SafeRelease(ipDecoderPtr);
+	SafeRelease(ipFramePtr);
+
+	return ipResult;
 }
 
 

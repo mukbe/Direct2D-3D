@@ -4,6 +4,7 @@
 
 
 GameObject::GameObject(string name , D3DXVECTOR2 pos )
+	:defaultTexture(nullptr)
 {
 	worldBuffer = new WorldBuffer;
 	shader = new Shader(L"./Shaders/Color.hlsl");
@@ -13,6 +14,7 @@ GameObject::GameObject(string name , D3DXVECTOR2 pos )
 	
 	rc.left = rc.top = -50;
 	rc.right = rc.bottom = 50;
+	size.x = size.y = 100;
 }
 
 
@@ -37,6 +39,11 @@ void GameObject::Release()
 
 void GameObject::Update()
 {
+	if (Keyboard::Get()->Press('G'))
+		size += D3DXVECTOR2(10, 10) * Time::Delta();
+	if (Keyboard::Get()->Press('F'))
+		size += D3DXVECTOR2(-10, -10) * Time::Delta();
+
 }
 
 //뷰행렬 계산을 하면 TRUE
@@ -51,7 +58,10 @@ void GameObject::Render(bool isRelative)
 
 	world.Bind();
 
-	p2DRenderer->FillEllipse(rc.GetRect());
+	if(defaultTexture != nullptr)
+		defaultTexture->Render(size);
+
+	//p2DRenderer->FillEllipse(rc.GetRect());
 	
 }
 
@@ -75,4 +85,20 @@ void GameObject::PostRender()
 	DeviceContext->Draw(4, 0);
 	pRenderer->TurnOffAlphaBlend();
 
+}
+
+void GameObject::SetTextureFilePath(wstring file)
+{
+	//TODO 리소스관리에서 확인후 있으면 포인터 반환 없으면 생성해서 반환
+
+}
+
+void GameObject::SetTexture(Texture * tex)
+{
+	if (defaultTexture != nullptr)
+	{
+		LOG->Warning(__FILE__, __LINE__, "Texture Confirm");
+	}
+	
+	defaultTexture = tex;
 }

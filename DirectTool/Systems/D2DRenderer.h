@@ -22,6 +22,11 @@ public:
 	void BeginDraw();
 	void EndDraw();
 
+	HRESULT AddTextFormat(wstring fontname, float size);
+
+	ID2D1Bitmap* CreateD2DBitmapFromFile(wstring file);
+
+
 	ID2D1RenderTarget* GetRenderTarget() { return d2dRenderTarget; }
 	ID2D1DeviceContext* GetDeviceContext() { return d2dDeviceContext; }
 private:
@@ -39,8 +44,6 @@ private:
 	ID2D1Device* d2dDevice;
 	ID2D1DeviceContext* d2dDeviceContext;
 
-	//이미지 로드에 사용
-	IWICFormatConverter* convertedSrcBmp;
 	//텍스트레이아웃
 	IDWriteTextLayout* dwLayout;
 	ID2D1SolidColorBrush*	dwDefaultBrush[DefaultBrush::end];
