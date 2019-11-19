@@ -53,6 +53,15 @@ void CameraManager::Update()
 	}
 }
 
+void CameraManager::ImguiRender()
+{
+	ImGui::Begin("Camera");
+	ImGui::Text("FPS : %f", Time::Get()->FPS());
+	ImGui::Text("Tick : %f", Time::Delta());
+	ImGui::Text("PosX : %.2f, PosY : %.2f", pos.x, pos.y);
+	ImGui::End();
+}
+
 void CameraManager::UpdateRenderRect()
 {
 	renderRect = { (LONG)pos.x,(LONG)pos.y, (LONG)(pos.x + WinSizeX) , (LONG)(pos.y + WinSizeY) };
@@ -60,8 +69,12 @@ void CameraManager::UpdateRenderRect()
 
 void CameraManager::AddZoom(float value)
 {
-	//Á¦ÇÑ µÖ¾ßÇÔ
+
 	zoom += value;
+
+	if (zoom < ZOOM_MIN) zoom = ZOOM_MIN;
+	if (zoom > ZOOM_MAX) zoom = ZOOM_MAX;
+
 	UpdateMatrix();
 }
 

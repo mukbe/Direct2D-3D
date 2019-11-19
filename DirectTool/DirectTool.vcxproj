@@ -168,9 +168,6 @@
     <ClCompile Include="Render\Texture.cpp" />
     <ClCompile Include="Utilities\Buffer.cpp" />
     <ClCompile Include="Utilities\ImGuiHelper.cpp" />
-    <ClCompile Include="View\CameraBase.cpp" />
-    <ClCompile Include="View\OrthoWindow.cpp" />
-    <ClCompile Include="View\Projection.cpp" />
     <ClCompile Include="Render\RenderTargetBuffer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Program.cpp" />
@@ -203,10 +200,7 @@
     <ClInclude Include="Render\Texture.h" />
     <ClInclude Include="Utilities\Buffer.h" />
     <ClInclude Include="Utilities\ImGuiHelper.h" />
-    <ClInclude Include="View\CameraBase.h" />
     <ClInclude Include="DefineHeader.h" />
-    <ClInclude Include="View\OrthoWindow.h" />
-    <ClInclude Include="View\Projection.h" />
     <ClInclude Include="Render\RenderTargetBuffer.h" />
     <ClInclude Include="Interfaces\ICloneable.h" />
     <ClInclude Include="Interfaces\IEvent.h" />

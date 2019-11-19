@@ -251,42 +251,33 @@ void Texture::ReleaseResource()
 {
 }
 
-void Texture::Render(D3DXVECTOR2 size , float alpha, Pivot pivot)
+void Texture::Render(float alpha, Pivot pivot)
 {
-	//피벗 계산
-	//vector2D render = getPivotPosition(x, y, pivot);
-	
 	//클리핑
 
 	D2D1_RECT_F dxArea;
-	float len = D3DXVec2Length(&size);
 
-	//리소스사이즈
-	if (len <= 0)
-		dxArea = D2D1::RectF(0, 0, width, height);
-	else
-		dxArea = D2D1::RectF(0, 0, size.x, size.y);
-
+	//피벗 계산	
+	dxArea = CalculatePivot(pivot);
 
 	p2DRenderer->GetRenderTarget()->DrawBitmap(bitmap, dxArea, alpha);
 
 }
 
-void Texture::FrameRender(D3DXVECTOR2 size , UINT frameX, UINT frameY, float alpha, Pivot pivot)
+//프레임이미지가 아닌 1x1프레임 이미지도 동일하게 렌더링 가능
+void Texture::FrameRender(UINT frameX, UINT frameY, float alpha, Pivot pivot)
 {
+	//클리핑
+
+
 	int frame = frameY * maxFrameX + frameX;
+
 	D2D1_RECT_F dxArea;
-	float len = D3DXVec2Length(&size);
+	dxArea = CalculatePivot(pivot);
 
 	//리소스사이즈
-	if (len <= 0)
-		dxArea = D2D1::RectF(0, 0, width, height);
-	else
-		dxArea = D2D1::RectF(0, 0, size.x, size.y);
 	D2D1_RECT_F dxSrc;
 	dxSrc = D2D1::RectF(frameInfo[frame].X, frameInfo[frame].Y, frameInfo[frame].X + frameInfo[frame].Width, frameInfo[frame].Y + frameInfo[frame].Height);
-
-
 
 	p2DRenderer->GetRenderTarget()->DrawBitmap(bitmap, dxArea, alpha,D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,&dxSrc);
 
@@ -637,3 +628,42 @@ ID3D11Texture2D * Texture::GetReadBuffer()
 
 	return readBuffer;
 }
+
+const D2D1_RECT_F Texture::CalculatePivot(Pivot pivot)
+{
+	D2D1_RECT_F dxArea;
+
+	switch (pivot)
+	{
+	default :
+		dxArea.left = 0.f;
+		dxArea.right = frameSize.x;
+		dxArea.top = 0.f;
+		dxArea.bottom = frameSize.y;
+
+		break;
+	case Pivot::CENTER:
+		dxArea.left = -frameSize.x * 0.5f;
+		dxArea.right = frameSize.x * 0.5f;
+		dxArea.top = -frameSize.y * 0.5f;
+		dxArea.bottom = frameSize.y * 0.5f;
+		break;
+
+	case Pivot::BOTTOM:
+		dxArea.left = -frameSize.x * 0.5f;
+		dxArea.right = frameSize.x * 0.5f;
+		dxArea.top = -frameSize.y;
+		dxArea.bottom = 0.f;
+		break;
+
+	case Pivot::TOP:
+		dxArea.left = -frameSize.x * 0.5f;
+		dxArea.right = frameSize.x * 0.5f;
+		dxArea.top = 0.f;
+		dxArea.bottom = frameSize.y;
+		break;
+	}
+
+	return dxArea;
+}
+

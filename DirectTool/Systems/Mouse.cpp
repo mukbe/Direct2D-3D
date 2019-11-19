@@ -157,6 +157,8 @@ LRESULT Mouse::InputProc(UINT message, WPARAM wParam, LPARAM lParam)
 
 		wheelOldStatus.z = wheelStatus.z;
 		wheelStatus.z += (float)tWheelValue;
+
+		CAMERA->AddZoom((float)tWheelValue * Time::Delta() * 0.4f);
 	}
 
 	return TRUE;

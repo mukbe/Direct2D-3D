@@ -41,6 +41,13 @@ public:
 	int GetHeight() { return height; }
 	void SetWidth(int val) { width = val; }
 	void SetHeight(int val) { height = val; }
+	const D3DXVECTOR2& GetFrameSize() { return frameSize; }
+	const D3DXVECTOR2& GetMaxFrame() { return D3DXVECTOR2((float)maxFrameX, (float)maxFrameY); }
+
+	const ID2D1Bitmap* GetBitmap() { return bitmap; }
+
+
+
 	DXGI_FORMAT GetFormat() { return format; }
 
 	ID3D11ShaderResourceView* GetSRV() { return srv; }
@@ -63,8 +70,8 @@ public:
 	void ReleaseResource();
 
 
-	void Render(D3DXVECTOR2 size= D3DXVECTOR2(0,0) , float alpha = 1.f ,Pivot pivot = Pivot::LEFT_TOP);
-	void FrameRender(D3DXVECTOR2 size, UINT frameX, UINT frameY, float alpha = 1.f, Pivot pivot = Pivot::LEFT_TOP);
+	void Render(float alpha = 1.f ,Pivot pivot = Pivot::LEFT_TOP);
+	void FrameRender(UINT frameX = 0, UINT frameY = 0, float alpha = 1.f, Pivot pivot = Pivot::LEFT_TOP);
 	//void AniRender(int x, int y, animation* ani, Pivot pivot = Pivot::LEFT_TOP, bool sizeSet = FALSE);
 
 	//const bool& operator==(const Texture* other);
@@ -72,15 +79,19 @@ public:
 private:
 	void Initialize();
 	ID3D11Texture2D* GetReadBuffer();
+	const D2D1_RECT_F CalculatePivot(Pivot pivot);
+
 
 private:
 	wstring file;
+	//이미지 파일의 너비높이
 	int width;
 	int height;
 	ID2D1Bitmap* bitmap;
 	vector<WICRect>	frameInfo;
 	int	maxFrameX;
 	int	maxFrameY;
+	//프레임 하나의 높이 너비
 	D3DXVECTOR2 frameSize;
 
 

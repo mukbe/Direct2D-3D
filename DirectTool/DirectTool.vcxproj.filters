@@ -39,9 +39,6 @@
     <ClCompile Include="Render\Shader.cpp" />
     <ClCompile Include="Render\States.cpp" />
     <ClCompile Include="Render\ShaderManager.cpp" />
-    <ClCompile Include="View\Projection.cpp" />
-    <ClCompile Include="View\OrthoWindow.cpp" />
-    <ClCompile Include="View\CameraBase.cpp" />
     <ClCompile Include="Utilities\Buffer.cpp" />
     <ClCompile Include="Render\BufferManager.cpp" />
     <ClCompile Include="Systems\D2DRenderer.cpp" />
@@ -105,9 +102,6 @@
     <ClInclude Include="Render\States.h" />
     <ClInclude Include="Render\Shader.h" />
     <ClInclude Include="Render\ShaderManager.h" />
-    <ClInclude Include="View\Projection.h" />
-    <ClInclude Include="View\OrthoWindow.h" />
-    <ClInclude Include="View\CameraBase.h" />
     <ClInclude Include="Render\WorldBuffer.h" />
     <ClInclude Include="Render\BufferManager.h" />
     <ClInclude Include="Utilities\Buffer.h" />

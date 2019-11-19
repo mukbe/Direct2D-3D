@@ -43,14 +43,13 @@ Program::Program()
 	Buffer::CreateIndexBuffer(&indexBuffer, indexData.data(), sizeof(UINT)* indexCount);
 
 	
-	play = FloatRect(D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2), 70, true);
 	
 	tex = new Texture(L"../_Resources/Box.png");
 	Texture* tex2 = new Texture(L"../_Resources/blueHorse.png",20,13);
 
 
 	gameObject = new GameObject("", D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2));
-	gameObject->SetTexture(tex);
+	//gameObject->SetTexture(tex);
 	gameObject->SetTexture(tex2);
 
 	gameObject2 = new GameObject("");
@@ -67,29 +66,17 @@ Program::~Program()
 
 void Program::PreUpdate()
 {
-	//camera->Update();
+
 	sm->PreUpdate();
+	gameObject->PreUpdate();
+
 }
 
 void Program::Update(float tick)
 {
 	sm->Update(tick);
 
-	if (Keyboard::Get()->Press('W'))
-		play += D3DXVECTOR2(0, -40.f)*Time::Delta();
-	if (Keyboard::Get()->Press('S'))
-		play += D3DXVECTOR2(0, 40.f)*Time::Delta();
-	if (Keyboard::Get()->Press('D'))
-		play += D3DXVECTOR2(40.f, 0)*Time::Delta();
-	if (Keyboard::Get()->Press('A'))
-		play += D3DXVECTOR2(-40.f, 0)*Time::Delta();
 
-
-
-	if (Keyboard::Get()->Down('T'))
-		CAMERA->AddZoom(0.1f);
-	if (Keyboard::Get()->Down('R'))
-		CAMERA->AddZoom(-0.1f);
 	gameObject->Update();
 
 }
@@ -97,6 +84,7 @@ void Program::Update(float tick)
 void Program::PostUpdate()
 {
 	sm->PostUpdate();
+	gameObject->PostUpdate();
 }
 
 void Program::Render()
@@ -118,16 +106,8 @@ void Program::PostRender()
 
 void Program::ImguiRender()
 {
-	ImGui::Begin("Camera");
-	ImGui::Text("FPS : %f", Time::Get()->FPS());
-	ImGui::Text("Tick : %f", Time::Delta());
-	ImGui::Text("PosX : %.2f, PosY : %.2f", CAMERA->GetPos().x, CAMERA->GetPos().y);
-	ImGui::Separator();
-	ImGui::Text("Player Position");
-	ImGui::Text("X : %f, Y : %f", play.left, play.right);
-	ImGui::End();
+	CAMERA->ImguiRender();
 
-	//camera->UIRender();
 	sm->ImguiRender();
 }
 

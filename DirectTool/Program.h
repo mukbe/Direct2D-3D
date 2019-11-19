@@ -28,7 +28,6 @@ private:
 
 	ID3D11Buffer* vertexBuffer, *indexBuffer;
 
-	FloatRect play;
 
 	GameObject* gameObject;
 	GameObject* gameObject2;

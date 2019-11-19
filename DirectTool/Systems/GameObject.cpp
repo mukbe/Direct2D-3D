@@ -3,8 +3,9 @@
 #include "./Utilities/Matrix2D.h"
 
 
-GameObject::GameObject(string name , D3DXVECTOR2 pos )
-	:defaultTexture(nullptr)
+GameObject::GameObject(string name, D3DXVECTOR2 pos)
+	:defaultTexture(nullptr), pos(pos), name(name), bActive(true), rotate(0.f), velocity(D3DXVECTOR2(0, 0)), accelerate(D3DXVECTOR2(0, 0)), alpha(1.f)
+
 {
 	worldBuffer = new WorldBuffer;
 	shader = new Shader(L"./Shaders/Color.hlsl");
@@ -12,11 +13,13 @@ GameObject::GameObject(string name , D3DXVECTOR2 pos )
 	transform = new Matrix2D();
 	transform->SetPos(pos);
 	
+	bActive = true;
+
+	size.x = size.y = 1;
+	frameX = frameY = 0;
+
 	rc.left = rc.top = -50;
 	rc.right = rc.bottom = 50;
-	size.x = size.y = 100;
-	this->pos = pos;
-	frameX = frameY = 0;
 }
 
 
@@ -27,8 +30,6 @@ GameObject::~GameObject()
 
 	SafeDelete(shader);
 	SafeDelete(worldBuffer);
-
-
 }
 
 void GameObject::Init()
@@ -39,20 +40,24 @@ void GameObject::Release()
 {
 }
 
+void GameObject::PreUpdate()
+{
+}
+
 void GameObject::Update()
 {
 	if (Keyboard::Get()->Press('G'))
-		size += D3DXVECTOR2(100, 100) * Time::Delta();
-	if (Keyboard::Get()->Press('F'))
-		size += D3DXVECTOR2(-100, -100) * Time::Delta();
+		size += D3DXVECTOR2(10, 10) * Time::Delta();
+	else if (Keyboard::Get()->Press('F'))
+		size += D3DXVECTOR2(-10, -10) * Time::Delta();
 
 	if (Keyboard::Get()->Press('W'))
 		pos += D3DXVECTOR2(0, -40.f)*Time::Delta();
-	if (Keyboard::Get()->Press('S'))
+	else if (Keyboard::Get()->Press('S'))
 		pos += D3DXVECTOR2(0, 40.f)*Time::Delta();
 	if (Keyboard::Get()->Press('D'))
 		pos += D3DXVECTOR2(40.f, 0)*Time::Delta();
-	if (Keyboard::Get()->Press('A'))
+	else if (Keyboard::Get()->Press('A'))
 		pos += D3DXVECTOR2(-40.f, 0)*Time::Delta();
 
 	static float time = 0.f;
@@ -78,14 +83,20 @@ void GameObject::Update()
 	{
 		frameX = 0;
 		frameY = 0;
-
-
 	}
 
 
 
-	transform->SetPos(pos);
+}
 
+void GameObject::PostUpdate()
+{
+	transform->SetScale(size);
+	transform->SetPos(pos);
+	transform->SetRotate(rotate);
+
+	pos += velocity * Time::Delta();
+	velocity += accelerate * Time::Delta();
 }
 
 //뷰행렬 계산을 하면 TRUE
@@ -102,8 +113,8 @@ void GameObject::Render(bool isRelative)
 
 	if (defaultTexture != nullptr)
 	{
-		//defaultTexture->Render(size);
-		defaultTexture->FrameRender(size, frameX, frameY);
+		//defaultTexture->Render();
+		defaultTexture->FrameRender(frameX, frameY, 1.f, Texture::Pivot::CENTER);
 	}
 
 	//p2DRenderer->FillEllipse(rc.GetRect());
@@ -146,4 +157,6 @@ void GameObject::SetTexture(Texture * tex)
 	}
 	
 	defaultTexture = tex;
+
+
 }
