@@ -53,6 +53,8 @@ Program::Program()
 	gameObject->SetTexture(tex2);
 
 	gameObject2 = new GameObject("");
+	gameObject2->SetActive(false);
+	gameObject2->SetTexture(tex2);
 
 }
 
@@ -69,6 +71,7 @@ void Program::PreUpdate()
 
 	sm->PreUpdate();
 	gameObject->PreUpdate();
+	gameObject2->PreUpdate();
 
 }
 
@@ -78,6 +81,7 @@ void Program::Update(float tick)
 
 
 	gameObject->Update();
+	gameObject2->Update();
 
 }
 
@@ -85,6 +89,7 @@ void Program::PostUpdate()
 {
 	sm->PostUpdate();
 	gameObject->PostUpdate();
+	gameObject2->PostUpdate();
 }
 
 void Program::Render()
@@ -102,6 +107,7 @@ void Program::Render()
 void Program::PostRender()
 {
 	gameObject->PostRender();
+	gameObject2->PostRender();
 }
 
 void Program::ImguiRender()

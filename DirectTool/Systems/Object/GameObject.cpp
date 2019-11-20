@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "GameObject.h"
 #include "./Utilities/Matrix2D.h"
+#include "Bounding.h"
 
-
-GameObject::GameObject(string name, D3DXVECTOR2 pos)
-	:defaultTexture(nullptr), pos(pos), name(name), bActive(true), rotate(0.f), velocity(D3DXVECTOR2(0, 0)), accelerate(D3DXVECTOR2(0, 0)), alpha(1.f)
-
+GameObject::GameObject(string name, D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p)
+	:defaultTexture(nullptr)
+	, pos(pos), name(name), bActive(true)
+	, rotate(0.f), velocity(D3DXVECTOR2(0, 0)), accelerate(D3DXVECTOR2(0, 0))
+	, alpha(1.f), size(size), pivot(p)
 {
 	worldBuffer = new WorldBuffer;
 	shader = new Shader(L"./Shaders/Color.hlsl");
@@ -15,11 +17,10 @@ GameObject::GameObject(string name, D3DXVECTOR2 pos)
 	
 	bActive = true;
 
-	size.x = size.y = 1;
+	scale.x = scale.y = 1;
 	frameX = frameY = 0;
 
-	rc.left = rc.top = -50;
-	rc.right = rc.bottom = 50;
+	bound = new BoundingBox(this);
 }
 
 
@@ -46,10 +47,18 @@ void GameObject::PreUpdate()
 
 void GameObject::Update()
 {
+
+	if (Keyboard::Get()->Down(VK_F5))
+		bActive = !bActive;
+
+	if (bActive == false) return;
+
 	if (Keyboard::Get()->Press('G'))
-		size += D3DXVECTOR2(10, 10) * Time::Delta();
+		size += D3DXVECTOR2(50, 50) * Time::Delta();
 	else if (Keyboard::Get()->Press('F'))
-		size += D3DXVECTOR2(-10, -10) * Time::Delta();
+		size += D3DXVECTOR2(-50, -50) * Time::Delta();
+
+
 
 	if (Keyboard::Get()->Press('W'))
 		pos += D3DXVECTOR2(0, -40.f)*Time::Delta();
@@ -91,22 +100,26 @@ void GameObject::Update()
 
 void GameObject::PostUpdate()
 {
-	transform->SetScale(size);
+	transform->SetScale(scale);
 	transform->SetPos(pos);
 	transform->SetRotate(rotate);
 
 	pos += velocity * Time::Delta();
 	velocity += accelerate * Time::Delta();
+
+	bound->Update();
 }
 
 //뷰행렬 계산을 하면 TRUE
 void GameObject::Render(bool isRelative)
 {
-	Matrix2D world;
+	if (bActive == false)return;
+
+	Matrix2D world = *transform;
 
 	if (isRelative)
 	{
-		world = *transform * CAMERA->GetView();
+		world = world * CAMERA->GetView();
 	}
 
 	world.Bind();
@@ -114,9 +127,9 @@ void GameObject::Render(bool isRelative)
 	if (defaultTexture != nullptr)
 	{
 		//defaultTexture->Render();
-		defaultTexture->FrameRender(frameX, frameY, 1.f, Texture::Pivot::CENTER);
+		defaultTexture->FrameRender(frameX, frameY, size, 1.f, pivot);
 	}
-
+	bound->Render();
 	//p2DRenderer->FillEllipse(rc.GetRect());
 	
 }

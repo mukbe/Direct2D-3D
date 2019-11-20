@@ -4,7 +4,7 @@ class Matrix2D;
 class GameObject	//메세지 인터페이스 추가
 {
 public:
-	GameObject(string name = "",D3DXVECTOR2 pos = D3DXVECTOR2(0.f,0.f));
+	GameObject(string name = "",D3DXVECTOR2 pos = D3DXVECTOR2(0.f,0.f),D3DXVECTOR2 size = D3DXVECTOR2(100.f,100.f),Pivot p = Pivot::BOTTOM);
 	virtual~GameObject();
 
 	//초기화
@@ -55,6 +55,16 @@ public:
 	}
 	const float& GetAlpha() { return alpha; }
 
+	void SetSize(const D3DXVECTOR2& s) 
+	{
+		size = s;
+	}
+	const D3DXVECTOR2& GetSize() { return size; }
+
+	void SetPivot(const Pivot& p) { pivot = p; }
+	const Pivot& GetPivot() { return pivot; }
+
+
 	void SetTextureFilePath(wstring file);
 	void SetTexture(Texture* tex);
 	//void SetTexture(const string key);
@@ -66,7 +76,9 @@ protected:
 	Matrix2D* transform;
 	bool bActive;
 	float alpha;
-
+	//랜더링이나 바운딩 박스의 크기 scale말고 이걸 사용하기 바람
+	D3DXVECTOR2 size;
+	Pivot pivot;
 
 	Texture* defaultTexture;
 	UINT frameX;
@@ -75,7 +87,7 @@ protected:
 	//이놈의 좌표
 	D3DXVECTOR2 pos;
 	//이놈의 스캐일
-	D3DXVECTOR2 size;
+	D3DXVECTOR2 scale;
 	//회전스캐일 Degree
 	float rotate;
 	//이놈의 이동속도
@@ -91,7 +103,7 @@ protected:
 
 
 	//test
-	FloatRect rc;
+	class Bounding* bound;
 
 private:
 	WorldBuffer * worldBuffer;

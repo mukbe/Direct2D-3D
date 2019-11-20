@@ -60,6 +60,9 @@ using namespace std;
 #include <DirectXTex.h>
 #pragma comment(lib, "directxtex.lib")
 
+
+#include "EnumHelper.h"
+
 #include "./Utilities/FloatRect.h"
 #include "MacroFunction.h"
 
@@ -73,7 +76,7 @@ const wstring ShaderPath = L"_Shaders/";
 
 #include "./Render/WorldBuffer.h"
 
-#include "./Systems/GameObject.h"
+#include "./Systems/Object/GameObject.h"
 
 
 

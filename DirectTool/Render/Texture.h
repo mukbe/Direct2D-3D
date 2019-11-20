@@ -10,10 +10,6 @@
 class Texture
 {
 public:
-	enum Pivot
-	{
-		LEFT_TOP, CENTER, BOTTOM, TOP
-	};
 
 	static void SaveToFile(wstring fileFullPath, ID3D11ShaderResourceView* srv);
 
@@ -42,6 +38,7 @@ public:
 	void SetWidth(int val) { width = val; }
 	void SetHeight(int val) { height = val; }
 	const D3DXVECTOR2& GetFrameSize() { return frameSize; }
+	void SetFrameSize(const D3DXVECTOR2& size) { frameSize = size; }
 	const D3DXVECTOR2& GetMaxFrame() { return D3DXVECTOR2((float)maxFrameX, (float)maxFrameY); }
 
 	const ID2D1Bitmap* GetBitmap() { return bitmap; }
@@ -70,8 +67,8 @@ public:
 	void ReleaseResource();
 
 
-	void Render(float alpha = 1.f ,Pivot pivot = Pivot::LEFT_TOP);
-	void FrameRender(UINT frameX = 0, UINT frameY = 0, float alpha = 1.f, Pivot pivot = Pivot::LEFT_TOP);
+	void Render(D3DXVECTOR2 size = D3DXVECTOR2(0,0), float alpha = 1.f ,Pivot pivot = Pivot::LEFT_TOP);
+	void FrameRender( UINT frameX = 0, UINT frameY = 0, D3DXVECTOR2 size = D3DXVECTOR2(0, 0), float alpha = 1.f, Pivot pivot = Pivot::LEFT_TOP);
 	//void AniRender(int x, int y, animation* ani, Pivot pivot = Pivot::LEFT_TOP, bool sizeSet = FALSE);
 
 	//const bool& operator==(const Texture* other);
@@ -79,7 +76,7 @@ public:
 private:
 	void Initialize();
 	ID3D11Texture2D* GetReadBuffer();
-	const D2D1_RECT_F CalculatePivot(Pivot pivot);
+	const D2D1_RECT_F CalculatePivot(D3DXVECTOR2 size, Pivot pivot);
 
 
 private:

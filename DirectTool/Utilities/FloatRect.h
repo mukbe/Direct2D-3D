@@ -15,10 +15,14 @@ public:
 	float bottom;
 
 	FloatRect();
-	FloatRect(D3DXVECTOR2 pos, float d , bool IsCenter = false);
-	FloatRect(D3DXVECTOR2 pos, float w, float h, bool IsCenter = false);
+	FloatRect(D3DXVECTOR2 pos, float d , Pivot p);
+	FloatRect(D3DXVECTOR2 pos, float w, float h, Pivot p);
+	FloatRect(D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p);
 	FloatRect(float l, float t, float r, float b);
 	RECT GetRect();
+
+private:
+	void Calculate(D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p);
 
 };
 

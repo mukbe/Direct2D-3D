@@ -46,40 +46,19 @@ FloatRect::FloatRect()
 {
 }
 
-FloatRect::FloatRect(D3DXVECTOR2 pos, float d, bool IsCenter)
+FloatRect::FloatRect(D3DXVECTOR2 pos, float d, Pivot p)
 {
-	if (IsCenter)
-	{
-		left = pos.x - d/2.f;
-		right = pos.x + d/2.f;
-		top = pos.y - d / 2.f;
-		bottom = pos.y + d / 2.f;
-	}
-	else
-	{
-		left = pos.x;
-		right = pos.x + d;
-		top = pos.y;
-		bottom = pos.y + d;
-	}
+	Calculate(pos, D3DXVECTOR2(d, d), p);
 }
 
-FloatRect::FloatRect(D3DXVECTOR2 pos, float w, float h, bool IsCenter)
+FloatRect::FloatRect(D3DXVECTOR2 pos, float w, float h, Pivot p)
 {
-	if (IsCenter)
-	{
-		left = pos.x - w / 2.f;
-		right = pos.x + w / 2.f;
-		top = pos.y - h / 2.f;
-		bottom = pos.y + h / 2.f;
-	}
-	else
-	{
-		left = pos.x;
-		right = pos.x + w;
-		top = pos.y;
-		bottom = pos.y + h;
-	}
+	Calculate(pos, D3DXVECTOR2(w, h), p);
+}
+
+FloatRect::FloatRect(D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p)
+{
+	Calculate(pos, size, p);
 }
 
 FloatRect::FloatRect(float l, float t, float r, float b)
@@ -98,6 +77,38 @@ RECT FloatRect::GetRect()
 	rc.right = right;
 	rc.bottom = bottom;
 	return std::move(rc);
+}
+
+void FloatRect::Calculate(D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p)
+{
+	switch (p)
+	{
+	case LEFT_TOP:
+		left = pos.x;
+		right = pos.x + size.x;
+		top = pos.y;
+		bottom = pos.y + size.y;
+		break;
+	case CENTER:
+		left = pos.x - size.x / 2.f;
+		right = pos.x + size.x / 2.f;
+		top = pos.y - size.y / 2.f;
+		bottom = pos.y + size.y / 2.f;
+		break;
+	case BOTTOM:
+		left = pos.x - size.x / 2.f;
+		right = pos.x + size.x / 2.f;
+		top = pos.y - size.y;
+		bottom = pos.y;
+		break;
+	case TOP:
+		left = pos.x - size.x / 2.f;
+		right = pos.x + size.x / 2.f;
+		top = pos.y;
+		bottom = pos.y + size.y;
+		break;
+	}
+
 }
 
 
