@@ -2,6 +2,7 @@
 #include "Program.h"
 
 #include "./Scenes/SceneMain.h"
+#include "./Systems/Object/ObjectTest.h"
 
 Program::Program()
 {
@@ -46,15 +47,19 @@ Program::Program()
 	
 	tex = new Texture(L"../_Resources/Box.png");
 	Texture* tex2 = new Texture(L"../_Resources/blueHorse.png",20,13);
+	Texture* tex3 = new Texture(L"../_Resources/Idle.png", 4, 1);
+	Texture* tex4 = new Texture(L"../_Resources/Run_4.png", 10, 1);
 
 
 	gameObject = new GameObject("", D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2));
 	//gameObject->SetTexture(tex);
 	gameObject->SetTexture(tex2);
 
-	gameObject2 = new GameObject("");
+	gameObject2 = new ObjectTest("");
 	gameObject2->SetActive(false);
-	gameObject2->SetTexture(tex2);
+	gameObject2->SetTexture(tex4);
+	gameObject2->SetSprite(GameObject::State::Idle, tex3);
+	gameObject2->SetSprite(GameObject::State::Run, tex4);
 
 }
 
@@ -114,7 +119,9 @@ void Program::ImguiRender()
 {
 	CAMERA->ImguiRender();
 
-	sm->ImguiRender();
+	gameObject2->ImguiRender();
+
+
 }
 
 void Program::ResizeScreen()

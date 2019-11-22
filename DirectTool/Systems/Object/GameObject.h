@@ -4,6 +4,12 @@ class Matrix2D;
 class GameObject	//메세지 인터페이스 추가
 {
 public:
+	enum State
+	{
+		Idle = 0,Run,
+	};
+
+public:
 	GameObject(string name = "",D3DXVECTOR2 pos = D3DXVECTOR2(0.f,0.f),D3DXVECTOR2 size = D3DXVECTOR2(100.f,100.f),Pivot p = Pivot::BOTTOM);
 	virtual~GameObject();
 
@@ -71,6 +77,8 @@ public:
 
 	Texture* GetTexture() { return defaultTexture; }
 
+	void SetSprite(State state, Texture* tex);
+
 protected:
 	string name;
 	Matrix2D* transform;
@@ -81,8 +89,12 @@ protected:
 	Pivot pivot;
 
 	Texture* defaultTexture;
+	unordered_map<State, Texture*> sprites;
+	State state;
+
 	UINT frameX;
 	UINT frameY;
+	float frequency;
 
 	//이놈의 좌표
 	D3DXVECTOR2 pos;

@@ -21,6 +21,7 @@ GameObject::GameObject(string name, D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p)
 	frameX = frameY = 0;
 
 	bound = new BoundingBox(this);
+	frequency = 0.07f;
 }
 
 
@@ -60,39 +61,21 @@ void GameObject::Update()
 
 
 
-	if (Keyboard::Get()->Press('W'))
-		pos += D3DXVECTOR2(0, -40.f)*Time::Delta();
-	else if (Keyboard::Get()->Press('S'))
-		pos += D3DXVECTOR2(0, 40.f)*Time::Delta();
-	if (Keyboard::Get()->Press('D'))
-		pos += D3DXVECTOR2(40.f, 0)*Time::Delta();
-	else if (Keyboard::Get()->Press('A'))
-		pos += D3DXVECTOR2(-40.f, 0)*Time::Delta();
 
-	static float time = 0.f;
-	time += Time::Delta();
+	//if (Keyboard::Get()->Press('W'))
+	//	pos += D3DXVECTOR2(0, -40.f)*Time::Delta();
+	//else if (Keyboard::Get()->Press('S'))
+	//	pos += D3DXVECTOR2(0, 40.f)*Time::Delta();
+	//if (Keyboard::Get()->Press('D'))
+	//	pos += D3DXVECTOR2(40.f, 0)*Time::Delta();
+	//else if (Keyboard::Get()->Press('A'))
+	//	pos += D3DXVECTOR2(-40.f, 0)*Time::Delta();
 
-	if (time >= 0.03f)
-	{
-		frameX++;
-		time -= 0.03f;
-		if (frameX >= 20)
-		{
-			frameY++;
-			frameX = 0;
-			
-
-			if (frameY >= 13)
-			{
-				frameY = 0;
-			}
-		}
-	}
-	if (frameY >= 12 && frameX >= 10)
-	{
-		frameX = 0;
-		frameY = 0;
-	}
+	//if (frameY >= 12 && frameX >= 10)
+	//{
+	//	frameX = 0;
+	//	frameY = 0;
+	//}
 
 
 
@@ -100,6 +83,31 @@ void GameObject::Update()
 
 void GameObject::PostUpdate()
 {
+
+	static float time = 0.f;
+	time += Time::Delta();
+
+	if (sprites.size() != 0)
+	{
+		if (time >= frequency)
+		{
+			frameX++;
+			time -= frequency;
+			if (frameX >= sprites[state]->GetMaxFrame().x)
+			{
+				frameY++;
+				frameX = 0;
+
+
+				if (frameY >= sprites[state]->GetMaxFrame().y)
+				{
+					frameY = 0;
+				}
+			}
+		}
+
+	}
+
 	transform->SetScale(scale);
 	transform->SetPos(pos);
 	transform->SetRotate(rotate);
@@ -171,5 +179,15 @@ void GameObject::SetTexture(Texture * tex)
 	
 	defaultTexture = tex;
 
+
+}
+
+void GameObject::SetSprite(State state, Texture * tex)
+{
+	if (sprites[state] != nullptr)
+		LOG->Warning(__FILE__, __LINE__, "Sprite Confirm");
+
+	sprites[state] = tex;
+	
 
 }

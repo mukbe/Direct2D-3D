@@ -50,6 +50,7 @@
     <ClCompile Include="Utilities\Matrix2D.cpp" />
     <ClCompile Include="Systems\Object\GameObject.cpp" />
     <ClCompile Include="Systems\Object\Bounding.cpp" />
+    <ClCompile Include="Systems\Object\ObjectTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DefineHeader.h" />
@@ -117,6 +118,7 @@
     <ClInclude Include="Systems\Object\GameObject.h" />
     <ClInclude Include="Systems\Object\Bounding.h" />
     <ClInclude Include="EnumHelper.h" />
+    <ClInclude Include="Systems\Object\ObjectTest.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utilities">
