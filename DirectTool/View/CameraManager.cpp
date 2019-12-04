@@ -45,12 +45,21 @@ void CameraManager::Update()
 		memcpy(&pick, Mouse::Get()->GetPosition(), sizeof(D3DXVECTOR2));
 
 		D3DXVECTOR2 delta = picked - pick;
-		pos += delta;
+		pos += delta * zoom;
 
 		memcpy(&picked, Mouse::Get()->GetPosition(), sizeof(D3DXVECTOR2));
 
 		UpdateMatrix();
 	}
+}
+
+void CameraManager::ImguiRender()
+{
+	ImGui::Begin("Camera");
+	ImGui::Text("FPS : %f", Time::Get()->FPS());
+	ImGui::Text("Tick : %f", Time::Delta());
+	ImGui::Text("PosX : %.2f, PosY : %.2f", pos.x, pos.y);
+	ImGui::End();
 }
 
 void CameraManager::UpdateRenderRect()
@@ -60,8 +69,12 @@ void CameraManager::UpdateRenderRect()
 
 void CameraManager::AddZoom(float value)
 {
-	//Á¦ÇÑ µÖ¾ßÇÔ
+
 	zoom += value;
+
+	if (zoom < ZOOM_MIN) zoom = ZOOM_MIN;
+	if (zoom > ZOOM_MAX) zoom = ZOOM_MAX;
+
 	UpdateMatrix();
 }
 

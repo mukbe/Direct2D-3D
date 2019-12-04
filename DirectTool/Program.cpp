@@ -2,6 +2,7 @@
 #include "Program.h"
 
 #include "./Scenes/SceneMain.h"
+#include "./Systems/Object/ObjectTest.h"
 
 Program::Program()
 {
@@ -9,7 +10,6 @@ Program::Program()
 	//jsonRoot = new Json::Value();
 	//JsonHelper::ReadData(L"LevelEditor.json", jsonRoot);
 	
-
 	
 
 	//camera = new CameraMove2D;
@@ -44,11 +44,23 @@ Program::Program()
 	Buffer::CreateIndexBuffer(&indexBuffer, indexData.data(), sizeof(UINT)* indexCount);
 
 	
-	play = FloatRect(D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2), 70, true);
+	
+	tex = new Texture(L"../_Resources/Box.png");
+	Texture* tex2 = new Texture(L"../_Resources/blueHorse.png",20,13);
+	Texture* tex3 = new Texture(L"../_Resources/Idle.png", 4, 1);
+	Texture* tex4 = new Texture(L"../_Resources/Run_4.png", 10, 1);
+
 
 	gameObject = new GameObject("", D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2));
+	//gameObject->SetTexture(tex);
+	gameObject->SetTexture(tex2);
 
-	angle = 45;
+	gameObject2 = new ObjectTest("");
+	gameObject2->SetActive(false);
+	gameObject2->SetTexture(tex4);
+	gameObject2->SetSprite(GameObject::State::Idle, tex3);
+	gameObject2->SetSprite(GameObject::State::Run, tex4);
+
 }
 
 Program::~Program()
@@ -61,45 +73,34 @@ Program::~Program()
 
 void Program::PreUpdate()
 {
-	//camera->Update();
+
 	sm->PreUpdate();
+	gameObject->PreUpdate();
+	gameObject2->PreUpdate();
+
 }
 
 void Program::Update(float tick)
 {
 	sm->Update(tick);
 
-	if (Keyboard::Get()->Press('W'))
-		play += D3DXVECTOR2(0, -40.f)*Time::Delta();
-	if (Keyboard::Get()->Press('S'))
-		play += D3DXVECTOR2(0, 40.f)*Time::Delta();
-	if (Keyboard::Get()->Press('D'))
-		play += D3DXVECTOR2(40.f, 0)*Time::Delta();
-	if (Keyboard::Get()->Press('A'))
-		play += D3DXVECTOR2(-40.f, 0)*Time::Delta();
 
-	if (Keyboard::Get()->Press(VK_LEFT))
-		angle += 20 * Time::Delta();
-	if (Keyboard::Get()->Press(VK_RIGHT))
-		angle -= 20 * Time::Delta();
-
-
-	if (Keyboard::Get()->Down('T'))
-		CAMERA->AddZoom(0.1f);
-	if (Keyboard::Get()->Down('R'))
-		CAMERA->AddZoom(-0.1f);
-
+	gameObject->Update();
+	gameObject2->Update();
 
 }
 
 void Program::PostUpdate()
 {
 	sm->PostUpdate();
+	gameObject->PostUpdate();
+	gameObject2->PostUpdate();
 }
 
 void Program::Render()
 {	
 	gameObject->Render(true);
+	gameObject2->Render(true);
 
 
 
@@ -111,21 +112,16 @@ void Program::Render()
 void Program::PostRender()
 {
 	gameObject->PostRender();
+	gameObject2->PostRender();
 }
 
 void Program::ImguiRender()
 {
-	ImGui::Begin("Camera");
-	ImGui::Text("FPS : %f", Time::Get()->FPS());
-	ImGui::Text("Tick : %f", Time::Delta());
-	ImGui::Text("PosX : %.2f, PosY : %.2f", CAMERA->GetPos().x, CAMERA->GetPos().y);
-	ImGui::Separator();
-	ImGui::Text("Player Position");
-	ImGui::Text("X : %f, Y : %f", play.left, play.right);
-	ImGui::End();
+	CAMERA->ImguiRender();
 
-	//camera->UIRender();
-	sm->ImguiRender();
+	gameObject2->ImguiRender();
+
+
 }
 
 void Program::ResizeScreen()

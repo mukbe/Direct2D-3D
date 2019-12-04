@@ -57,7 +57,7 @@ WPARAM Window::Run()
 			Time::Get()->Update();
 
 			//imgui UI위에 마우스 있으면 게임 화면에만 키보드하고 마우스 정보 안보냄 => imgui만 누르기 위해서
-			if (ImGui::IsAnyWindowHovered() == false)
+			if (ImGui::IsAnyWindowFocused() == false && ImGui::IsAnyWindowHovered() == false)
 			{
 				Keyboard::Get()->Update();
 				Mouse::Get()->Update();

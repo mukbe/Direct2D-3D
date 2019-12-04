@@ -10,6 +10,8 @@ class CameraManager
 public:
 
 	void Update();
+	void ImguiRender();
+
 	RECT GetRenderRect() { return renderRect; }
 	void UpdateRenderRect();
 
@@ -25,6 +27,8 @@ public:
 		zoom = z;
 		if (zoom < ZOOM_MIN) zoom = ZOOM_MIN;
 		if (zoom > ZOOM_MAX) zoom = ZOOM_MAX;
+
+		UpdateMatrix();
 	}
 	float GetZoom() { return zoom; }
 	void AddZoom(float value);

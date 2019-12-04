@@ -1,4 +1,5 @@
 #pragma once
+
 namespace DefaultBrush
 {
 	enum Enum
@@ -18,28 +19,31 @@ class D2DRenderer
 public:
 	
 	void Create2DBuffer();
-
 	void BeginDraw();
 	void EndDraw();
+
+	HRESULT AddTextFormat(wstring fontname, float size);
+
+	ID2D1Bitmap* CreateD2DBitmapFromFile(wstring file);
+
+
 	ID2D1RenderTarget* GetRenderTarget() { return d2dRenderTarget; }
-
-	//회전이나 스케일변경시에 사용(일회성)
-	void SetWorld(D2D1::Matrix3x2F matrix) { d2dRenderTarget->SetTransform(matrix); }
-
+	ID2D1DeviceContext* GetDeviceContext() { return d2dDeviceContext; }
 private:
 	typedef unordered_map<wstring, IDWriteTextFormat*> mapTextList;
 	typedef unordered_map<wstring, IDWriteTextFormat*>::iterator mapTextIter;
 
 private:
 	//== 2dRenderer
-	ID2D1Factory* d2dFactory;
+	ID2D1Factory1* d2dFactory;
 	ID2D1RenderTarget * d2dRenderTarget;
 
 	IWICImagingFactory* wicFactory;
 	IDWriteFactory* dwFactory;
 
-	//이미지 로드에 사용
-	IWICFormatConverter* convertedSrcBmp;
+	ID2D1Device* d2dDevice;
+	ID2D1DeviceContext* d2dDeviceContext;
+
 	//텍스트레이아웃
 	IDWriteTextLayout* dwLayout;
 	ID2D1SolidColorBrush*	dwDefaultBrush[DefaultBrush::end];
@@ -75,3 +79,4 @@ public:
 };
 
 #define p2DRenderer D2DRenderer::Get()
+#define DeviceContext2D D2DRenderer::Get()->GetDeviceContext()

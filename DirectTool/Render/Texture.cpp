@@ -60,25 +60,45 @@ Texture::Texture(DXGI_FORMAT format)
 	this->format = format;
 }
 
-Texture::Texture(wstring file, DXGI_FORMAT format)
+Texture::Texture(wstring file, UINT frameX, UINT frameY, DXGI_FORMAT format)
 {
 	Initialize();
 	this->file = file;
 	this->format = format;
+	this->maxFrameX = frameX;
+	this->maxFrameY = frameY;
 
 	this->SetTexture(file);
+
+	int dx = bitmap->GetPixelSize().width / frameX;
+	int dy = bitmap->GetPixelSize().height / frameY;
+
+	WICRect rc;
+	for (int j = 0; j < frameY; ++j)
+	{
+		for (int i = 0; i < frameX; ++i)
+		{
+			rc.X = i * dx;
+			rc.Y = j * dy;
+			rc.Width = dx;
+			rc.Height = dy;
+			frameInfo.push_back(rc);
+		}
+	}
+	frameSize.x = dx;
+	frameSize.y = dy;
 }
 
-Texture::Texture(wstring file, int width, int height, DXGI_FORMAT format)
-{
-	Initialize();
-	this->file = file;
-	this->width = width;
-	this->height = height;
-	this->format = format;
-
-	this->SetTexture(file);
-}
+//Texture::Texture(wstring file, int width, int height, DXGI_FORMAT format)
+//{
+//	Initialize();
+//	this->file = file;
+//	this->width = width;
+//	this->height = height;
+//	this->format = format;
+//
+//	this->SetTexture(file);
+//}
 
 Texture::~Texture()
 {
@@ -107,7 +127,7 @@ void Texture::SetTexture(wstring file)
 			texHeight = height;
 		}
 	};
-
+	
 	TexMetadata metaData;
 	ScratchImage image;
 	wstring ext = Path::GetExtension(file);
@@ -165,7 +185,7 @@ void Texture::SetTexture(wstring file)
 		imageLoadInfo.Usage = D3D11_USAGE_DEFAULT;
 		imageLoadInfo.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 		imageLoadInfo.CpuAccessFlags = 0;
-		imageLoadInfo.MiscFlags = 0;
+		imageLoadInfo.MiscFlags = D3D10_RESOURCE_MISC_SHARED;
 		imageLoadInfo.Format = format;
 		imageLoadInfo.Filter = D3DX11_FILTER_LINEAR;
 		imageLoadInfo.MipFilter = D3DX11_FILTER_LINEAR;
@@ -183,6 +203,13 @@ void Texture::SetTexture(wstring file)
 		srvDesc.Texture2D.MostDetailedMip = 0;
 		hr = Device->CreateShaderResourceView(texture, &srvDesc, &srv);
 		assert(SUCCEEDED(hr));
+		
+
+		//비트맵이미지
+		Log_ErrorAssert(bitmap = p2DRenderer->CreateD2DBitmapFromFile(file));
+
+
+
 	}
 	else
 	{
@@ -222,6 +249,43 @@ void Texture::SetCSResource(UINT slot)
 
 void Texture::ReleaseResource()
 {
+}
+
+void Texture::Render(D3DXVECTOR2 size, float alpha, Pivot pivot)
+{
+	//클리핑
+	//카메라의 충될된 오브젝트를 그리는 방식을 사용한다면 렌더링 매니저 필요
+
+	D2D1_RECT_F dxArea;
+	float len = D3DXVec2Length(&size);
+
+	//피벗 계산	
+	dxArea = CalculatePivot((len <= 0 ? frameSize : size), pivot);
+
+	p2DRenderer->GetRenderTarget()->DrawBitmap(bitmap, dxArea, alpha);
+
+}
+
+//프레임이미지가 아닌 1x1프레임 이미지도 동일하게 렌더링 가능
+void Texture::FrameRender( UINT frameX, UINT frameY, D3DXVECTOR2 size, float alpha, Pivot pivot)
+{
+	//클리핑
+
+
+	int frame = frameY * maxFrameX + frameX;
+
+	float len = D3DXVec2Length(&size);
+
+
+	D2D1_RECT_F dxArea;
+	dxArea = CalculatePivot((len <= 0 ? frameSize : size), pivot);
+
+	//리소스사이즈
+	D2D1_RECT_F dxSrc;
+	dxSrc = D2D1::RectF(frameInfo[frame].X, frameInfo[frame].Y, frameInfo[frame].X + frameInfo[frame].Width, frameInfo[frame].Y + frameInfo[frame].Height);
+
+	p2DRenderer->GetRenderTarget()->DrawBitmap(bitmap, dxArea, alpha,D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,&dxSrc);
+
 }
 
 
@@ -569,3 +633,42 @@ ID3D11Texture2D * Texture::GetReadBuffer()
 
 	return readBuffer;
 }
+
+const D2D1_RECT_F Texture::CalculatePivot(D3DXVECTOR2 size, Pivot pivot)
+{
+	D2D1_RECT_F dxArea;
+
+	switch (pivot)
+	{
+	default :
+		dxArea.left = 0.f;
+		dxArea.right = size.x;
+		dxArea.top = 0.f;
+		dxArea.bottom = size.y;
+
+		break;
+	case Pivot::CENTER:
+		dxArea.left = -size.x * 0.5f;
+		dxArea.right = size.x * 0.5f;
+		dxArea.top = -size.y * 0.5f;
+		dxArea.bottom = size.y * 0.5f;
+		break;
+
+	case Pivot::BOTTOM:
+		dxArea.left = -size.x * 0.5f;
+		dxArea.right = size.x * 0.5f;
+		dxArea.top = -size.y;
+		dxArea.bottom = 0.f;
+		break;
+
+	case Pivot::TOP:
+		dxArea.left = -size.x * 0.5f;
+		dxArea.right = size.x * 0.5f;
+		dxArea.top = 0.f;
+		dxArea.bottom = size.y;
+		break;
+	}
+
+	return dxArea;
+}
+

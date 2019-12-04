@@ -31,7 +31,8 @@ using namespace std;
 
 //다이렉트2D 라이브러리
 #pragma comment(lib, "d2d1.lib")
-#include <D2D1.h>
+//#include <D2D1.h>
+#include <d2d1_1.h>
 #include <d2d1helper.h>
 
 //다이렉트 Write 라이브러리 (텍스트)
@@ -59,6 +60,9 @@ using namespace std;
 #include <DirectXTex.h>
 #pragma comment(lib, "directxtex.lib")
 
+
+#include "EnumHelper.h"
+
 #include "./Utilities/FloatRect.h"
 #include "MacroFunction.h"
 
@@ -72,7 +76,7 @@ const wstring ShaderPath = L"_Shaders/";
 
 #include "./Render/WorldBuffer.h"
 
-#include "./Systems/GameObject.h"
+#include "./Systems/Object/GameObject.h"
 
 
 
