@@ -53,8 +53,20 @@ public:
 		else
 			return -a;
 	}
+	static bool FloatEqual(const float & f1, const float & f2)
+	{
+		return (fabsf(f1 - f2) <= Math::Epsilon);
+	}
+
 
 	static float Angle(D3DXVECTOR3 v1, D3DXVECTOR3 v2);
 
 	static bool IsPointInAABB(D3DXVECTOR2 rectPos, D3DXVECTOR2 rectSize, D3DXVECTOR2 ptPos);
+	static bool IsPointInAABB(FloatRect rc, D3DXVECTOR2 ptPos);
+	static bool IsPointInCircle(D3DXVECTOR2 origin, float radius, D3DXVECTOR2 ptPos);
+
+	static bool IsAABBInAABB(FloatRect rc0, FloatRect rc1, FloatRect * temp = nullptr);
+	static bool IsAABBInCircle(FloatRect rc, D3DXVECTOR2 origin, float radius);
+	static bool IsAABBInAABBReaction(FloatRect* me, FloatRect other);
+
 };

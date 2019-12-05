@@ -5,10 +5,11 @@
 
 GameObject::GameObject(string name, D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p)
 	:defaultTexture(nullptr)
-	, pos(pos), name(name), bActive(true)
+	, pos(pos), name(name), bActive(true), worldBuffer(nullptr), shader(nullptr)
 	, rotate(0.f), velocity(D3DXVECTOR2(0, 0)), accelerate(D3DXVECTOR2(0, 0))
-	, alpha(1.f), size(size), pivot(p)
+	, alpha(1.f), size(size), pivot(p), lifeTiem(0.f), frameTime(0.f)
 {
+
 	worldBuffer = new WorldBuffer;
 	shader = new Shader(L"./Shaders/Color.hlsl");
 
@@ -22,6 +23,7 @@ GameObject::GameObject(string name, D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p)
 
 	bound = new BoundingBox(this);
 	frequency = 0.07f;
+
 }
 
 
@@ -36,6 +38,7 @@ GameObject::~GameObject()
 
 void GameObject::Init()
 {
+	
 }
 
 void GameObject::Release()
@@ -44,9 +47,19 @@ void GameObject::Release()
 
 void GameObject::PreUpdate()
 {
+	pos += velocity * Time::Delta();
+	velocity += accelerate * Time::Delta();
+
+	transform->SetScale(scale);
+	transform->SetPos(pos);
+	transform->SetRotate(rotate);
+
+
+	bound->Update();
+
 }
 
-void GameObject::Update()
+void GameObject::Update(float tick)
 {
 
 	if (Keyboard::Get()->Down(VK_F5))
@@ -79,20 +92,16 @@ void GameObject::Update()
 
 
 
-}
+	lifeTiem += tick;
+	frameTime += tick;
 
-void GameObject::PostUpdate()
-{
-
-	static float time = 0.f;
-	time += Time::Delta();
-
+	//애니메이션으로 바꿔야됨
 	if (sprites.size() != 0)
 	{
-		if (time >= frequency)
+		if (frameTime >= frequency)
 		{
 			frameX++;
-			time -= frequency;
+			frameTime -= frequency;
 			if (frameX >= sprites[state]->GetMaxFrame().x)
 			{
 				frameY++;
@@ -108,14 +117,12 @@ void GameObject::PostUpdate()
 
 	}
 
-	transform->SetScale(scale);
-	transform->SetPos(pos);
-	transform->SetRotate(rotate);
+}
 
-	pos += velocity * Time::Delta();
-	velocity += accelerate * Time::Delta();
+void GameObject::PostUpdate()
+{
 
-	bound->Update();
+
 }
 
 //뷰행렬 계산을 하면 TRUE

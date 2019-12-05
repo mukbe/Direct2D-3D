@@ -1,12 +1,13 @@
 #pragma once
 
 class Matrix2D;
+class Bounding;
 class GameObject	//메세지 인터페이스 추가
 {
 public:
 	enum State
 	{
-		Idle = 0,Run,
+		Idle = 0, Run, Jump
 	};
 
 public:
@@ -20,12 +21,12 @@ public:
 	//카메라에 관한 최초업데이트 - 사용 안해두됨
 	virtual void PreUpdate();
 	//메인 루틴
-	virtual void Update();
+	virtual void Update(float tick);
 	//이동관련 계산
 	virtual void PostUpdate();
 
 	//이미지 렌더링 - direct2D
-	virtual void Render(bool isRelative);
+	virtual void Render(bool isRelative = true);
 	//후처리 렌더링 -direct3D
 	virtual void PostRender();
 	//imgui debugUI render
@@ -39,6 +40,10 @@ public:
 		transform->SetPos(pos);
 	}
 	const D3DXVECTOR2 GetPos() { return pos; }
+	void MovePos(D3DXVECTOR2 p) 
+	{
+		pos += p;
+	}
 	void SetVelocity(const D3DXVECTOR2& v) { velocity = v; }
 	const D3DXVECTOR2& GetVelocity() { return velocity; }
 	void SetRotate(const float& degree)
@@ -79,11 +84,21 @@ public:
 
 	void SetSprite(State state, Texture* tex);
 
+	Bounding* GetBounding() { return bound; }
+	void SetSpeed() 
+	{
+		velocity = { 0,0 }; 
+		accelerate = { 0,0 };
+	}
+
 protected:
 	string name;
 	Matrix2D* transform;
 	bool bActive;
 	float alpha;
+	float lifeTiem;
+	float frameTime;
+
 	//랜더링이나 바운딩 박스의 크기 scale말고 이걸 사용하기 바람
 	D3DXVECTOR2 size;
 	Pivot pivot;

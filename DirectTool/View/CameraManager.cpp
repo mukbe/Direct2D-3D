@@ -55,11 +55,6 @@ void CameraManager::Update()
 
 void CameraManager::ImguiRender()
 {
-	ImGui::Begin("Camera");
-	ImGui::Text("FPS : %f", Time::Get()->FPS());
-	ImGui::Text("Tick : %f", Time::Delta());
-	ImGui::Text("PosX : %.2f, PosY : %.2f", pos.x, pos.y);
-	ImGui::End();
 }
 
 void CameraManager::UpdateRenderRect()

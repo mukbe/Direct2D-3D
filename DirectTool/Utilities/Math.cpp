@@ -107,3 +107,147 @@ bool Math::IsPointInAABB(D3DXVECTOR2 rectPos, D3DXVECTOR2 rectSize, D3DXVECTOR2 
 
 	return true;
 }
+
+bool Math::IsPointInAABB(FloatRect rc, D3DXVECTOR2 ptPos)
+{
+	if (ptPos.x < rc.left || ptPos.x > rc.right)
+		return false;
+	else if (ptPos.y < rc.bottom || ptPos.y > rc.top)
+		return false;
+
+	return true;
+}
+
+bool Math::IsPointInCircle(D3DXVECTOR2 origin, float radius, D3DXVECTOR2 ptPos)
+{
+	float distance = D3DXVec2Length(&(ptPos - origin));
+
+	if (distance <= radius) return true;
+
+	return false;
+}
+
+bool Math::IsAABBInAABB(FloatRect rc0, FloatRect rc1, FloatRect * temp)
+{
+	if (rc0.right < rc1.left || rc0.left > rc1.right) return false;
+	if (rc0.bottom < rc1.top || rc0.top > rc1.bottom) return false;
+
+	if (temp != nullptr)
+	{
+		temp->left = Math::Max(rc0.left, rc1.left);
+		temp->right = Math::Min(rc0.right, rc1.right);
+		temp->top = Math::Max(rc0.top, rc1.top);
+		temp->bottom = Math::Min(rc0.bottom, rc1.bottom);
+	}
+	return true;
+}
+
+bool Math::IsAABBInCircle(FloatRect rc, D3DXVECTOR2 origin, float radius)
+{
+	FloatRect temp, pt;
+	pt = FloatRect(origin, radius, Pivot::CENTER);
+	if (IsAABBInAABB(rc, pt))
+	{
+		if (origin.x <= rc.left && origin.y <= rc.top)
+		{
+			float dx = fabsf(rc.left - origin.x);
+			float dy = fabsf(rc.top - origin.y);
+			if (dx * dx + dy * dy > radius * radius)
+				return false;
+		}
+		if (origin.x >= rc.right && origin.y <= rc.top)
+		{
+			float dx = fabsf(rc.right - origin.x);
+			float dy = fabsf(rc.top - origin.y);
+			if (dx * dx + dy * dy > radius * radius)
+				return false;
+		}
+		if (origin.x >= rc.right && origin.y >= rc.bottom)
+		{
+			float dx = fabsf(rc.right - origin.x);
+			float dy = fabsf(rc.bottom - origin.y);
+			if (dx * dx + dy * dy > radius * radius)
+				return false;
+		}
+		if (origin.x <= rc.left && origin.y >= rc.bottom)
+		{
+			float dx = fabsf(rc.left - origin.x);
+			float dy = fabsf(rc.bottom - origin.y);
+			if (dx * dx + dy * dy > radius * radius)
+				return false;
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool Math::IsAABBInAABBReaction(FloatRect * me, FloatRect other)
+{
+	FloatRect rcInter;
+
+	if (IsAABBInAABB(*me, other, &rcInter) == false)
+		return false;
+
+	float interW = rcInter.right - rcInter.left;
+	float interH = rcInter.bottom - rcInter.top;
+
+	if (Math::FloatEqual(interW, interH))
+	{
+		if (Math::FloatEqual(rcInter.left, other.left))
+		{
+			me->left -= interW;
+			me->right -= interW;
+		}
+		else if (Math::FloatEqual(rcInter.right, other.right))
+		{
+			me->left += interW;
+			me->right += interW;
+		}
+		//위
+		if (Math::FloatEqual(rcInter.top, other.top))
+		{
+			me->top -= interH;
+			me->bottom -= interH;
+		}
+		//아래
+		else if (Math::FloatEqual(rcInter.bottom, other.bottom))
+		{
+			me->top += interH;
+			me->bottom += interH;
+		}
+	}
+	else if (interW < interH)
+	{
+		if (Math::FloatEqual(rcInter.left, other.left))
+		{
+			me->left -= interW;
+			me->right -= interW;
+		}
+		else if (Math::FloatEqual(rcInter.right, other.right))
+		{
+			me->left += interW;
+			me->right += interW;
+		}
+
+	}
+	else
+	{
+		//위
+		if (Math::FloatEqual(rcInter.top, other.top))
+		{
+			me->top -= interH;
+			me->bottom -= interH;
+		}
+		//아래
+		else if (Math::FloatEqual(rcInter.bottom, other.bottom))
+		{
+			me->top += interH;
+			me->bottom += interH;
+		}
+	}
+
+	return true;
+	
+}

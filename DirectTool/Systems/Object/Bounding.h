@@ -1,4 +1,7 @@
 #pragma once
+//회전변환은 생각하지않고 만약 회전이 빈번한 객체라면 원형으로 바운딩을 줄 것
+
+
 
 class FloatRect;
 class GameObject;
@@ -17,11 +20,14 @@ public:
 	
 	void Update();
 	void Render();
+	void SetOffset(D3DXVECTOR2 offset);
+	FloatRect GetRect();
 
 protected:
 	Figure figure;
 	GameObject* obj;
 	FloatRect rc;
+	FloatRect renderRc;
 	D3DXVECTOR2 offset;
 };
 

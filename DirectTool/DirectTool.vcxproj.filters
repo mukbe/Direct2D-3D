@@ -51,6 +51,8 @@
     <ClCompile Include="Systems\Object\GameObject.cpp" />
     <ClCompile Include="Systems\Object\Bounding.cpp" />
     <ClCompile Include="Systems\Object\ObjectTest.cpp" />
+    <ClCompile Include="Systems\Object\Terrain.cpp" />
+    <ClCompile Include="Systems\Object\ObjectManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DefineHeader.h" />
@@ -119,6 +121,8 @@
     <ClInclude Include="Systems\Object\Bounding.h" />
     <ClInclude Include="EnumHelper.h" />
     <ClInclude Include="Systems\Object\ObjectTest.h" />
+    <ClInclude Include="Systems\Object\Terrain.h" />
+    <ClInclude Include="Systems\Object\ObjectManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utilities">

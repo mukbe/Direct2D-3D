@@ -1,11 +1,9 @@
 #pragma once
-#include "GameObject.h"
-
-class ObjectTest : public GameObject
+class Terrain : public GameObject
 {
 public:
-	ObjectTest(string name = "", D3DXVECTOR2 pos = D3DXVECTOR2(0.f, 0.f), D3DXVECTOR2 size = D3DXVECTOR2(100.f, 100.f), Pivot p = Pivot::BOTTOM);
-	~ObjectTest();
+	Terrain(string name = "", D3DXVECTOR2 pos = D3DXVECTOR2(0.f, 0.f), D3DXVECTOR2 size = D3DXVECTOR2(2000.f, 70.f), Pivot p = Pivot::BOTTOM);
+	~Terrain();
 
 	//√ ±‚»≠
 	virtual void Init();
@@ -24,8 +22,8 @@ public:
 	virtual void PostRender();
 	//imgui debugUI render
 	virtual void ImguiRender();
+private:
 
 
-	void KeyControl();
 };
 

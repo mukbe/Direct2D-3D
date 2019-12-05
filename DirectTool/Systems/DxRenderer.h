@@ -12,10 +12,9 @@ struct D3DDesc
 	bool bFullScreen;
 };
 
-
-class DxRenderer
+//Singleton
+class DxRenderer		
 {
-	SingletonHeader(DxRenderer)
 public:
 	static void GetDesc(D3DDesc* desc)
 	{
@@ -75,6 +74,9 @@ public:
 	ID3D11RenderTargetView* GetRenderTargetView()const { return this->pRenderTargetView; }
 	D3D_FEATURE_LEVEL GetFeatureLevel()const { return this->mFeatureLevel; }
 	//TODO ResizeScreen func
+
+//======================================================
+	SingletonHeader(DxRenderer)
 };
 
 #define pRenderer DxRenderer::Get()

@@ -1,8 +1,10 @@
 #pragma once
 
+
+
+//Singleton
 class Time
 {
-	SingletonHeader(Time)
 public:
 	static bool Stopped() { return isTimerStopped; }
 	static float Delta() { return isTimerStopped ? 0.0f : timeElapsed; }
@@ -23,6 +25,8 @@ public:
 	UINT GetMinute() { return minute; }
 	float GetDayTimeRatio() { return dayTimeRatio; }
 
+	float GetLockFPS() { return lockFPS; }
+	void SetLockFPS(float val);
 private:
 	
 	void UpdateWorldTime();
@@ -40,6 +44,8 @@ private:
 	UINT frameCount;///< 프레임 수
 	float runningTime;///< 진행 시간
 	float framePerSecond;///< FPS
+	float lockFPS;
+
 
 	float worldTime;
 	UINT hour;
@@ -47,4 +53,7 @@ private:
 
 	const float secondsPerDay;
 	float dayTimeRatio;
+
+
+	SingletonHeader(Time)
 };
