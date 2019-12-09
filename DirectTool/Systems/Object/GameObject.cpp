@@ -5,25 +5,23 @@
 
 GameObject::GameObject(string name, D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p)
 	:defaultTexture(nullptr)
-	, pos(pos), name(name), bActive(true), worldBuffer(nullptr), shader(nullptr)
-	, rotate(0.f), velocity(D3DXVECTOR2(0, 0)), accelerate(D3DXVECTOR2(0, 0))
-	, alpha(1.f), size(size), pivot(p), lifeTiem(0.f), frameTime(0.f)
+	, name(name), bActive(true), worldBuffer(nullptr), shader(nullptr)
+	,  velocity(D3DXVECTOR2(0, 0)), accelerate(D3DXVECTOR2(0, 0))
+	, alpha(1.f), size(size),  lifeTiem(0.f), frameTime(0.f)
 {
 
 	worldBuffer = new WorldBuffer;
 	shader = new Shader(L"./Shaders/Color.hlsl");
 
-	transform = new Matrix2D();
-	transform->SetPos(pos);
-	
+	transform = new Matrix2D(pos, size, p);
+
 	bActive = true;
 
-	scale.x = scale.y = 1;
 	frameX = frameY = 0;
 
 	bound = new BoundingBox(this);
 	frequency = 0.07f;
-
+	gravity = D3DXVECTOR2(0, 0.f);
 }
 
 
@@ -47,16 +45,8 @@ void GameObject::Release()
 
 void GameObject::PreUpdate()
 {
-	pos += velocity * Time::Delta();
-	velocity += accelerate * Time::Delta();
-
-	transform->SetScale(scale);
-	transform->SetPos(pos);
-	transform->SetRotate(rotate);
-
 
 	bound->Update();
-
 }
 
 void GameObject::Update(float tick)
@@ -75,20 +65,6 @@ void GameObject::Update(float tick)
 
 
 
-	//if (Keyboard::Get()->Press('W'))
-	//	pos += D3DXVECTOR2(0, -40.f)*Time::Delta();
-	//else if (Keyboard::Get()->Press('S'))
-	//	pos += D3DXVECTOR2(0, 40.f)*Time::Delta();
-	//if (Keyboard::Get()->Press('D'))
-	//	pos += D3DXVECTOR2(40.f, 0)*Time::Delta();
-	//else if (Keyboard::Get()->Press('A'))
-	//	pos += D3DXVECTOR2(-40.f, 0)*Time::Delta();
-
-	//if (frameY >= 12 && frameX >= 10)
-	//{
-	//	frameX = 0;
-	//	frameY = 0;
-	//}
 
 
 
@@ -138,11 +114,11 @@ void GameObject::Render(bool isRelative)
 	}
 
 	world.Bind();
-
+	transform->Render();
 	if (defaultTexture != nullptr)
 	{
 		//defaultTexture->Render();
-		defaultTexture->FrameRender(frameX, frameY, size, 1.f, pivot);
+		//defaultTexture->FrameRender(frameX, frameY, size, 1.f, pivot);
 	}
 	bound->Render();
 	//p2DRenderer->FillEllipse(rc.GetRect());

@@ -51,6 +51,7 @@ PixelInput VS(uint VertexID : SV_VertexID)
     return output;
 }
 
+
 float4 PS(PixelInput input) : SV_TARGET
 {
     float4 color = input.color;
@@ -63,15 +64,17 @@ float4 PS(PixelInput input) : SV_TARGET
     position.xy = mul(position, float3x2(View.xyzw, CameraPos));
     float zoom = length(View.xw);
 
-    color = float4(0, 0, 0, 0.3f);
+    color = float4(0, 0, 0, 0.2f);
     float dx = abs(input.position.x - position.x);
     float dy = abs(input.position.y - position.y);
-    float distance = sqrt(dx * dx + dy * dy);
+    float distance = sqrt(dx * dx + dy * dy) ;
     
     
     if(distance < 200 * zoom)
     {
-        color.r = 1;
+        
+        float factor = (distance) / (200 * zoom);
+        color = lerp(0, color, factor);
 
         discard;
    

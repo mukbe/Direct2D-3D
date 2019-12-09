@@ -53,6 +53,7 @@
     <ClCompile Include="Systems\Object\ObjectTest.cpp" />
     <ClCompile Include="Systems\Object\Terrain.cpp" />
     <ClCompile Include="Systems\Object\ObjectManager.cpp" />
+    <ClCompile Include="Systems\Object\RigidBody.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DefineHeader.h" />
@@ -123,6 +124,7 @@
     <ClInclude Include="Systems\Object\ObjectTest.h" />
     <ClInclude Include="Systems\Object\Terrain.h" />
     <ClInclude Include="Systems\Object\ObjectManager.h" />
+    <ClInclude Include="Systems\Object\RigidBody.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utilities">

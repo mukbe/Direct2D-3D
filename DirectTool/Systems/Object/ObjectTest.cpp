@@ -9,7 +9,7 @@ ObjectTest::ObjectTest(string name, D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p)
 {
 	state = Idle;
 	frequency = 0.127f;
-
+	objectType = Dynamic;
 }
 
 
@@ -53,7 +53,6 @@ void ObjectTest::PostUpdate()
 		velocity.y < 0 ? frameX = 0 : frameX = 1;
 		
 	}
-	
 }
 
 void ObjectTest::Render(bool isRelative)
@@ -68,14 +67,14 @@ void ObjectTest::Render(bool isRelative)
 	}
 
 	world.Bind();
-
+	transform->Render();
 	Texture* tex = sprites[state];
 	if (tex == nullptr)
 	{
 		LOG->Print("None Texture");
 		return;
 	}
-	tex->FrameRender(frameX, frameY, size, 1.f, pivot);
+	//tex->FrameRender(frameX, frameY, size, 1.f, pivot);
 
 
 
@@ -117,20 +116,20 @@ void ObjectTest::KeyControl()
 	if (Keyboard::Get()->Press('D'))
 	{
 		state = Run;
-		velocity.x = 150.f;
-		scale.x > 0.f ? scale.x *= 1.f : scale.x *= -1.f;
+		velocity.x = 300.f;
+	//	scale.x > 0.f ? scale.x *= 1.f : scale.x *= -1.f;
 
 	}
 	else if (Keyboard::Get()->Press('A'))
 	{
 		state = Run;
-		velocity.x = -150.f;
-		scale.x < 0.f ? scale.x *= 1.f : scale.x *= -1.f;
+		velocity.x = -300.f;
+	//	scale.x < 0.f ? scale.x *= 1.f : scale.x *= -1.f;
 	}
 
 	if (Keyboard::Get()->Up(VK_SPACE))
 	{
-		velocity = { 0.f, -2000.f };
+		velocity = { 0.f, -1500.f };
 		accelerate = { 0.f,3000.f };
 
 

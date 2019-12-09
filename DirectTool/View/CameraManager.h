@@ -22,23 +22,14 @@ public:
 		UpdateRenderRect();
 	}
 
-	void SetZoom(float z)
-	{
-		zoom = z;
-		if (zoom < ZOOM_MIN) zoom = ZOOM_MIN;
-		if (zoom > ZOOM_MAX) zoom = ZOOM_MAX;
-
-		UpdateMatrix();
-	}
 	float GetZoom() { return zoom; }
 	void AddZoom(float value);
 
 	RECT GetRelativeRECT(RECT rc);
-	POINT GetRelativePOINT(POINT pt);
-	D3DXVECTOR2 GetRelativeVector2D(D3DXVECTOR2 vr);
+	D3DXVECTOR2 ScreenToWorld(D3DXVECTOR2 vr);
+	D3DXVECTOR2 WorldToScreen(D3DXVECTOR2 vr);
 
-
-	POINT GetMousePos();
+	D3DXVECTOR2 GetMousePos();
 
 	BOOL IsCollision(D3DXVECTOR2 p);
 	Matrix2D GetView() { return view; }

@@ -24,6 +24,8 @@ public:
 	FloatRect(float l, float t, float r, float b);
 	RECT GetRect();
 
+	void Update(D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p);
+
 private:
 	void Calculate(D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p);
 

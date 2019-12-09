@@ -17,7 +17,7 @@ void Bounding::SetGameObject(GameObject * obj, D3DXVECTOR2 offset)
 {
 	this->obj = obj;
 	this->offset = offset;
-	renderRc = FloatRect(this->offset, obj->GetSize(), obj->GetPivot());
+	//renderRc = FloatRect(this->offset, obj->GetSize(), obj->GetPivot());
 
 	Matrix2D* mat = obj->Transform();
 	rc = renderRc;
@@ -51,7 +51,7 @@ void Bounding::Render()
 void Bounding::SetOffset(D3DXVECTOR2 offset)
 {
 	this->offset = offset;
-	renderRc = FloatRect(offset, obj->GetSize(), obj->GetPivot());
+	//renderRc = FloatRect(offset, obj->GetSize(), obj->GetPivot());
 }
 //절대좌표에서의 위치를 반환한다
 FloatRect Bounding::GetRect()

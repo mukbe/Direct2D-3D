@@ -34,26 +34,7 @@ public:
 
 	//위치관련 함수들
 	Matrix2D* Transform() { return transform; }
-	void SetPos(const D3DXVECTOR2& p) 
-	{
-		pos = p; 
-		transform->SetPos(pos);
-	}
-	const D3DXVECTOR2 GetPos() { return pos; }
-	void MovePos(D3DXVECTOR2 p) 
-	{
-		pos += p;
-	}
-	void SetVelocity(const D3DXVECTOR2& v) { velocity = v; }
-	const D3DXVECTOR2& GetVelocity() { return velocity; }
-	void SetRotate(const float& degree)
-	{
-		rotate = degree;
-		transform->SetRotate(rotate);
-	}
-	const float& GetRotate() { return rotate; }
 
-	
 	const string& Name() { return name; }
 	void SetName(const string& s) { name = s; }
 
@@ -72,55 +53,49 @@ public:
 	}
 	const D3DXVECTOR2& GetSize() { return size; }
 
-	void SetPivot(const Pivot& p) { pivot = p; }
-	const Pivot& GetPivot() { return pivot; }
-
-
 	void SetTextureFilePath(wstring file);
 	void SetTexture(Texture* tex);
 	//void SetTexture(const string key);
-
 	Texture* GetTexture() { return defaultTexture; }
-
 	void SetSprite(State state, Texture* tex);
 
 	Bounding* GetBounding() { return bound; }
-	void SetSpeed() 
+
+	void SetObjectType(ObjectType t) { objectType = t; }
+	ObjectType GetObjectType() { return objectType; }
+	void SetVelocity(const D3DXVECTOR2& v) { velocity = v; }
+	const D3DXVECTOR2& GetVelocity() { return velocity; }
+	void SetSpeed()
 	{
-		velocity = { 0,0 }; 
+		velocity = { 0,0 };
 		accelerate = { 0,0 };
 	}
 
 protected:
 	string name;
+	ObjectType objectType;
 	Matrix2D* transform;
 	bool bActive;
 	float alpha;
 	float lifeTiem;
 	float frameTime;
 
-	//랜더링이나 바운딩 박스의 크기 scale말고 이걸 사용하기 바람
-	D3DXVECTOR2 size;
-	Pivot pivot;
-
-	Texture* defaultTexture;
-	unordered_map<State, Texture*> sprites;
-	State state;
 
 	UINT frameX;
 	UINT frameY;
 	float frequency;
 
-	//이놈의 좌표
-	D3DXVECTOR2 pos;
-	//이놈의 스캐일
-	D3DXVECTOR2 scale;
-	//회전스캐일 Degree
-	float rotate;
+	D3DXVECTOR2 size;
+
+	Texture* defaultTexture;
+	unordered_map<State, Texture*> sprites;
+	State state;
+
 	//이놈의 이동속도
 	D3DXVECTOR2 velocity;
 	//이놈의 가속도
 	D3DXVECTOR2 accelerate;
+	D3DXVECTOR2 gravity;
 
 
 	//렌더링 레이어

@@ -64,12 +64,30 @@ void CameraManager::UpdateRenderRect()
 
 void CameraManager::AddZoom(float value)
 {
+	D3DXVECTOR2 oldpos = GetMousePos();
+
 
 	zoom += value;
+
+
 
 	if (zoom < ZOOM_MIN) zoom = ZOOM_MIN;
 	if (zoom > ZOOM_MAX) zoom = ZOOM_MAX;
 
+	bool check = true;
+	check &= !Math::FloatEqual(zoom, ZOOM_MAX);
+	check &= !Math::FloatEqual(zoom, ZOOM_MIN);
+	if (check)
+	{
+		//pos.x = oldpos.x - (WinSizeX * value) *0.5f;
+		//pos.y = oldpos.y - (WinSizeY * value) *0.5f;
+
+		D3DXVECTOR2 oldscreen = WorldToScreen(oldpos);
+		oldscreen.x -= WinSizeX / 2;
+		oldscreen.y -= WinSizeY / 2;
+		pos = ScreenToWorld(oldscreen);
+
+	}
 	UpdateMatrix();
 }
 
@@ -80,33 +98,37 @@ RECT CameraManager::GetRelativeRECT(RECT rc)
 	return std::move(temp);
 }
 
-POINT CameraManager::GetRelativePOINT(POINT pt)
-{
-	pt.x -= pos.x;
-	pt.y -= pos.y;
 
-	return std::move(pt);
+D3DXVECTOR2 CameraManager::ScreenToWorld(D3DXVECTOR2 vr)
+{
+	vr.x += pos.x;
+	vr.y += pos.y;
+	vr /= zoom;
+	return std::move(vr);
 }
 
-D3DXVECTOR2 CameraManager::GetRelativeVector2D(D3DXVECTOR2 vr)
+D3DXVECTOR2 CameraManager::WorldToScreen(D3DXVECTOR2 vr)
 {
+	vr *= zoom;
 	vr.x -= pos.x;
 	vr.y -= pos.y;
-	vr *= zoom;
 	return std::move(vr);
 }
 
 
-POINT CameraManager::GetMousePos()
+D3DXVECTOR2 CameraManager::GetMousePos()
 {
-	D3DXVECTOR3 mouse = Mouse::Get()->GetPosition();
-	POINT pt = { mouse.x / zoom + pos.x, mouse.y / zoom + pos.y };
-	return POINT();
+	D3DXVECTOR2 mouse;
+	memcpy(&mouse, Mouse::Get()->GetPosition(), sizeof(D3DXVECTOR2));
+
+	D3DXVECTOR2 pt = ScreenToWorld(mouse);
+	return pt;
 }
 
 BOOL CameraManager::IsCollision(D3DXVECTOR2 p)
 {
 	FloatRect rc(p.x, p.y, WinSizeX / zoom, WinSizeY / zoom);
+
 
 	if (rc.left <= p.x &&
 		rc.right >= p.x &&
@@ -126,11 +148,11 @@ void CameraManager::CameraDataBind()
 	buffer->Setting(view.GetResult());
 	buffer->SetPSBuffer(0);
 	buffer->SetVSBuffer(0);
-
 }
 
 void CameraManager::UpdateMatrix()
 {
+
 	view.SetPos(-pos);
 	view.SetScale(zoom);
 

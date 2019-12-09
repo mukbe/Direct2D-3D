@@ -90,18 +90,17 @@ void Program::PreUpdate()
 	for (GameObject* obj : objs)
 		obj->PreUpdate();
 
-	FloatRect player, terrain, temp;
-	player = objs[0]->GetBounding()->GetRect();
-	terrain = objs[1]->GetBounding()->GetRect();
-	temp = player;
+	//FloatRect player, terrain, temp;
+	//player = objs[0]->GetBounding()->GetRect();
+	//terrain = objs[1]->GetBounding()->GetRect();
+	//temp = player;
 
-	float len = Math::Abs(objs[0]->GetVelocity().y);
 
-	if (Math::IsAABBInAABBReaction(&player, terrain) && len != 0.f)
-	{
-		objs[0]->SetSpeed();
- 		objs[0]->MovePos(D3DXVECTOR2(0.f, -(temp.bottom - player.bottom)));
-	}z
+	//if (Math::IsAABBInAABBReaction(&player, terrain) )
+	//{
+	//	objs[0]->SetSpeed();
+ //		objs[0]->MovePos(D3DXVECTOR2(0.f, -(temp.bottom - player.bottom)));
+	//}
 
 }
 
@@ -130,11 +129,14 @@ void Program::Render()
 		obj->Render();
 
 
+	CAMERA->GetView().Bind();
+	p2DRenderer->DrawLine(D3DXVECTOR2(-10000, 0), D3DXVECTOR2(10000, 0));
+	p2DRenderer->DrawLine(D3DXVECTOR2(0, -10000), D3DXVECTOR2(0, 10000));
 
-
-	//p2DRenderer->FillRectangle(play.GetRect(),DefaultBrush::red);
-
-	
+	wstring str;
+	str += L"pos.x : " + to_wstring(CAMERA->GetMousePos().x);
+	str += L"pos.y : " + to_wstring(CAMERA->GetMousePos().y);
+	p2DRenderer->DrawText2D(Mouse::Get()->GetPosition().x-200, Mouse::Get()->GetPosition().y-20, str, 20);
 }
 
 void Program::PostRender()
@@ -170,7 +172,9 @@ void Program::ImguiRender()
 
 	ImGui::Begin("TEST");
 
-	ImGui::Text("pos.x : %.2f , pos.y : %.2f", objs[0]->GetPos().x, objs[0]->GetPos().y);
+	D3DXVECTOR2 pos = objs[0]->Transform()->GetPos();
+	
+	ImGui::Text("pos.x : %.2f , pos.y : %.2f", pos.x, pos.y);
 	ImGui::Text("rc.bottom : %.2f ", objs[0]->GetBounding()->GetRect().bottom);
 
 	ImGui::End();
