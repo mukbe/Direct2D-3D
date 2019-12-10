@@ -134,8 +134,8 @@ void Program::Render()
 	p2DRenderer->DrawLine(D3DXVECTOR2(0, -10000), D3DXVECTOR2(0, 10000));
 
 	wstring str;
-	str += L"pos.x : " + to_wstring(CAMERA->GetMousePos().x);
-	str += L"pos.y : " + to_wstring(CAMERA->GetMousePos().y);
+	str += L"pos.x : " + to_wstring(CAMERA->GetMousePos().x).substr(0,6);
+	str += L"pos.y : " + to_wstring(CAMERA->GetMousePos().y).substr(0,6);
 	p2DRenderer->DrawText2D(Mouse::Get()->GetPosition().x-200, Mouse::Get()->GetPosition().y-20, str, 20);
 }
 

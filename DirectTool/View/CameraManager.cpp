@@ -10,7 +10,7 @@ CameraManager::CameraManager()
 
 	pos = D3DXVECTOR2(0.f,0.f);
 	zoom = 1.f;
-	view = Matrix2D();
+	view = Matrix2D(pos, D3DXVECTOR2(WinSizeX, WinSizeY), Pivot::LEFT_TOP);
 	buffer = new CameraBuffer;
 
 	UpdateMatrix();
@@ -64,12 +64,7 @@ void CameraManager::UpdateRenderRect()
 
 void CameraManager::AddZoom(float value)
 {
-	D3DXVECTOR2 oldpos = GetMousePos();
-
-
 	zoom += value;
-
-
 
 	if (zoom < ZOOM_MIN) zoom = ZOOM_MIN;
 	if (zoom > ZOOM_MAX) zoom = ZOOM_MAX;
@@ -79,15 +74,10 @@ void CameraManager::AddZoom(float value)
 	check &= !Math::FloatEqual(zoom, ZOOM_MIN);
 	if (check)
 	{
-		//pos.x = oldpos.x - (WinSizeX * value) *0.5f;
-		//pos.y = oldpos.y - (WinSizeY * value) *0.5f;
-
-		D3DXVECTOR2 oldscreen = WorldToScreen(oldpos);
-		oldscreen.x -= WinSizeX / 2;
-		oldscreen.y -= WinSizeY / 2;
-		pos = ScreenToWorld(oldscreen);
-
+		pos.x += WinSizeX *0.5f * value;
+		pos.y += WinSizeY *0.5f * value;
 	}
+
 	UpdateMatrix();
 }
 

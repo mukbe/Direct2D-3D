@@ -96,20 +96,20 @@ void FloatRect::Calculate(D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p)
 		bottom = pos.y + size.y;
 		break;
 	case CENTER:
-		left = pos.x - size.x / 2.f;
-		right = pos.x + size.x / 2.f;
-		top = pos.y - size.y / 2.f;
-		bottom = pos.y + size.y / 2.f;
+		left = pos.x - size.x * 0.5f;
+		right = pos.x + size.x * 0.5f;
+		top = pos.y - size.y * 0.5f;
+		bottom = pos.y + size.y * 0.5f;
 		break;
 	case BOTTOM:
-		left = pos.x - size.x / 2.f;
-		right = pos.x + size.x / 2.f;
+		left = pos.x - size.x * 0.5f;
+		right = pos.x + size.x * 0.5f;
 		top = pos.y - size.y;
 		bottom = pos.y;
 		break;
 	case TOP:
-		left = pos.x - size.x / 2.f;
-		right = pos.x + size.x / 2.f;
+		left = pos.x - size.x * 0.5f;
+		right = pos.x + size.x * 0.5f;
 		top = pos.y;
 		bottom = pos.y + size.y;
 		break;
