@@ -7,7 +7,7 @@ const int Math::IntMin = -2147483647;
 const int Math::IntMax = 2147483647;
 const float Math::FloatMin = -3.402823E+38f;
 const float Math::FloatMax = 3.402823E+38f;
-
+const D3DXVECTOR2 Math::gravity = { 0, 9.8f * 5.0f };
 float Math::NegativeChecking(float value)
 {
 	if (value < 0.0f)
@@ -183,7 +183,7 @@ bool Math::IsAABBInCircle(FloatRect rc, D3DXVECTOR2 origin, float radius)
 	return false;
 }
 
-bool Math::IsAABBInAABBReaction(FloatRect * me, FloatRect other)
+bool Math::IsAABBInAABBReaction(FloatRect * me, FloatRect other, D3DXVECTOR2* dir)
 {
 	FloatRect rcInter;
 
@@ -199,23 +199,31 @@ bool Math::IsAABBInAABBReaction(FloatRect * me, FloatRect other)
 		{
 			me->left -= interW;
 			me->right -= interW;
+			if (dir)
+				*dir = D3DXVECTOR2(1.f, 0.f);
 		}
 		else if (Math::FloatEqual(rcInter.right, other.right))
 		{
 			me->left += interW;
 			me->right += interW;
+			if (dir)
+				*dir = D3DXVECTOR2(-1.f, 0.f);
 		}
 		//위
 		if (Math::FloatEqual(rcInter.top, other.top))
 		{
 			me->top -= interH;
 			me->bottom -= interH;
+			if (dir)
+				*dir = D3DXVECTOR2(0.f, -1.f);
 		}
 		//아래
 		else if (Math::FloatEqual(rcInter.bottom, other.bottom))
 		{
 			me->top += interH;
 			me->bottom += interH;
+			if (dir)
+				*dir = D3DXVECTOR2(0.f, 1.f);
 		}
 	}
 	else if (interW < interH)
@@ -224,13 +232,16 @@ bool Math::IsAABBInAABBReaction(FloatRect * me, FloatRect other)
 		{
 			me->left -= interW;
 			me->right -= interW;
+			if (dir)
+				*dir = D3DXVECTOR2(1.f, 0.f);
 		}
 		else if (Math::FloatEqual(rcInter.right, other.right))
 		{
 			me->left += interW;
 			me->right += interW;
+			if (dir)
+				*dir = D3DXVECTOR2(-1.f, 0.f);
 		}
-
 	}
 	else
 	{
@@ -239,12 +250,16 @@ bool Math::IsAABBInAABBReaction(FloatRect * me, FloatRect other)
 		{
 			me->top -= interH;
 			me->bottom -= interH;
+			if (dir)
+				*dir = D3DXVECTOR2(0.f, 1.f);
 		}
 		//아래
 		else if (Math::FloatEqual(rcInter.bottom, other.bottom))
 		{
 			me->top += interH;
 			me->bottom += interH;
+			if (dir)
+				*dir = D3DXVECTOR2(0.f, -1.f);
 		}
 	}
 

@@ -5,8 +5,8 @@
 
 
 
-Terrain::Terrain(string name, D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p)
-	:GameObject(name, pos, size, p)
+Terrain::Terrain(string name, D3DXVECTOR2 pos, D3DXVECTOR2 size,ObjectType type,  Pivot p)
+	:GameObject(name, pos, size,type, p)
 {
 
 }

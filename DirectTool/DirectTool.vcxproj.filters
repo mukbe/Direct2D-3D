@@ -54,6 +54,10 @@
     <ClCompile Include="Systems\Object\Terrain.cpp" />
     <ClCompile Include="Systems\Object\ObjectManager.cpp" />
     <ClCompile Include="Systems\Object\RigidBody.cpp" />
+    <ClCompile Include="Systems\Object\Shape.cpp" />
+    <ClCompile Include="Systems\Object\Collision.cpp" />
+    <ClCompile Include="Systems\Object\Manifold.cpp" />
+    <ClCompile Include="Systems\Object\PhysicsWorld.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DefineHeader.h" />
@@ -125,6 +129,11 @@
     <ClInclude Include="Systems\Object\Terrain.h" />
     <ClInclude Include="Systems\Object\ObjectManager.h" />
     <ClInclude Include="Systems\Object\RigidBody.h" />
+    <ClInclude Include="Systems\Object\Shape.h" />
+    <ClInclude Include="Utilities\Matrix2x2.h" />
+    <ClInclude Include="Systems\Object\Collision.h" />
+    <ClInclude Include="Systems\Object\Manifold.h" />
+    <ClInclude Include="Systems\Object\PhysicsWorld.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utilities">

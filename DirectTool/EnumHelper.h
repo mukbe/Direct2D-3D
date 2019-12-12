@@ -5,5 +5,9 @@ enum Pivot
 };
 enum ObjectType : short
 {
-	Dynamic = 0, Static, None
+	Background = 0, Charactor, Monster, Object, Effect, UI, ObjectType_End
+};
+enum RigidType : short
+{
+	Dynamic = 0, Static, RigidType_End
 };

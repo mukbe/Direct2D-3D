@@ -33,6 +33,7 @@ public:
 	D3DXVECTOR2 GetPos() { return pos; }
 	D3DXVECTOR2 GetSize() { return size; }
 	Pivot GetPivot() { return pivot; }
+	FloatRect GetRect() { return rc; }
 
 	void SetScale(D3DXVECTOR2 s, D3DXVECTOR2 center);
 	void SetScale(D3DXVECTOR2 s);
@@ -44,6 +45,8 @@ public:
 	void SetSize(float x, float y);
 
 	void SetRotate(float degree, D3DXVECTOR2 pos = D3DXVECTOR2(0,0), bool isLocal = true, bool isDegree = true);
+	//for physics
+	void SetRadian(float rad);
 
 	void SetPos(D3DXVECTOR2 p);
 	void SetPos(float x, float y);

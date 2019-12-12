@@ -64,7 +64,7 @@ float4 PS(PixelInput input) : SV_TARGET
     position.xy = mul(position, float3x2(View.xyzw, CameraPos));
     float zoom = length(View.xw);
 
-    color = float4(0, 0, 0, 0.2f);
+    color = float4(0, 0, 0, 0.5f);
     float dx = abs(input.position.x - position.x);
     float dy = abs(input.position.y - position.y);
     float distance = sqrt(dx * dx + dy * dy) ;
@@ -76,7 +76,7 @@ float4 PS(PixelInput input) : SV_TARGET
         float factor = (distance) / (200 * zoom);
         color = lerp(0, color, factor);
 
-        discard;
+       // discard;
    
 
     }

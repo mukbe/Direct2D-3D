@@ -6,6 +6,7 @@
 #include "./Systems/Object/ObjectTest.h"
 #include "./Systems/Object/Terrain.h"
 #include "./Systems/Object/Bounding.h"
+#include "./Systems/Object/ObjectManager.h"
 
 Program::Program()
 {
@@ -47,30 +48,9 @@ Program::Program()
 	Buffer::CreateIndexBuffer(&indexBuffer, indexData.data(), sizeof(UINT)* indexCount);
 
 	
-	
-	tex = new Texture(L"../_Resources/Box.png");
-	Texture* tex2 = new Texture(L"../_Resources/blueHorse.png",20,13);
-	Texture* tex3 = new Texture(L"../_Resources/Idle.png", 4, 1);
-	Texture* tex4 = new Texture(L"../_Resources/Run_4.png", 10, 1);
-	Texture* tex5 = new Texture(L"../_Resources/Jump.png", 2, 1);
+	objManager = new ObjectManager;
 
 
-	gameObject = new GameObject("", D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2));
-	//gameObject->SetTexture(tex);
-	gameObject->SetTexture(tex2);
-
-	gameObject2 = new ObjectTest("", D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2));
-	
-	gameObject2->SetTexture(tex4);
-	gameObject2->SetSprite(GameObject::State::Idle, tex3);
-	gameObject2->SetSprite(GameObject::State::Run, tex4);
-	gameObject2->SetSprite(GameObject::State::Jump, tex5);
-
-
-	
-	//objs.push_back(gameObject);
-	objs.push_back(gameObject2);
-	objs.push_back(new Terrain("", D3DXVECTOR2(WinSizeX / 2, WinSizeY - 200)));
 
 }
 
@@ -90,6 +70,8 @@ void Program::PreUpdate()
 	for (GameObject* obj : objs)
 		obj->PreUpdate();
 
+
+	objManager->PreUpdate();
 	//FloatRect player, terrain, temp;
 	//player = objs[0]->GetBounding()->GetRect();
 	//terrain = objs[1]->GetBounding()->GetRect();
@@ -111,7 +93,7 @@ void Program::Update(float tick)
 	for (GameObject* obj : objs)
 		obj->Update(tick);
 
-
+	objManager->Update(tick);
 }
 
 void Program::PostUpdate()
@@ -121,6 +103,7 @@ void Program::PostUpdate()
 	for (GameObject* obj : objs)
 		obj->PostUpdate();
 
+	objManager->PostUpdate();
 }
 
 void Program::Render()
@@ -137,13 +120,15 @@ void Program::Render()
 	str += L"pos.x : " + to_wstring(CAMERA->GetMousePos().x).substr(0,6);
 	str += L"pos.y : " + to_wstring(CAMERA->GetMousePos().y).substr(0,6);
 	p2DRenderer->DrawText2D(Mouse::Get()->GetPosition().x-200, Mouse::Get()->GetPosition().y-20, str, 20);
+
+	objManager->Render();
 }
 
 void Program::PostRender()
 {
 	for (GameObject* obj : objs)
 		obj->PostRender();
-
+	objManager->PostRender();
 }
 
 void Program::ImguiRender()
@@ -172,10 +157,10 @@ void Program::ImguiRender()
 
 	ImGui::Begin("TEST");
 
-	D3DXVECTOR2 pos = objs[0]->Transform()->GetPos();
-	
-	ImGui::Text("pos.x : %.2f , pos.y : %.2f", pos.x, pos.y);
-	ImGui::Text("rc.bottom : %.2f ", objs[0]->GetBounding()->GetRect().bottom);
+	//D3DXVECTOR2 pos = objs[0]->Transform()->GetPos();
+	//
+	//ImGui::Text("pos.x : %.2f , pos.y : %.2f", pos.x, pos.y);
+	//ImGui::Text("rc.bottom : %.2f ", objs[0]->GetBounding()->GetRect().bottom);
 
 	ImGui::End();
 
@@ -185,6 +170,8 @@ void Program::ImguiRender()
 	for (GameObject* obj : objs)
 		obj->ImguiRender();
 
+
+	objManager->ImguiRender();
 
 }
 

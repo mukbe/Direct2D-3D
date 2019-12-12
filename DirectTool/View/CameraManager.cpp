@@ -74,8 +74,8 @@ void CameraManager::AddZoom(float value)
 	check &= !Math::FloatEqual(zoom, ZOOM_MIN);
 	if (check)
 	{
-		pos.x += WinSizeX *0.5f * value;
-		pos.y += WinSizeY *0.5f * value;
+		pos.x += WinSizeX * 0.5f * value;
+		pos.y += WinSizeY * 0.5f * value;
 	}
 
 	UpdateMatrix();

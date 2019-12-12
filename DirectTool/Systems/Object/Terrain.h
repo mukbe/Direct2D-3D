@@ -2,7 +2,7 @@
 class Terrain : public GameObject
 {
 public:
-	Terrain(string name = "", D3DXVECTOR2 pos = D3DXVECTOR2(0.f, 0.f), D3DXVECTOR2 size = D3DXVECTOR2(2000.f, 70.f), Pivot p = Pivot::BOTTOM);
+	Terrain(string name , D3DXVECTOR2 pos , D3DXVECTOR2 size , ObjectType type,  Pivot p = Pivot::BOTTOM);
 	~Terrain();
 
 	//√ ±‚»≠

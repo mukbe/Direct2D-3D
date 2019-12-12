@@ -1,6 +1,9 @@
 #pragma once
 
-
+class PhysicsWorld;
+class GameObject;
+class Shape;
+class RigidBody;
 class ObjectManager
 {
 public:
@@ -20,6 +23,7 @@ public:
 	void AddObject(GameObject* object);
 private:
 	unordered_map<string, GameObject*> objects;
+	PhysicsWorld* world;
 };
 
 

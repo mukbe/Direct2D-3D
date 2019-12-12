@@ -1,6 +1,7 @@
 #pragma once
 
 class SceneMain;
+class ObjectManager;
 class Program
 {
 
@@ -35,4 +36,5 @@ private:
 
 	vector<GameObject*> objs;
 
+	ObjectManager* objManager;
 };

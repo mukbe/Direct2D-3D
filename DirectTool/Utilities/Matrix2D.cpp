@@ -114,6 +114,12 @@ void Matrix2D::SetRotate(float degree, D3DXVECTOR2 pos, bool isLocal, bool isDeg
 	UpdateMatrix();
 }
 
+void Matrix2D::SetRadian(float rad)
+{
+	rotate = Matrix3x2F::Rotation(D3DXToDegree(rad));
+	UpdateMatrix();
+}
+
 void Matrix2D::SetPos(D3DXVECTOR2 p)
 {
 	pos = p;

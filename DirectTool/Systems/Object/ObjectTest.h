@@ -4,7 +4,7 @@
 class ObjectTest : public GameObject
 {
 public:
-	ObjectTest(string name = "", D3DXVECTOR2 pos = D3DXVECTOR2(0.f, 0.f), D3DXVECTOR2 size = D3DXVECTOR2(100.f, 100.f), Pivot p = Pivot::BOTTOM);
+	ObjectTest(string name , D3DXVECTOR2 pos , D3DXVECTOR2 size, ObjectType type, Pivot p = Pivot::BOTTOM);
 	~ObjectTest();
 
 	//√ ±‚»≠
@@ -27,5 +27,8 @@ public:
 
 
 	void KeyControl();
+
+private:
+	
 };
 

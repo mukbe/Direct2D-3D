@@ -5,13 +5,7 @@ class Bounding;
 class GameObject	//메세지 인터페이스 추가
 {
 public:
-	enum State
-	{
-		Idle = 0, Run, Jump
-	};
-
-public:
-	GameObject(string name = "",D3DXVECTOR2 pos = D3DXVECTOR2(0.f,0.f),D3DXVECTOR2 size = D3DXVECTOR2(100.f,100.f),Pivot p = Pivot::BOTTOM);
+	GameObject(string name, D3DXVECTOR2 pos, D3DXVECTOR2 size, ObjectType type, Pivot p = Pivot::BOTTOM);
 	virtual~GameObject();
 
 	//초기화
@@ -32,11 +26,15 @@ public:
 	//imgui debugUI render
 	virtual void ImguiRender() {}
 
-	//위치관련 함수들
-	Matrix2D* Transform() { return transform; }
+
 
 	const string& Name() { return name; }
 	void SetName(const string& s) { name = s; }
+
+	void SetObjectType(ObjectType t) { objectType = t; }
+	ObjectType GetObjectType() { return objectType; }
+
+	Matrix2D* Transform() { return transform; }
 
 	const bool& IsActive() { return bActive; }
 	void SetActive(const bool& b) { bActive = b; }
@@ -49,68 +47,53 @@ public:
 
 	void SetSize(const D3DXVECTOR2& s) 
 	{
+		//수정해야됨
 		size = s;
 	}
 	const D3DXVECTOR2& GetSize() { return size; }
 
-	void SetTextureFilePath(wstring file);
-	void SetTexture(Texture* tex);
-	//void SetTexture(const string key);
-	Texture* GetTexture() { return defaultTexture; }
-	void SetSprite(State state, Texture* tex);
 
 	Bounding* GetBounding() { return bound; }
 
-	void SetObjectType(ObjectType t) { objectType = t; }
-	ObjectType GetObjectType() { return objectType; }
-	void SetVelocity(const D3DXVECTOR2& v) { velocity = v; }
-	const D3DXVECTOR2& GetVelocity() { return velocity; }
-	void SetSpeed()
-	{
-		velocity = { 0,0 };
-		accelerate = { 0,0 };
-	}
+
+
+
+	void SetTexture(Texture* tex);
+	//void SetTexture(const string key);
+	Texture* GetTexture() { return defaultTexture; }
+
+
 
 protected:
 	string name;
 	ObjectType objectType;
 	Matrix2D* transform;
+	D3DXVECTOR2 size;
 	bool bActive;
+
 	float alpha;
 	float lifeTiem;
 	float frameTime;
 
+	//test
+	class Bounding* bound;
 
-	UINT frameX;
-	UINT frameY;
-	float frequency;
 
-	D3DXVECTOR2 size;
 
-	Texture* defaultTexture;
-	unordered_map<State, Texture*> sprites;
-	State state;
-
-	//이놈의 이동속도
-	D3DXVECTOR2 velocity;
-	//이놈의 가속도
-	D3DXVECTOR2 accelerate;
-	D3DXVECTOR2 gravity;
 
 
 	//렌더링 레이어
 	//충돌렉트or원
 	//데이터 저장 - 할까? 말고 다른곳에서 한번에 할까?
 
+	UINT frameX;
+	UINT frameY;
+	float frequency;
+	Texture* defaultTexture;
 
-
-	//test
-	class Bounding* bound;
 
 private:
 	WorldBuffer * worldBuffer;
 	Shader* shader;
-
-
 };
 

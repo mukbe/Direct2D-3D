@@ -4,6 +4,8 @@ class Math
 public:
 	static const float PI;
 	static const float Epsilon;
+	static const D3DXVECTOR2 gravity;
+
 
 	static const int IntMin;
 	static const int IntMax;
@@ -26,6 +28,29 @@ public:
 	static float Modulo(float val1, float val2);
 
 	static D3DXCOLOR RandomColor();
+
+	static float Cross(const D3DXVECTOR2& a, const D3DXVECTOR2& b)
+	{
+		return a.x * b.y - a.y * b.x;
+	}
+
+	static D3DXVECTOR2 Cross(const D3DXVECTOR2& v, float a)
+	{
+		return D3DXVECTOR2(a * v.y, -a * v.x);
+	}
+
+	static D3DXVECTOR2 Cross(float a, const D3DXVECTOR2& v)
+	{
+		return D3DXVECTOR2(-a * v.y, a * v.x);
+	}
+	static bool BiasGreaterThan(float a, float b)
+	{
+		const float k_biasRelative = 0.95f;
+		const float k_biasAbsolute = 0.01f;
+		return a >= b * k_biasRelative + a * k_biasAbsolute;
+	}
+
+
 
 	template<typename T>
 	static T Min(const T& a, const T& b)
@@ -67,6 +92,8 @@ public:
 
 	static bool IsAABBInAABB(FloatRect rc0, FloatRect rc1, FloatRect * temp = nullptr);
 	static bool IsAABBInCircle(FloatRect rc, D3DXVECTOR2 origin, float radius);
-	static bool IsAABBInAABBReaction(FloatRect* me, FloatRect other);
+	static bool IsAABBInAABBReaction(FloatRect* me, FloatRect other, D3DXVECTOR2* dir = nullptr );
+
+
 
 };
