@@ -5,7 +5,7 @@ class Bounding;
 class GameObject	//메세지 인터페이스 추가
 {
 public:
-	GameObject(string name, D3DXVECTOR2 pos, D3DXVECTOR2 size, ObjectType type, Pivot p = Pivot::BOTTOM);
+	explicit GameObject(string name, D3DXVECTOR2 pos, D3DXVECTOR2 size, ObjectType type, Pivot p = Pivot::CENTER);
 	virtual~GameObject();
 
 	//초기화

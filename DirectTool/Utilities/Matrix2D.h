@@ -4,6 +4,7 @@ using namespace D2D1;
 
 class Matrix2D
 {
+	friend class PhysicsWorld;
 private:
 	static 	ID2D1RenderTarget* renderTarget;
 
@@ -34,6 +35,7 @@ public:
 	D3DXVECTOR2 GetSize() { return size; }
 	Pivot GetPivot() { return pivot; }
 	FloatRect GetRect() { return rc; }
+	float GetRotation() { return rotation; }
 
 	void SetScale(D3DXVECTOR2 s, D3DXVECTOR2 center);
 	void SetScale(D3DXVECTOR2 s);
@@ -44,7 +46,7 @@ public:
 	void SetSize(float v);
 	void SetSize(float x, float y);
 
-	void SetRotate(float degree, D3DXVECTOR2 pos = D3DXVECTOR2(0,0), bool isLocal = true, bool isDegree = true);
+	void SetRotate(float rad, D3DXVECTOR2 pos = D3DXVECTOR2(0,0), bool isLocal = true);
 	//for physics
 	void SetRadian(float rad);
 

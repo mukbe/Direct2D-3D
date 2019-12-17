@@ -5,7 +5,7 @@ public:
 	static const float PI;
 	static const float Epsilon;
 	static const D3DXVECTOR2 gravity;
-
+	static const float gravityScale;
 
 	static const int IntMin;
 	static const int IntMax;

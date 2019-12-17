@@ -283,6 +283,7 @@ void PolygontoPolygon(Manifold *m, RigidBody *a, RigidBody *b)
 		RefPoly = A;
 		IncPoly = B;
 		referenceIndex = faceA;
+
 		flip = false;
 	}
 

@@ -22,7 +22,7 @@ public:
 private:
 	
 	int m_iterations;
-	std::vector<RigidBody *> bodies;
+	std::vector<RigidBody*> bodies;
 	std::vector<Manifold> contacts;
 
 

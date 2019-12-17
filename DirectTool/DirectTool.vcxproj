@@ -167,7 +167,6 @@
     <ClCompile Include="Systems\Object\Bounding.cpp" />
     <ClCompile Include="Systems\Object\GameObject.cpp" />
     <ClCompile Include="Systems\Object\Shape.cpp" />
-    <ClCompile Include="Systems\Object\Terrain.cpp" />
     <ClCompile Include="Utilities\Matrix2D.cpp" />
     <ClCompile Include="Utilities\FloatRect.cpp" />
     <ClCompile Include="View\CameraManager.cpp" />
@@ -207,7 +206,6 @@
     <ClInclude Include="Systems\Object\Bounding.h" />
     <ClInclude Include="Systems\Object\GameObject.h" />
     <ClInclude Include="Systems\Object\Shape.h" />
-    <ClInclude Include="Systems\Object\Terrain.h" />
     <ClInclude Include="Utilities\Matrix2D.h" />
     <ClInclude Include="Utilities\FloatRect.h" />
     <ClInclude Include="MacroFunction.h" />

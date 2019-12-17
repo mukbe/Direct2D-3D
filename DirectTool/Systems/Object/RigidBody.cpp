@@ -21,7 +21,7 @@ RigidBody::RigidBody(GameObject * pObject, RigidType type, Shape * shape)
 	this->shape->body = this;
 	angularVelocity = 0;
 	torque = 0;
-	orient = Math::Random(-Math::PI, Math::PI);
+	SetOrient(-Math::PI * 0.5f * 0.f);
 	staticFriction = 0.5f;
 	dynamicFriction = 0.3f;
 	restitution = 0.2f;
@@ -36,7 +36,15 @@ RigidBody::~RigidBody()
 void RigidBody::SetOrient(float radians)
 {
 	transform->SetRadian(radians);
-	orient = radians;
 	shape->SetOrient(radians);
+}
+
+void RigidBody::SetMass(float val, float density)
+{
+	if (val < Math::Epsilon) return;
+	mass = val;
+	shape->ComputeMass(density);
+
+
 }
 

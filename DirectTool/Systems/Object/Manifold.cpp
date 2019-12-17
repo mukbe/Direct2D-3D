@@ -23,13 +23,13 @@ void Manifold::Initialize()
 		D3DXVECTOR2 rb = contacts[i] - B->transform->GetPos();
 
 		D3DXVECTOR2 rv = B->velocity + Math::Cross(B->angularVelocity, rb) -
-			A->velocity - Math::Cross(A->angularVelocity, ra);
+						A->velocity - Math::Cross(A->angularVelocity, ra);
 
 
 		// Determine if we should perform a resting collision or not
 		// The idea is if the only thing moving this object is gravity,
 		// then the collision should be performed without any restitution
-		if (D3DXVec2Length(&rv) < D3DXVec2Length(&(Time::Delta() * Math::gravity)) + Math::Epsilon)
+		if (D3DXVec2Length(&rv) < D3DXVec2Length(&(Time::Tick() * Math::gravity)) + Math::Epsilon)
 			e = 0.0f;
 	}
 

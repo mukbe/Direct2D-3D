@@ -26,8 +26,9 @@ public:
 
 	void Update(D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p);
 
-private:
-	void Calculate(D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p);
+public:
+	static FloatRect Calculate(D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p);
+
 
 };
 

@@ -7,7 +7,8 @@ const int Math::IntMin = -2147483647;
 const int Math::IntMax = 2147483647;
 const float Math::FloatMin = -3.402823E+38f;
 const float Math::FloatMax = 3.402823E+38f;
-const D3DXVECTOR2 Math::gravity = { 0, 9.8f * 5.0f };
+const float Math::gravityScale = 50.f;
+const D3DXVECTOR2 Math::gravity = { 0, 9.8f * gravityScale };
 float Math::NegativeChecking(float value)
 {
 	if (value < 0.0f)

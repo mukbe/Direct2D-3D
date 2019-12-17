@@ -4,10 +4,16 @@
 #include "Manifold.h"
 #include "Shape.h"
 
+//TODO 레이어를 두고 충돌체크를 하게되면 효율이 좋아질것 같다 
+//		게임으로 예를 들면 입앤옵같은 한쪽은 못 지나가는 지형을 만들 수 있을거같다
+
+//최적화를 어떤식으로 해야하나 
+// 임펄스 계산을 줄인다 => 부드럽지 않을 수 있다
+//
 PhysicsWorld::PhysicsWorld()
 {
-	bActive = false;
-	m_iterations = 10;
+	bActive = true;
+	m_iterations = 2;
 }
 
 
@@ -18,6 +24,7 @@ PhysicsWorld::~PhysicsWorld()
 void PhysicsWorld::Update()
 {
 	if (bActive == false) return;
+	
 	// Generate new collision info
 	contacts.clear();
 	for (int i = 0; i < bodies.size(); ++i)
@@ -80,8 +87,11 @@ void PhysicsWorld::Render()
 		Manifold& m = contacts[i];
 		for (int j = 0; j < m.contact_count; ++j)
 		{
-			D3DXVECTOR2 c = m.contacts[j];
 			//Draw Point
+			D3DXVECTOR2 c = m.contacts[j];
+			CAMERA->GetView().Bind();
+			FloatRect rc(c, 10.f, Pivot::CENTER);
+			p2DRenderer->FillEllipse(rc, DefaultBrush::gray);
 		}
 	}
 	for (int i = 0; i < contacts.size(); ++i)
@@ -90,12 +100,13 @@ void PhysicsWorld::Render()
 		D3DXVECTOR2 n = m.normal;
 		for (int j = 0; j < m.contact_count; ++j)
 		{
-			D3DXVECTOR2 c = m.contacts[j];
 			//Draw Line
-			//glVertex2f(c.x, c.y);
-			//n *= 0.75f;
-			//c += n;
-			//glVertex2f(c.x, c.y);
+			D3DXVECTOR2 c = m.contacts[j];
+			D3DXVECTOR2 c2 = c;
+			CAMERA->GetView().Bind();
+			n *= 0.75f;
+			c2 += n;
+			p2DRenderer->DrawLine(c,c2,DefaultBrush::yello);
 		}
 	}
 
@@ -116,8 +127,8 @@ void PhysicsWorld::IntegrateForces(RigidBody * b)
 	if (b->InvMass == 0.0f)
 		return;
 
-	b->velocity += (b->force * b->InvMass + Math::gravity) * (Time::Delta() / 2.0f);
-	b->angularVelocity += b->torque * b->InvInertia * (Time::Delta() / 2.0f);
+	b->velocity += (b->force * b->InvMass + Math::gravity) * (Time::Tick() );
+	b->angularVelocity += b->torque * b->InvInertia * (Time::Tick());
 }
 
 void PhysicsWorld::IntegrateVelocity(RigidBody * b)
@@ -125,8 +136,10 @@ void PhysicsWorld::IntegrateVelocity(RigidBody * b)
 	if (b->InvMass == 0.0f)
 		return;
 
-	b->transform->SetPos(b->transform->GetPos() + b->velocity * Time::Delta());
-	b->orient += b->angularVelocity * Time::Delta();
-	b->SetOrient(b->orient);
+	Matrix2D* transform = b->transform;
+
+	transform->SetPos(transform->GetPos() + b->velocity * Time::Tick());
+	transform->rotation += b->angularVelocity * Time::Tick();
+	b->SetOrient(transform->rotation);
 	IntegrateForces(b);
 }

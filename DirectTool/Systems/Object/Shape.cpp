@@ -3,12 +3,16 @@
 #include "./Utilities/Matrix2x2.h"
 #include "./Systems/Object/RigidBody.h"
 
+
+float Shape::inertiaFactor = 0.1f;
+
 void Circle::ComputeMass(float density)
 {
-	body->mass = Math::PI * radius * radius * density;
+	//body->mass = Math::PI * radius * radius * density;
 	body->InvMass = (body->mass) ? 1.0f / body->mass : 0.0f;
-	body->inertia = body->mass * radius * radius;
+	body->inertia = body->mass * radius * radius * inertiaFactor;
 	body->InvInertia = (body->inertia) ? 1.0f / body->inertia : 0.0f;
+
 }
 
 void Circle::Draw(void)
@@ -16,12 +20,14 @@ void Circle::Draw(void)
 	Matrix2D world = *body->transform;
 
 	world = world * CAMERA->GetView();
-	
-
 	world.Bind();
 
-	//body->transform->Bind();
+	D3DXVECTOR2 start = { 0,0 };
+	D3DXVECTOR2 end = { radius, 0 };
+	end += start;
+	p2DRenderer->DrawLine(start, end, DefaultBrush::red);
 	p2DRenderer->DrawEllipse(body->transform->GetRect(), DefaultBrush::blue);
+	body->transform->Render();
 }
 
 void PolygonShape::ComputeMass(float density)
@@ -60,10 +66,12 @@ void PolygonShape::ComputeMass(float density)
 	for (int i = 0; i < m_vertexCount; ++i)
 		m_vertices[i] -= c;
 
-	body->mass = density * area;
+	//body->mass = density * area;
 	body->InvMass = (body->mass) ? 1.0f / body->mass : 0.0f;
-	body->inertia = I * density;
+	body->inertia = body->mass* I * density * inertiaFactor  * 0.001f;
 	body->InvInertia = body->inertia ? 1.0f / body->inertia : 0.0f;
+
+
 }
 
 void PolygonShape::Draw(void) 
@@ -71,8 +79,9 @@ void PolygonShape::Draw(void)
 	Matrix2D world = *body->transform;
 
 	world = world * CAMERA->GetView();
-
-
 	world.Bind();
+
 	p2DRenderer->DrawRectangle(body->transform->GetRect(), DefaultBrush::blue);
+	body->transform->Render();
+
 }

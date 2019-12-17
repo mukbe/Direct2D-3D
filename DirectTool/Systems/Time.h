@@ -7,8 +7,9 @@ class Time
 {
 public:
 	static bool Stopped() { return isTimerStopped; }
+	//< 이전 프레임으로부터 경과시간
 	static float Delta() { return isTimerStopped ? 0.0f : timeElapsed; }
-
+	static float Tick() { return InvLockFPS; }
 	void Update();
 	void Print();
 
@@ -33,6 +34,7 @@ private:
 private:
 	static bool isTimerStopped;///< 타이머 중지
 	static float timeElapsed;///< 이전 프레임으로부터 경과시간
+	static float InvLockFPS;
 
 
 	INT64 ticksPerSecond;///< 초당 틱카운트
@@ -45,7 +47,6 @@ private:
 	float runningTime;///< 진행 시간
 	float framePerSecond;///< FPS
 	float lockFPS;
-
 
 	float worldTime;
 	UINT hour;

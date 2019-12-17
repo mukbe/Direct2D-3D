@@ -33,7 +33,7 @@ Matrix2D::Matrix2D(D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p)
 	result = rotate = Matrix3x2F::Identity();
 	trans = Matrix3x2F::Translation(pos.x, pos.y);
 	scale = Matrix3x2F::Identity();
-
+	rotation = 0.f;
 	this->pos = pos;
 	this->size = size;
 	pivot = p;
@@ -85,30 +85,16 @@ void Matrix2D::SetSize(float x, float y)
 	UpdateMatrix();
 }
 
-void Matrix2D::SetRotate(float degree, D3DXVECTOR2 pos, bool isLocal, bool isDegree)
+void Matrix2D::SetRotate(float rad, D3DXVECTOR2 pos, bool isLocal)
 {
-	rotation = degree;
-	if (isDegree)
+	rotation = rad;
+	if (isLocal)
 	{
-		if (isLocal)
-		{
-			rotate = Matrix3x2F::Rotation(degree, Point2F(pos.x, pos.y));
-		}
-		else
-		{
-			rotate = Matrix3x2F::Rotation(degree);
-		}
+		rotate = Matrix3x2F::Rotation(D3DXToDegree(rad), Point2F(pos.x, pos.y));
 	}
 	else
 	{
-		if (isLocal)
-		{
-			rotate = Matrix3x2F::Rotation(D3DXToDegree(degree), Point2F(pos.x, pos.y));
-		}
-		else
-		{
-			rotate = Matrix3x2F::Rotation(D3DXToDegree(degree));
-		}
+		rotate = Matrix3x2F::Rotation(D3DXToDegree(rad));
 	}
 
 	UpdateMatrix();
@@ -116,6 +102,7 @@ void Matrix2D::SetRotate(float degree, D3DXVECTOR2 pos, bool isLocal, bool isDeg
 
 void Matrix2D::SetRadian(float rad)
 {
+	rotation = rad;
 	rotate = Matrix3x2F::Rotation(D3DXToDegree(rad));
 	UpdateMatrix();
 }
@@ -148,7 +135,7 @@ void Matrix2D::Bind()
 
 void Matrix2D::Render()
 {
-	p2DRenderer->DrawRectangle(rc, DefaultBrush::blue);
+	p2DRenderer->DrawRectangle(rc, DefaultBrush::black);
 }
 
 //테스트 안해봄

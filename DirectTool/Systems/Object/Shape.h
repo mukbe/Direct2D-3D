@@ -20,6 +20,7 @@ struct Shape
 	virtual void Draw() {}
 	virtual ShapeType GetType() = 0;
 
+	static float inertiaFactor;
 	RigidBody* body;
 	float radius;
 	

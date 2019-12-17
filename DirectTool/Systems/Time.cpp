@@ -5,6 +5,7 @@ SingletonCpp(Time)
 
 bool Time::isTimerStopped = true;
 float Time::timeElapsed = 0.0f;
+float Time::InvLockFPS = 0.0f;
 
 Time::Time(void) :
 	ticksPerSecond(0), currentTime(0), lastTime(0), lastFPSUpdate(0), fpsUpdateInterval(0),
@@ -19,7 +20,8 @@ Time::Time(void) :
 
 	dayTimeRatio = (Math::PI * 2.0f) / (secondsPerDay * 100);
 
-	lockFPS = 150.f;
+	lockFPS = 60.f;
+	InvLockFPS = 1.f / lockFPS;
 }
 
 Time::~Time(void)
@@ -109,4 +111,5 @@ void Time::Stop()
 void Time::SetLockFPS(float val)
 {
 	lockFPS = val;
+	InvLockFPS = 1.f / lockFPS;
 }

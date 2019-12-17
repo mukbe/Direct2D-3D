@@ -28,7 +28,7 @@ private:
 	float angularVelocity;
 	D3DXVECTOR2 force;
 	float torque;
-	float orient; // radians
+	//float orient; // radians
 
 	RigidType type;
 	bool bActive;
@@ -43,6 +43,8 @@ private:
 	float dynamicFriction;
 	float restitution;
 
+	D3DXVECTOR2 physicsOffset;
+
 public:
 	void SetVelocity(const D3DXVECTOR2& v) { velocity = v; }
 	const D3DXVECTOR2& GetVelocity() { return velocity; }
@@ -52,11 +54,11 @@ public:
 	void ApplyImpulse(const D3DXVECTOR2& impulse, const D3DXVECTOR2& contactVector)
 	{
 		velocity += InvMass * impulse;
-		angularVelocity += InvInertia * D3DXVec2Dot(&impulse, &contactVector);
+		angularVelocity += InvInertia * Math::Cross(contactVector, impulse);
 	}
 	void SetOrient(float radians);
 
-
+	//움직임이 없을 물체들
 	void SetStatic(void)
 	{
 		inertia = 0.0f;
@@ -64,13 +66,15 @@ public:
 		mass = 0.0f;
 		InvMass = 0.0f;
 	}
-	void SetMass(float val)
+	//각속도를 부여안함
+	void SetInertiaStatic()
 	{
-		if (val < Math::Epsilon) return;
-		mass = val;
-		InvMass = 1 / val;
+		inertia = 0.0f;
+		InvInertia = 0.0f;
 	}
 
+	void SetMass(float val, float density = 1.0f);
+	float GetMass() { return mass; }
 
 	void SetActive(bool b) { bActive = b; }
 	bool GetActive() { return bActive; }
