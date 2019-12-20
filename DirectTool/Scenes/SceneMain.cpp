@@ -5,7 +5,6 @@
 
 SceneMain::SceneMain()
 {
-
 }
 
 

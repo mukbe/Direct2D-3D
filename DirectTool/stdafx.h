@@ -61,14 +61,20 @@ using namespace std;
 #include <DirectXTex.h>
 #pragma comment(lib, "directxtex.lib")
 
+//FMOD
+#include <fmod/fmod.hpp>
+#pragma comment(lib, "fmod/fmodex_vc.lib")
+
+
 
 #include "EnumHelper.h"
 
 #include "./Utilities/FloatRect.h"
 #include "MacroFunction.h"
 
-const wstring ShaderPath = L"_Shaders/";
-
+const wstring ShaderPath = L"Shaders/";
+const wstring ResourcePath = L"../_Resources/";
+const wstring LibPath = L"../_Libraries/";
 
 #include "DefineHeader.h"
 #include "./Systems/DxRenderer.h"

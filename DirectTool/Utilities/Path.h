@@ -38,6 +38,7 @@ public:
 	const static WCHAR* MeshFilter;
 	const static WCHAR* AnimationFilter;
 	const static WCHAR* ColliderFilter;
+	const static WCHAR* Mp3Filter;
 
 	static void OpenFileDialog(wstring file, const WCHAR* filter, wstring folder, function<void(wstring)> func, HWND hwnd = NULL);
 	static void SaveFileDialog(wstring file, const WCHAR* filter, wstring folder, function<void(wstring)> func, HWND hwnd = NULL);

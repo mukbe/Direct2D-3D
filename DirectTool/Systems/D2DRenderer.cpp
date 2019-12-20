@@ -108,6 +108,7 @@ ID2D1Bitmap * D2DRenderer::CreateD2DBitmapFromFile(wstring file)
 	if (FAILED(wicFactory->CreateDecoderFromFilename(file.c_str(), NULL, GENERIC_READ, WICDecodeMetadataCacheOnDemand, &ipDecoderPtr)))
 	{
 		LOG->Error(__FILE__, __LINE__, "Does not exist bitmapfile");
+		return nullptr;
 	}
 
 	//2. 디코더에서 프레임을 얻는다.
