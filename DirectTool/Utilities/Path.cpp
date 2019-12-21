@@ -132,6 +132,7 @@ const WCHAR* Path::MaterialFilter = L"Material file\0*.material";
 const WCHAR* Path::MeshFilter = L"Mesh file\0*.mesh";
 const WCHAR* Path::AnimationFilter = L"Animation file\0*.anim";
 const WCHAR* Path::ColliderFilter = L"Collider file\0*.collider";
+const WCHAR* Path::Mp3Filter = L"Mp3 file\0*.mp3";
 
 void Path::OpenFileDialog(wstring file, const WCHAR* filter, wstring folder, function<void(wstring)> func, HWND hwnd)
 {

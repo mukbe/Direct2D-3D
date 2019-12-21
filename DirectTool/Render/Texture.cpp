@@ -68,7 +68,8 @@ Texture::Texture(wstring file, UINT frameX, UINT frameY, DXGI_FORMAT format)
 	this->maxFrameX = frameX;
 	this->maxFrameY = frameY;
 
-	this->SetTexture(file);
+	HRESULT hr = this->SetTexture(file);
+	if (FAILED(hr)) return;
 
 	int dx = bitmap->GetPixelSize().width / frameX;
 	int dy = bitmap->GetPixelSize().height / frameY;
@@ -106,7 +107,7 @@ Texture::~Texture()
 	SafeRelease(srv);
 }
 
-void Texture::SetTexture(wstring file)
+HRESULT Texture::SetTexture(wstring file)
 {
 	SafeRelease(texture);
 	SafeRelease(srv);
@@ -134,28 +135,28 @@ void Texture::SetTexture(wstring file)
 	if (ext == L"tga")
 	{
 		hr = GetMetadataFromTGAFile(file.c_str(), metaData);
-		assert(SUCCEEDED(hr));
+		if (FAILED(hr)) return hr;
 
 		SetWidthHeight(width, height, metaData.width, metaData.height);
 
 		hr = LoadFromTGAFile(file.c_str(), &metaData, image);
-		assert(SUCCEEDED(hr));
+		if (FAILED(hr)) return hr;
 
 		hr = DirectX::CreateShaderResourceView(Device, image.GetImages(), image.GetImageCount(), metaData, &srv);
-		assert(SUCCEEDED(hr));
+		if (FAILED(hr)) return hr;
 	}
 	else if (ext == L"dds")
 	{
 		hr = GetMetadataFromDDSFile(file.c_str(), DDS_FLAGS_NONE, metaData);
-		assert(SUCCEEDED(hr));
+		if (FAILED(hr)) return hr;
 
 		SetWidthHeight(width, height, metaData.width, metaData.height);
 
 		hr = LoadFromDDSFile(file.c_str(), DDS_FLAGS_NONE, &metaData, image);
-		assert(SUCCEEDED(hr));
+		if (FAILED(hr)) return hr;
 
 		hr = DirectX::CreateShaderResourceView(Device, image.GetImages(), image.GetImageCount(), metaData, &srv);
-		assert(SUCCEEDED(hr));
+		if (FAILED(hr)) return hr;
 	}
 	else if (ext == L"hdr")
 	{
@@ -170,7 +171,7 @@ void Texture::SetTexture(wstring file)
 			(
 				file.c_str(), NULL, &info, NULL
 			);
-			assert(SUCCEEDED(hr));
+			if (FAILED(hr)) return hr;
 
 			width = info.Width;
 			height = info.Height;
@@ -202,8 +203,8 @@ void Texture::SetTexture(wstring file)
 		srvDesc.Texture2D.MipLevels = -1;
 		srvDesc.Texture2D.MostDetailedMip = 0;
 		hr = Device->CreateShaderResourceView(texture, &srvDesc, &srv);
-		assert(SUCCEEDED(hr));
-		
+		if (FAILED(hr)) return hr;
+
 
 		//비트맵이미지
 		Log_ErrorAssert(bitmap = p2DRenderer->CreateD2DBitmapFromFile(file));

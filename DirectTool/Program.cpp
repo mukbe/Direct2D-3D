@@ -4,9 +4,10 @@
 #include "./Scenes/SceneMain.h"
 #include "./Systems/Object/GameObject.h"
 #include "./Systems/Object/ObjectTest.h"
-#include "./Systems/Object/Terrain.h"
 #include "./Systems/Object/Bounding.h"
 #include "./Systems/Object/ObjectManager.h"
+
+#include "./Systems/Object/Player.h"
 
 Program::Program()
 {
@@ -50,13 +51,15 @@ Program::Program()
 	
 	objManager = new ObjectManager;
 
-
-
+	player = new Player("mp3", D3DXVECTOR2(0, 0), D3DXVECTOR2(0, 0),ObjectType::UI);
+	player->Init();
 }
 
 Program::~Program()
 {
 	SafeDelete(sm);
+	player->Release();
+	SafeDelete(player);
 	//SafeDelete(camera);
 	//JsonHelper::WriteData(L"LevelEditor.json", jsonRoot);
 	//SafeDelete(jsonRoot);
@@ -94,6 +97,8 @@ void Program::Update(float tick)
 		obj->Update(tick);
 
 	objManager->Update(tick);
+
+	player->Update(tick);
 }
 
 void Program::PostUpdate()
@@ -155,17 +160,13 @@ void Program::ImguiRender()
 	ImGui::End();
 
 
-	ImGui::Begin("TEST");
 
-	//D3DXVECTOR2 pos = objs[0]->Transform()->GetPos();
-	//
-	//ImGui::Text("pos.x : %.2f , pos.y : %.2f", pos.x, pos.y);
-	//ImGui::Text("rc.bottom : %.2f ", objs[0]->GetBounding()->GetRect().bottom);
 
-	ImGui::End();
+	
 
 
 
+	player->ImguiRender();
 
 	for (GameObject* obj : objs)
 		obj->ImguiRender();

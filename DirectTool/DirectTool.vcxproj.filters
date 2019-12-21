@@ -57,6 +57,8 @@
     <ClCompile Include="Systems\Object\Collision.cpp" />
     <ClCompile Include="Systems\Object\Manifold.cpp" />
     <ClCompile Include="Systems\Object\PhysicsWorld.cpp" />
+    <ClCompile Include="Systems\SoundManager.cpp" />
+    <ClCompile Include="Systems\Object\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DefineHeader.h" />
@@ -132,6 +134,8 @@
     <ClInclude Include="Systems\Object\Collision.h" />
     <ClInclude Include="Systems\Object\Manifold.h" />
     <ClInclude Include="Systems\Object\PhysicsWorld.h" />
+    <ClInclude Include="Systems\SoundManager.h" />
+    <ClInclude Include="Systems\Object\Player.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utilities">

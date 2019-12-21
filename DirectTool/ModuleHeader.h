@@ -3,6 +3,7 @@
 #include "./Systems/Keyboard.h"
 #include "./Systems/Mouse.h"
 #include "./Systems/Time.h"
+#include "./Systems/SoundManager.h"
 #include "./Utilities/Matrix2D.h"
 #include "./Utilities/Matrix2x2.h"
 
@@ -22,7 +23,7 @@
 #include "./Utilities/Json.h"
 #include "./Utilities/String.h"
 #include "./Utilities/Logging.h"
-
+#include "./Utilities/Path.h"
 #include "./Utilities/Buffer.h"
 
 #define KeyCode Keyboard::Get()

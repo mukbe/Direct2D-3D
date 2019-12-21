@@ -2,6 +2,7 @@
 
 class SceneMain;
 class ObjectManager;
+class Player;
 class Program
 {
 
@@ -37,4 +38,8 @@ private:
 	vector<GameObject*> objs;
 
 	ObjectManager* objManager;
+
+
+
+	Player* player;
 };

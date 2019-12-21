@@ -30,7 +30,7 @@ public:
 	//Texture(wstring file, int width, int height, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM);
 	~Texture();
 
-	void SetTexture(wstring file);
+	HRESULT SetTexture(wstring file);
 	wstring GetFilePath() { return file; }
 
 	int GetWidth() { return width; }

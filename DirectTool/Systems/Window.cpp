@@ -23,6 +23,7 @@ WPARAM Window::Run()
 	Keyboard::Create();
 	Mouse::Create();
 	CameraManager::Create();
+	SoundManager::Create();
 
 	Time::Create();
 	Time::Get()->Start();
@@ -63,7 +64,7 @@ WPARAM Window::Run()
 				Mouse::Get()->Update();
 				CameraManager::Get()->Update();
 			}
-			
+			SoundManager::Get()->Update();
 			program->PreUpdate();
 			program->Update(Time::Delta());
 			program->PostUpdate();
@@ -92,7 +93,7 @@ WPARAM Window::Run()
 
 				//TODO 데모 추가한 dll빌드한거 만들어야됨
 				//static bool bImguiWin = true;
-				//ImGui::ShowDemoWindow(&bImguiWin);DDD
+				//ImGui::ShowDemoWindow(&bImguiWin);
 
 				ImGui::Render();
 				ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
@@ -106,6 +107,11 @@ WPARAM Window::Run()
 	//================Release Manager===============================
 	ImGui_ImplDX11_Shutdown();
 
+	BufferManager::Delete();
+	ShaderManager::Delete();
+
+
+	SoundManager::Delete();
 	Time::Delete();
 	Mouse::Delete();
 	Keyboard::Delete();
