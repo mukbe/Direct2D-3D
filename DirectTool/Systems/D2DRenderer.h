@@ -73,6 +73,16 @@ public:
 	void FillRectangle(RECT rc, DefaultBrush::Enum defaultBrush = DefaultBrush::black, bool isRelativePos = TRUE);
 	void FillEllipse(RECT rc, D2D1::ColorF::Enum color, float alpha, bool isRelativePos = TRUE);
 	void FillEllipse(RECT rc, DefaultBrush::Enum defaultBrush = DefaultBrush::black, bool isRelativePos = TRUE);
+
+	void DrawRectangle(FloatRect rc, D2D1::ColorF::Enum color, float alpha, bool isRelativePos = TRUE, float strokeWidth = 1);
+	void DrawRectangle(FloatRect rc, DefaultBrush::Enum defaultBrush = DefaultBrush::black, bool isRelativePos = TRUE, float strokeWidth = 1);
+	void DrawEllipse(FloatRect rc, D2D1::ColorF::Enum color, float alpha, bool isRelativePos = TRUE, float strokeWidth = 1);
+	void DrawEllipse(FloatRect rc, DefaultBrush::Enum defaultBrush = DefaultBrush::black, bool isRelativePos = TRUE, float strokeWidth = 1);
+	void FillRectangle(FloatRect rc, D2D1::ColorF::Enum color, float alpha, bool isRelativePos = TRUE);
+	void FillRectangle(FloatRect rc, DefaultBrush::Enum defaultBrush = DefaultBrush::black, bool isRelativePos = TRUE);
+	void FillEllipse(FloatRect rc, D2D1::ColorF::Enum color, float alpha, bool isRelativePos = TRUE);
+	void FillEllipse(FloatRect rc, DefaultBrush::Enum defaultBrush = DefaultBrush::black, bool isRelativePos = TRUE);
+
 	//==============================================================
 
 

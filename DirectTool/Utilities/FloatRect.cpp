@@ -9,7 +9,7 @@ FloatRect FloatRect::MoveRect( FloatRect  rc, float dx, float dy)
 	r.left += dx;
 	r.right += dx;
 	r.top += dy;
-	r.bottom == dy;
+	r.bottom += dy;
 	return std::move(r);
 }
 
@@ -19,9 +19,10 @@ FloatRect FloatRect::MoveRect(FloatRect rc, D3DXVECTOR2 v)
 	r.left += v.x;
 	r.right += v.x;
 	r.top += v.y;
-	r.bottom == v.y;
+	r.bottom += v.y;
 	return std::move(r);
 }
+
 
 FloatRect FloatRect::operator+=(const D3DXVECTOR2&  v)
 {
@@ -48,17 +49,17 @@ FloatRect::FloatRect()
 
 FloatRect::FloatRect(D3DXVECTOR2 pos, float d, Pivot p)
 {
-	Calculate(pos, D3DXVECTOR2(d, d), p);
+	*this = Calculate(pos, D3DXVECTOR2(d, d), p);
 }
 
 FloatRect::FloatRect(D3DXVECTOR2 pos, float w, float h, Pivot p)
 {
-	Calculate(pos, D3DXVECTOR2(w, h), p);
+	*this = Calculate(pos, D3DXVECTOR2(w, h), p);
 }
 
 FloatRect::FloatRect(D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p)
 {
-	Calculate(pos, size, p);
+	*this = Calculate(pos, size, p);
 }
 
 FloatRect::FloatRect(float l, float t, float r, float b)
@@ -79,36 +80,43 @@ RECT FloatRect::GetRect()
 	return std::move(rc);
 }
 
-void FloatRect::Calculate(D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p)
+void FloatRect::Update(D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p)
 {
+	*this = Calculate(pos, size, p);
+}
+
+FloatRect FloatRect::Calculate(D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p)
+{
+	FloatRect rc;
 	switch (p)
 	{
 	case LEFT_TOP:
-		left = pos.x;
-		right = pos.x + size.x;
-		top = pos.y;
-		bottom = pos.y + size.y;
+		rc.left = pos.x;
+		rc.right = pos.x + size.x;
+		rc.top = pos.y;
+		rc.bottom = pos.y + size.y;
 		break;
 	case CENTER:
-		left = pos.x - size.x / 2.f;
-		right = pos.x + size.x / 2.f;
-		top = pos.y - size.y / 2.f;
-		bottom = pos.y + size.y / 2.f;
+		rc.left = pos.x - size.x * 0.5f;
+		rc.right = pos.x + size.x * 0.5f;
+		rc.top = pos.y - size.y * 0.5f;
+		rc.bottom = pos.y + size.y * 0.5f;
 		break;
 	case BOTTOM:
-		left = pos.x - size.x / 2.f;
-		right = pos.x + size.x / 2.f;
-		top = pos.y - size.y;
-		bottom = pos.y;
+		rc.left = pos.x - size.x * 0.5f;
+		rc.right = pos.x + size.x * 0.5f;
+		rc.top = pos.y - size.y;
+		rc.bottom = pos.y;
 		break;
 	case TOP:
-		left = pos.x - size.x / 2.f;
-		right = pos.x + size.x / 2.f;
-		top = pos.y;
-		bottom = pos.y + size.y;
+		rc.left = pos.x - size.x * 0.5f;
+		rc.right = pos.x + size.x * 0.5f;
+		rc.top = pos.y;
+		rc.bottom = pos.y + size.y;
 		break;
 	}
 
+	return rc;
 }
 
 

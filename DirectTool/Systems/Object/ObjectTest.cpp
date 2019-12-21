@@ -4,10 +4,10 @@
 
 
 
-ObjectTest::ObjectTest(string name, D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p)
-	: GameObject(name,pos,size,p)
+ObjectTest::ObjectTest(string name, D3DXVECTOR2 pos, D3DXVECTOR2 size, ObjectType type, Pivot p)
+	: GameObject(name,pos,size,type, p)
 {
-	state = Idle;
+	frequency = 0.127f;
 }
 
 
@@ -31,9 +31,9 @@ void ObjectTest::PreUpdate()
 
 }
 
-void ObjectTest::Update()
+void ObjectTest::Update(float tick)
 {
-	GameObject::Update();
+	GameObject::Update(tick);
 
 	KeyControl();
 
@@ -43,37 +43,19 @@ void ObjectTest::PostUpdate()
 {
 	GameObject::PostUpdate();
 	
+
+	//float len = D3DXVec2Length(&accelerate);
+	//if (len != 0)
+	//{
+	//	state = Jump;
+	//	velocity.y < 0 ? frameX = 0 : frameX = 1;
+	//	
+	//}
 }
 
 void ObjectTest::Render(bool isRelative)
 {
-	if (bActive == false)return;
-
-	Matrix2D world = *transform;
-
-	if (isRelative)
-	{
-		world = world * CAMERA->GetView();
-	}
-
-	world.Bind();
-
-	Texture* tex = sprites[state];
-	if (tex == nullptr)
-	{
-		LOG->Print("None Texture");
-		return;
-	}
-	tex->FrameRender(frameX, frameY, size, 1.f, pivot);
-
-
-	//if (defaultTexture != nullptr)
-	//{
-	//	defaultTexture->FrameRender(frameX, frameY, size, 1.f, pivot);
-	//}
-
-	bound->Render();
-
+	GameObject::Render(isRelative);
 }
 
 void ObjectTest::PostRender()
@@ -84,11 +66,11 @@ void ObjectTest::PostRender()
 
 void ObjectTest::ImguiRender()
 {
-	ImGui::Begin("Object Test");
-	ImGui::SliderFloat("Frame Frequency", &frequency, 0.01f, 0.5f);
-	ImGui::Image((ImTextureID)defaultTexture->GetSRV(), ImVec2(defaultTexture->GetWidth(), defaultTexture->GetHeight()));
+	//ImGui::Begin("Object Test");
+	//ImGui::SliderFloat("Frame Frequency", &frequency, 0.01f, 0.5f);
+	//ImGui::Image((ImTextureID)defaultTexture->GetSRV(), ImVec2(defaultTexture->GetWidth(), defaultTexture->GetHeight()));
 
-	ImGui::End();
+	//ImGui::End();
 
 }
 
@@ -102,24 +84,21 @@ void ObjectTest::KeyControl()
 	}
 	if (Keyboard::Get()->Up('D') || Keyboard::Get()->Up('A'))
 	{
-		velocity.x = 0.f;
-		state = Idle;
-		frameX = frameY = 0;
 	}
 
 	if (Keyboard::Get()->Press('D'))
 	{
-		state = Run;
-		velocity.x = 100.f;
-		scale.x > 0.f ? scale.x *= 1.f : scale.x *= -1.f;
+	//	scale.x > 0.f ? scale.x *= 1.f : scale.x *= -1.f;
 
 	}
 	else if (Keyboard::Get()->Press('A'))
 	{
-		state = Run;
-		velocity.x = -100.f;
-		scale.x < 0.f ? scale.x *= 1.f : scale.x *= -1.f;
+	//	scale.x < 0.f ? scale.x *= 1.f : scale.x *= -1.f;
 	}
 
+	if (Keyboard::Get()->Up(VK_SPACE))
+	{
 
+
+	}
 }

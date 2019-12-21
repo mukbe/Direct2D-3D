@@ -4,7 +4,7 @@
 class ObjectTest : public GameObject
 {
 public:
-	ObjectTest(string name = "", D3DXVECTOR2 pos = D3DXVECTOR2(0.f, 0.f), D3DXVECTOR2 size = D3DXVECTOR2(100.f, 100.f), Pivot p = Pivot::BOTTOM);
+	ObjectTest(string name , D3DXVECTOR2 pos , D3DXVECTOR2 size, ObjectType type, Pivot p = Pivot::BOTTOM);
 	~ObjectTest();
 
 	//초기화
@@ -14,7 +14,7 @@ public:
 	//카메라에 관한 최초업데이트 - 사용 안해두됨
 	virtual void PreUpdate();
 	//메인 루틴
-	virtual void Update();
+	virtual void Update(float tick);
 	//이동관련 계산
 	virtual void PostUpdate();
 
@@ -27,5 +27,8 @@ public:
 
 
 	void KeyControl();
+
+private:
+	
 };
 

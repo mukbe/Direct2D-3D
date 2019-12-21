@@ -3,21 +3,17 @@
 #include "./Utilities/Matrix2D.h"
 #include "Bounding.h"
 
-GameObject::GameObject(string name, D3DXVECTOR2 pos, D3DXVECTOR2 size, Pivot p)
+GameObject::GameObject(string name, D3DXVECTOR2 pos, D3DXVECTOR2 size, ObjectType type ,Pivot p)
 	:defaultTexture(nullptr)
-	, pos(pos), name(name), bActive(true)
-	, rotate(0.f), velocity(D3DXVECTOR2(0, 0)), accelerate(D3DXVECTOR2(0, 0))
-	, alpha(1.f), size(size), pivot(p)
+	, name(name), bActive(true), worldBuffer(nullptr), shader(nullptr)
+	, alpha(1.f), size(size),  lifeTiem(0.f), frameTime(0.f), objectType(type)
 {
 	worldBuffer = new WorldBuffer;
 	shader = new Shader(L"./Shaders/Color.hlsl");
+	transform = new Matrix2D(pos, size, p);
 
-	transform = new Matrix2D();
-	transform->SetPos(pos);
-	
 	bActive = true;
 
-	scale.x = scale.y = 1;
 	frameX = frameY = 0;
 
 	bound = new BoundingBox(this);
@@ -29,13 +25,13 @@ GameObject::~GameObject()
 {
 	Release();
 	SafeDelete(transform);
-
 	SafeDelete(shader);
 	SafeDelete(worldBuffer);
 }
 
 void GameObject::Init()
 {
+	
 }
 
 void GameObject::Release()
@@ -44,9 +40,10 @@ void GameObject::Release()
 
 void GameObject::PreUpdate()
 {
+	bound->Update();
 }
 
-void GameObject::Update()
+void GameObject::Update(float tick)
 {
 
 	if (Keyboard::Get()->Down(VK_F5))
@@ -54,68 +51,36 @@ void GameObject::Update()
 
 	if (bActive == false) return;
 
-	if (Keyboard::Get()->Press('G'))
-		size += D3DXVECTOR2(50, 50) * Time::Delta();
-	else if (Keyboard::Get()->Press('F'))
-		size += D3DXVECTOR2(-50, -50) * Time::Delta();
 
+	lifeTiem += tick;
+	frameTime += tick;
 
-
-
-	//if (Keyboard::Get()->Press('W'))
-	//	pos += D3DXVECTOR2(0, -40.f)*Time::Delta();
-	//else if (Keyboard::Get()->Press('S'))
-	//	pos += D3DXVECTOR2(0, 40.f)*Time::Delta();
-	//if (Keyboard::Get()->Press('D'))
-	//	pos += D3DXVECTOR2(40.f, 0)*Time::Delta();
-	//else if (Keyboard::Get()->Press('A'))
-	//	pos += D3DXVECTOR2(-40.f, 0)*Time::Delta();
-
-	//if (frameY >= 12 && frameX >= 10)
+	////애니메이션으로 바꿔야됨
+	//if (sprites.size() != 0)
 	//{
-	//	frameX = 0;
-	//	frameY = 0;
+	//	if (frameTime >= frequency)
+	//	{
+	//		frameX++;
+	//		frameTime -= frequency;
+	//		if (frameX >= sprites[state]->GetMaxFrame().x)
+	//		{
+	//			frameY++;
+	//			frameX = 0;
+
+
+	//			if (frameY >= sprites[state]->GetMaxFrame().y)
+	//			{
+	//				frameY = 0;
+	//			}
+	//		}
+	//	}
+
 	//}
-
-
 
 }
 
 void GameObject::PostUpdate()
 {
-
-	static float time = 0.f;
-	time += Time::Delta();
-
-	if (sprites.size() != 0)
-	{
-		if (time >= frequency)
-		{
-			frameX++;
-			time -= frequency;
-			if (frameX >= sprites[state]->GetMaxFrame().x)
-			{
-				frameY++;
-				frameX = 0;
-
-
-				if (frameY >= sprites[state]->GetMaxFrame().y)
-				{
-					frameY = 0;
-				}
-			}
-		}
-
-	}
-
-	transform->SetScale(scale);
-	transform->SetPos(pos);
-	transform->SetRotate(rotate);
-
-	pos += velocity * Time::Delta();
-	velocity += accelerate * Time::Delta();
-
-	bound->Update();
 }
 
 //뷰행렬 계산을 하면 TRUE
@@ -132,13 +97,14 @@ void GameObject::Render(bool isRelative)
 
 	world.Bind();
 
+	transform->Render();
+	bound->Render();
+
 	if (defaultTexture != nullptr)
 	{
 		//defaultTexture->Render();
-		defaultTexture->FrameRender(frameX, frameY, size, 1.f, pivot);
+		//defaultTexture->FrameRender(frameX, frameY, size, 1.f, pivot);
 	}
-	bound->Render();
-	//p2DRenderer->FillEllipse(rc.GetRect());
 	
 }
 
@@ -161,33 +127,5 @@ void GameObject::PostRender()
 	pRenderer->TurnOnAlphaBlend();
 	DeviceContext->Draw(4, 0);
 	pRenderer->TurnOffAlphaBlend();
-
-}
-
-void GameObject::SetTextureFilePath(wstring file)
-{
-	//TODO 리소스관리에서 확인후 있으면 포인터 반환 없으면 생성해서 반환
-
-}
-
-void GameObject::SetTexture(Texture * tex)
-{
-	if (defaultTexture != nullptr)
-	{
-		LOG->Warning(__FILE__, __LINE__, "Texture Confirm");
-	}
-	
-	defaultTexture = tex;
-
-
-}
-
-void GameObject::SetSprite(State state, Texture * tex)
-{
-	if (sprites[state] != nullptr)
-		LOG->Warning(__FILE__, __LINE__, "Sprite Confirm");
-
-	sprites[state] = tex;
-	
 
 }

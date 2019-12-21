@@ -158,9 +158,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Systems\Object\PhysicsWorld.cpp" />
+    <ClCompile Include="Systems\Object\Manifold.cpp" />
+    <ClCompile Include="Systems\Object\Collision.cpp" />
+    <ClCompile Include="Systems\Object\RigidBody.cpp" />
+    <ClCompile Include="Systems\Object\ObjectManager.cpp" />
     <ClCompile Include="Systems\Object\ObjectTest.cpp" />
     <ClCompile Include="Systems\Object\Bounding.cpp" />
     <ClCompile Include="Systems\Object\GameObject.cpp" />
+    <ClCompile Include="Systems\Object\Shape.cpp" />
     <ClCompile Include="Utilities\Matrix2D.cpp" />
     <ClCompile Include="Utilities\FloatRect.cpp" />
     <ClCompile Include="View\CameraManager.cpp" />
@@ -190,13 +196,20 @@
     <ClCompile Include="Utilities\String.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Systems\Object\PhysicsWorld.h" />
+    <ClInclude Include="Systems\Object\Manifold.h" />
+    <ClInclude Include="Systems\Object\Collision.h" />
     <ClInclude Include="EnumHelper.h" />
+    <ClInclude Include="Systems\Object\RigidBody.h" />
+    <ClInclude Include="Systems\Object\ObjectManager.h" />
     <ClInclude Include="Systems\Object\ObjectTest.h" />
     <ClInclude Include="Systems\Object\Bounding.h" />
     <ClInclude Include="Systems\Object\GameObject.h" />
+    <ClInclude Include="Systems\Object\Shape.h" />
     <ClInclude Include="Utilities\Matrix2D.h" />
     <ClInclude Include="Utilities\FloatRect.h" />
     <ClInclude Include="MacroFunction.h" />
+    <ClInclude Include="Utilities\Matrix2x2.h" />
     <ClInclude Include="View\CameraManager.h" />
     <ClInclude Include="Utilities\Path.h" />
     <ClInclude Include="Systems\D2DRenderer.h" />

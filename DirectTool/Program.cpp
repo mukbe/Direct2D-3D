@@ -2,7 +2,11 @@
 #include "Program.h"
 
 #include "./Scenes/SceneMain.h"
+#include "./Systems/Object/GameObject.h"
 #include "./Systems/Object/ObjectTest.h"
+#include "./Systems/Object/Terrain.h"
+#include "./Systems/Object/Bounding.h"
+#include "./Systems/Object/ObjectManager.h"
 
 Program::Program()
 {
@@ -44,22 +48,9 @@ Program::Program()
 	Buffer::CreateIndexBuffer(&indexBuffer, indexData.data(), sizeof(UINT)* indexCount);
 
 	
-	
-	tex = new Texture(L"../_Resources/Box.png");
-	Texture* tex2 = new Texture(L"../_Resources/blueHorse.png",20,13);
-	Texture* tex3 = new Texture(L"../_Resources/Idle.png", 4, 1);
-	Texture* tex4 = new Texture(L"../_Resources/Run_4.png", 10, 1);
+	objManager = new ObjectManager;
 
 
-	gameObject = new GameObject("", D3DXVECTOR2(WinSizeX / 2, WinSizeY / 2));
-	//gameObject->SetTexture(tex);
-	gameObject->SetTexture(tex2);
-
-	gameObject2 = new ObjectTest("");
-	gameObject2->SetActive(false);
-	gameObject2->SetTexture(tex4);
-	gameObject2->SetSprite(GameObject::State::Idle, tex3);
-	gameObject2->SetSprite(GameObject::State::Run, tex4);
 
 }
 
@@ -75,8 +66,23 @@ void Program::PreUpdate()
 {
 
 	sm->PreUpdate();
-	gameObject->PreUpdate();
-	gameObject2->PreUpdate();
+
+	for (GameObject* obj : objs)
+		obj->PreUpdate();
+
+
+	objManager->PreUpdate();
+	//FloatRect player, terrain, temp;
+	//player = objs[0]->GetBounding()->GetRect();
+	//terrain = objs[1]->GetBounding()->GetRect();
+	//temp = player;
+
+
+	//if (Math::IsAABBInAABBReaction(&player, terrain) )
+	//{
+	//	objs[0]->SetSpeed();
+ //		objs[0]->MovePos(D3DXVECTOR2(0.f, -(temp.bottom - player.bottom)));
+	//}
 
 }
 
@@ -84,43 +90,88 @@ void Program::Update(float tick)
 {
 	sm->Update(tick);
 
+	for (GameObject* obj : objs)
+		obj->Update(tick);
 
-	gameObject->Update();
-	gameObject2->Update();
-
+	objManager->Update(tick);
 }
 
 void Program::PostUpdate()
 {
 	sm->PostUpdate();
-	gameObject->PostUpdate();
-	gameObject2->PostUpdate();
+
+	for (GameObject* obj : objs)
+		obj->PostUpdate();
+
+	objManager->PostUpdate();
 }
 
 void Program::Render()
 {	
-	gameObject->Render(true);
-	gameObject2->Render(true);
+	for (GameObject* obj : objs)
+		obj->Render();
 
 
+	CAMERA->GetView().Bind();
+	p2DRenderer->DrawLine(D3DXVECTOR2(-10000, 0), D3DXVECTOR2(10000, 0));
+	p2DRenderer->DrawLine(D3DXVECTOR2(0, -10000), D3DXVECTOR2(0, 10000));
 
-	//p2DRenderer->FillRectangle(play.GetRect(),DefaultBrush::red);
+	wstring str;
+	str += L"pos.x : " + to_wstring(CAMERA->GetMousePos().x).substr(0,6);
+	str += L"pos.y : " + to_wstring(CAMERA->GetMousePos().y).substr(0,6);
+	p2DRenderer->DrawText2D(Mouse::Get()->GetPosition().x-200, Mouse::Get()->GetPosition().y-20, str, 20);
 
-	
+	objManager->Render();
 }
 
 void Program::PostRender()
 {
-	gameObject->PostRender();
-	gameObject2->PostRender();
+	for (GameObject* obj : objs)
+		obj->PostRender();
+	objManager->PostRender();
 }
 
 void Program::ImguiRender()
 {
-	CAMERA->ImguiRender();
+	static bool bLockFPS = true;
+	static int fps = Time::Get()->GetLockFPS();
+	ImGui::Begin("Info");
+	ImGui::Text("FPS : %f", Time::Get()->FPS()); ImGui::SameLine();
 
-	gameObject2->ImguiRender();
+	if (ImGui::Checkbox("FPS Lock", &bLockFPS) || ImGui::InputInt("FPS Value", &fps))
+	{
+		if(bLockFPS)
+			Time::Get()->SetLockFPS(fps);
+		else 
+			Time::Get()->SetLockFPS(0.f);
 
+	}
+
+
+
+
+	ImGui::Text("Tick : %f", Time::Delta());
+	ImGui::Text("PosX : %.2f, PosY : %.2f", CAMERA->GetPos().x,CAMERA->GetPos().y);
+	ImGui::End();
+
+
+	ImGui::Begin("TEST");
+
+	//D3DXVECTOR2 pos = objs[0]->Transform()->GetPos();
+	//
+	//ImGui::Text("pos.x : %.2f , pos.y : %.2f", pos.x, pos.y);
+	//ImGui::Text("rc.bottom : %.2f ", objs[0]->GetBounding()->GetRect().bottom);
+
+	ImGui::End();
+
+
+
+
+	for (GameObject* obj : objs)
+		obj->ImguiRender();
+
+
+	objManager->ImguiRender();
 
 }
 

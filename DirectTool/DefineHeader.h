@@ -1,7 +1,7 @@
 #pragma once
 
-#define WinSizeX 1280
-#define WinSizeY 720
+#define WinSizeX 1600
+#define WinSizeY 900
 
 #define SafeRelease(p){ if(p){ (p)->Release(); (p) = NULL; } }
 #define SafeDelete(p){ if(p){ delete (p); (p) = NULL; } }

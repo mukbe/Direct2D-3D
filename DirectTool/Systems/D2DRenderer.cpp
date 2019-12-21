@@ -161,9 +161,9 @@ void D2DRenderer::DrawText2D(int x, int y, wstring text, int size, DefaultBrush:
 	dwLayout->SetFontSize(size, range);
 
 	dwLayout->SetTextAlignment(align);
+	d2dRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
 	d2dRenderTarget->DrawTextLayout(D2D1::Point2F(x, y), dwLayout, dwDefaultBrush[defaultBrush]);
-	d2dRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
 	dwLayout->Release();
 }
@@ -274,7 +274,6 @@ void D2DRenderer::DrawLine(D2D1::ColorF::Enum color, float alpha, D3DXVECTOR2 st
 }
 void D2DRenderer::DrawLine(D3DXVECTOR2 start, D3DXVECTOR2 end, DefaultBrush::Enum defaultBrush, bool isRelativePos, float strokeWidth)
 {
-
 	d2dRenderTarget->DrawLine(D2D1::Point2F(start.x, start.y), D2D1::Point2F(end.x, end.y), dwDefaultBrush[defaultBrush], strokeWidth);
 }
 
@@ -369,6 +368,108 @@ void D2DRenderer::FillEllipse(RECT rc, D2D1::ColorF::Enum color, float alpha, bo
 void D2DRenderer::FillEllipse(RECT rc, DefaultBrush::Enum defaultBrush, bool isRelativePos)
 {
 
+	int width = rc.right - rc.left;
+	int height = rc.bottom - rc.top;
+
+	D2D1_ELLIPSE ellipse;
+	ellipse.point.x = rc.left + width * 0.5;
+	ellipse.point.y = rc.top + height * 0.5;
+	ellipse.radiusX = width * 0.5;
+	ellipse.radiusY = height * 0.5;
+
+	d2dRenderTarget->FillEllipse(&ellipse, dwDefaultBrush[defaultBrush]);
+}
+
+void D2DRenderer::DrawRectangle(FloatRect rc, D2D1::ColorF::Enum color, float alpha, bool isRelativePos, float strokeWidth)
+{
+	ID2D1SolidColorBrush* brush;
+	d2dRenderTarget->CreateSolidColorBrush(D2D1::ColorF(color, alpha), &brush);
+
+
+	d2dRenderTarget->DrawRectangle(D2D1::RectF(rc.left, rc.top, rc.right, rc.bottom), brush, strokeWidth);
+
+	brush->Release();
+}
+
+void D2DRenderer::DrawRectangle(FloatRect rc, DefaultBrush::Enum defaultBrush, bool isRelativePos, float strokeWidth)
+{
+	d2dRenderTarget->DrawRectangle(D2D1::RectF(rc.left, rc.top, rc.right, rc.bottom), dwDefaultBrush[defaultBrush], strokeWidth);
+}
+
+void D2DRenderer::DrawEllipse(FloatRect rc, D2D1::ColorF::Enum color, float alpha, bool isRelativePos, float strokeWidth)
+{
+	ID2D1SolidColorBrush* brush;
+	d2dRenderTarget->CreateSolidColorBrush(D2D1::ColorF(color, alpha), &brush);
+
+
+
+	int width = rc.right - rc.left;
+	int height = rc.bottom - rc.top;
+
+	D2D1_ELLIPSE ellipse;
+	ellipse.point.x = rc.left + width * 0.5;
+	ellipse.point.y = rc.top + height * 0.5;
+	ellipse.radiusX = width * 0.5;
+	ellipse.radiusY = height * 0.5;
+
+	d2dRenderTarget->DrawEllipse(&ellipse, brush, strokeWidth);
+
+	brush->Release();
+}
+
+void D2DRenderer::DrawEllipse(FloatRect rc, DefaultBrush::Enum defaultBrush, bool isRelativePos, float strokeWidth)
+{
+	int width = rc.right - rc.left;
+	int height = rc.bottom - rc.top;
+
+	D2D1_ELLIPSE ellipse;
+	ellipse.point.x = rc.left + width * 0.5;
+	ellipse.point.y = rc.top + height * 0.5;
+	ellipse.radiusX = width * 0.5;
+	ellipse.radiusY = height * 0.5;
+
+	d2dRenderTarget->DrawEllipse(&ellipse, dwDefaultBrush[defaultBrush], strokeWidth);
+}
+
+void D2DRenderer::FillRectangle(FloatRect rc, D2D1::ColorF::Enum color, float alpha, bool isRelativePos)
+{
+	ID2D1SolidColorBrush* brush;
+	d2dRenderTarget->CreateSolidColorBrush(D2D1::ColorF(color, alpha), &brush);
+
+
+	d2dRenderTarget->FillRectangle(D2D1::RectF(rc.left, rc.top, rc.right, rc.bottom), brush);
+
+	brush->Release();
+}
+
+void D2DRenderer::FillRectangle(FloatRect rc, DefaultBrush::Enum defaultBrush, bool isRelativePos)
+{
+	d2dRenderTarget->FillRectangle(D2D1::RectF(rc.left, rc.top, rc.right, rc.bottom), dwDefaultBrush[defaultBrush]);
+
+}
+
+void D2DRenderer::FillEllipse(FloatRect rc, D2D1::ColorF::Enum color, float alpha, bool isRelativePos)
+{
+	ID2D1SolidColorBrush* brush;
+	d2dRenderTarget->CreateSolidColorBrush(D2D1::ColorF(color, alpha), &brush);
+
+
+	int width = rc.right - rc.left;
+	int height = rc.bottom - rc.top;
+
+	D2D1_ELLIPSE ellipse;
+	ellipse.point.x = rc.left + width * 0.5;
+	ellipse.point.y = rc.top + height * 0.5;
+	ellipse.radiusX = width * 0.5;
+	ellipse.radiusY = height * 0.5;
+
+	d2dRenderTarget->FillEllipse(&ellipse, brush);
+
+	brush->Release();
+}
+
+void D2DRenderer::FillEllipse(FloatRect rc, DefaultBrush::Enum defaultBrush, bool isRelativePos)
+{
 	int width = rc.right - rc.left;
 	int height = rc.bottom - rc.top;
 

@@ -5,6 +5,7 @@ SingletonCpp(Time)
 
 bool Time::isTimerStopped = true;
 float Time::timeElapsed = 0.0f;
+float Time::InvLockFPS = 0.0f;
 
 Time::Time(void) :
 	ticksPerSecond(0), currentTime(0), lastTime(0), lastFPSUpdate(0), fpsUpdateInterval(0),
@@ -15,7 +16,12 @@ Time::Time(void) :
 	QueryPerformanceFrequency((LARGE_INTEGER *)&ticksPerSecond);
 	fpsUpdateInterval = ticksPerSecond >> 1;
 
+
+
 	dayTimeRatio = (Math::PI * 2.0f) / (secondsPerDay * 100);
+
+	lockFPS = 60.f;
+	InvLockFPS = 1.f / lockFPS;
 }
 
 Time::~Time(void)
@@ -41,8 +47,24 @@ void Time::Update()
 	//1. 현재시간을 가져와 시간 간격 및 진행 시간을 계산한다.
 	QueryPerformanceCounter((LARGE_INTEGER *)&currentTime);
 	timeElapsed = (float)(currentTime - lastTime) / (float)ticksPerSecond;
-	runningTime += timeElapsed;
 
+
+	if (lockFPS != 0.f && lockFPS > 0.f)
+	{
+		while (timeElapsed < (1.0f / lockFPS))
+		{
+			QueryPerformanceCounter((LARGE_INTEGER*)&this->currentTime);
+			timeElapsed = (float)((currentTime - lastTime)) / (float)ticksPerSecond;
+		}
+	}
+
+
+
+
+
+
+
+	runningTime += timeElapsed;
 
 	//2. FPS Update
 	frameCount++;
@@ -84,4 +106,10 @@ void Time::Stop()
 	QueryPerformanceCounter((LARGE_INTEGER *)&stopTime);
 	runningTime += (float)(stopTime - lastTime) / (float)ticksPerSecond;
 	isTimerStopped = true;
+}
+
+void Time::SetLockFPS(float val)
+{
+	lockFPS = val;
+	InvLockFPS = 1.f / lockFPS;
 }
