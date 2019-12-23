@@ -110,22 +110,21 @@ void Player::ImguiRender()
 				SOUNDMANAGER->Setposition(currentMusic->Name, pos);
 		}
 
-
 		if (ImGui::Button("Prev", ImVec2(50, 30)))
 		{
 			if (currentMusic != nullptr)
 			{
-				if (current == files.size() - 1)
+				if (current == 0)
 				{
 					SOUNDMANAGER->Stop(currentMusic->Name);
-					current = 0;
+					current = files.size() - 1;
 					currentMusic = files[current];
 					SOUNDMANAGER->Play(currentMusic->Name);
 				}
 				else
 				{
 					SOUNDMANAGER->Stop(currentMusic->Name);
-					current++;
+					current--;
 					currentMusic = files[current];
 					SOUNDMANAGER->Play(currentMusic->Name);
 				}
@@ -134,14 +133,15 @@ void Player::ImguiRender()
 			{
 				if (files.size() > 0)
 				{
-					current = 0;
+					current = files.size() - 1;
 					currentMusic = files[current];
 					SOUNDMANAGER->Play(currentMusic->Name);
 				}
 			}
+		}
 
-		} ImGui::SameLine();
 
+		ImGui::SameLine();
 		if (bPlay == false)
 		{
 			if (ImGui::Button("Play", ImVec2(50, 30)))
@@ -176,17 +176,17 @@ void Player::ImguiRender()
 		{
 			if (currentMusic != nullptr)
 			{
-				if (current == 0)
+				if (current == files.size() - 1)
 				{
 					SOUNDMANAGER->Stop(currentMusic->Name);
-					current = files.size()-1;
+					current = 0;
 					currentMusic = files[current];
 					SOUNDMANAGER->Play(currentMusic->Name);
 				}
 				else
 				{
 					SOUNDMANAGER->Stop(currentMusic->Name);
-					current--;
+					current++;
 					currentMusic = files[current];
 					SOUNDMANAGER->Play(currentMusic->Name);
 				}
@@ -195,12 +195,14 @@ void Player::ImguiRender()
 			{
 				if (files.size() > 0)
 				{
-					current = files.size()-1;
+					current = 0;
 					currentMusic = files[current];
 					SOUNDMANAGER->Play(currentMusic->Name);
 				}
 			}
+
 		}
+
 
 		//º¼·ý
 		ImGui::SameLine();
@@ -222,7 +224,7 @@ void Player::ImguiRender()
 		{
 			D3DDesc desc;
 			pRenderer->GetDesc(&desc);
-			Path::OpenFileDialog(L"", Path::Mp3Filter, L"../_Resources/Sound/mp3", addSoundFunc, desc.Handle);
+			Path::OpenFileDialog(L"", Path::Mp3Filter, L"../_Resources/Sound/mp3/", addSoundFunc, desc.Handle);
 		}
 		if (ImGui::IsItemHovered())
 		{
